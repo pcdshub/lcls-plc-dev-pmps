@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.10">
+  <POU Name="MAIN" Id="{8a7bcfd2-1a2b-4363-aa47-c19391bf1f9c}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	fbDev1	:	FB_ExampleDeviceSM;
+	fbDev2	:	FB_ExampleDeviceSM;
+	fbDev3	:	FB_ExampleDeviceSM;
+	fbDev4	:	FB_ExampleDeviceSM;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[//Sub-system Device PLC
+// This PLC runs 4 
+
+//Example devices
+fbDev1();
+fbDev2();
+fbDev3();
+fbDev4();
+]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="10" Count="0" />
+      <LineId Id="24" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="2" Count="0" />
+      <LineId Id="12" Count="4" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

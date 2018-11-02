@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.6">
+  <DUT Name="ST_BeamParams" Id="{1cfc4571-cdd9-4483-b0d1-cbcb7d03cd4c}">
+    <Declaration><![CDATA[TYPE ST_BeamParams :
+STRUCT
+	// Beam parameters
+	// These must be filled in by the caller. They are safest by default.
+	//Reques
+	fAtt : REAL := 100; //Requested attenuation %
+	fPP_mJ : REAL := 0; //Requested per pulse max energy (mJ)
+	fUpper_eV	:	REAL	:= 0; //Requested max eV
+	fLower_eV	:	REAL	:= 0; //Requested lower eV
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>
