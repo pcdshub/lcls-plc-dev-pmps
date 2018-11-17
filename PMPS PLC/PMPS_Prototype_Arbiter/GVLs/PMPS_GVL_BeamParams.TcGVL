@@ -14,6 +14,15 @@ VAR_GLOBAL CONSTANT
 		fUpper_eV := 1E4,
 		fLower_eV := 0
 );
+	cstSafeBeam	:	ST_BeamParams := (
+		fAtt := 100,
+		fPP_mJ := 0,
+		fUpper_eV := 0,
+		fLower_eV := 0
+);
+	cnMaxStateArrayLen : INT := 20;
+	
+	MAX_ASSERIONS	:	UDINT := 100; //Maximum number of assertions permitted in the arbiter
 END_VAR]]></Declaration>
   </GVL>
 </TcPlcObject>

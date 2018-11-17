@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.10">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.12">
   <DUT Name="ST_DeviceState" Id="{83155e5b-c608-4d41-b295-c67628bd27d3}">
     <Declaration><![CDATA[TYPE ST_DeviceState :
 STRUCT
@@ -11,14 +11,17 @@ STRUCT
 	
 	//State name
 	sStateName	:	STRING;
+	nStateRef	:	UDINT; //Primary key of device state database
 	
-	//Beam Power Class
-	bBeamClass	:	UINT;
-	
-	//Attenuation
-	arAttenuation	ARRAY[1..16] OF UINT;
-	
-	//
+	//////////////////
+	// This stuff may belong in a sub-class or something
+	//Position
+	rPosition	:	REAL := 0;
+	//Tolerance
+	rTolerance :	REAL := 0;
+	//////////////////
+	//Required beam parameters
+	stReqBeamParam	:	ST_BeamParams;
 
 END_STRUCT
 END_TYPE

@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.12">
+  <POU Name="FB_Arbiter" Id="{9cc1f6b7-c43c-0fbb-09be-271b21ce1be7}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Arbiter
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	fbBPAssertionPool	:	FB_BeamParamAssertionPool;
+	getPosPtr	: POINTER TO T_HashTableEntry := 0;
+	getBPStruct	:	ST_BeamParams;
+	stOutputBP	:	ST_BeamParams; //Safest beam parameters from all in the assertion pool
+	
+	fbMachine	:	FB_MachineSimulator;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <LineIds Name="FB_Arbiter">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

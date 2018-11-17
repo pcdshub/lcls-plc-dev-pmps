@@ -1,31 +1,60 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.10">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.12">
   <POU Name="MAIN" Id="{8a7bcfd2-1a2b-4363-aa47-c19391bf1f9c}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM MAIN
 VAR
-	fbDev1	:	FB_ExampleDeviceSM;
-	fbDev2	:	FB_ExampleDeviceSM;
-	fbDev3	:	FB_ExampleDeviceSM;
-	fbDev4	:	FB_ExampleDeviceSM;
+	fbDev1	:	FB_ExampleDevice;
+	
+	BP1	:	ST_BeamParams;
+	BP2	:	ST_BeamParams;
+	Test	:	BOOL;
+	
+	rtInit	:	R_TRIG;
+	Initialize	:	BOOL := TRUE;
+	
 END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[//Sub-system Device PLC
 // This PLC runs 4 
 
+Test := F_SafeBPCompare(BP1,BP2);
+
+IF Initialize THEN
+	fbDev1.Initialize();
+	Initialize := FALSE;
+END_IF
+
 //Example devices
 fbDev1();
-fbDev2();
-fbDev3();
-fbDev4();
+
+PMPS_Arbiter();
+
 ]]></ST>
     </Implementation>
+    <Action Name="Initialize" Id="{b0ee480a-3d4b-001d-04c4-43cdc47895c8}">
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Action>
     <LineIds Name="MAIN">
       <LineId Id="10" Count="0" />
       <LineId Id="24" Count="0" />
+      <LineId Id="38" Count="0" />
+      <LineId Id="36" Count="0" />
+      <LineId Id="46" Count="1" />
+      <LineId Id="50" Count="0" />
+      <LineId Id="54" Count="0" />
+      <LineId Id="51" Count="0" />
       <LineId Id="11" Count="0" />
       <LineId Id="2" Count="0" />
-      <LineId Id="12" Count="4" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="32" Count="1" />
+      <LineId Id="16" Count="0" />
+    </LineIds>
+    <LineIds Name="MAIN.Initialize">
+      <LineId Id="1" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>
