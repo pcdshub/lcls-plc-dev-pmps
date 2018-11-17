@@ -3,7 +3,7 @@
   <GVL Name="GVL" Id="{8be29a55-f95b-0019-032e-27be63ad623d}">
     <Declaration><![CDATA[
 VAR_GLOBAL
-	fbBPAssertionPool	:	FB_BeamParamAssertionPool;
+	fbArbiter	:	FB_Arbiter;
 END_VAR]]></Declaration>
   </GVL>
 </TcPlcObject>

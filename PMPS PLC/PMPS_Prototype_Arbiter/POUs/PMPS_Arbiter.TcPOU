@@ -4,111 +4,28 @@
     <Declaration><![CDATA[PROGRAM PMPS_Arbiter
 VAR
 	
-	getPosPtr	: POINTER TO T_HashTableEntry := 0;
-	getBPStruct	:	ST_BeamParams;
-	stOutputBP	:	ST_BeamParams; //Safest beam parameters from all in the assertion pool
 	
 	fbMachine	:	FB_MachineSimulator;
 END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[
-
-//Arbitrate
-(*
-This step cycles through every hash table entry, comparing
-the beam parameters from each assertion to what we're planning
-to assert.
-
-The safer of the two parameters is kept so at the end we may
-have a mix of beam parameters, the composition being safe for
-all asserters.
-
-*)
-
-//Safest parameters to start
-stOutputBP := F_SetBeamParams(
-	fAtt := 100,
-	fPP_mJ := 0,
-	fLower_eV := 0,
-	fUpper_eV := 1800
-	);
-
-fbBPAssertionPool.A_GetFirst( putPosPtr := 0, getPosPtr=>getPosPtr, getValue=>getBPStruct );
-IF fbBPAssertionPool.bOk THEN
-	
-	//The first entry in the hash table is taken as the setting to arbitrate against
-	stOutputBP := F_SetBeamParams(
-		fAtt := getBPStruct.fAtt,
-		fPP_mJ := getBPStruct.fPP_mJ,
-		fLower_eV := getBPStruct.fLower_eV,
-		fUpper_eV := getBPStruct.fUpper_eV
-	);
-
-	REPEAT
-		fbBPAssertionPool.A_GetNext( putPosPtr := fbBPAssertionPool.getPosPtr , getPosPtr=>getPosPtr, getValue=>getBPStruct );
-		IF fbBPAssertionPool.bOk THEN
-			A_Arbitrate();
-		END_IF
-	UNTIL NOT fbBPAssertionPool.bOk
-	END_REPEAT
-
-END_IF
+//Execute arbiter
+fbArbiter();
 
 //Machine simulator
 fbMachine(
-	i_stAssertedParams := stOutputBP,
+	i_stAssertedParams := fbArbiter.q_stBeamParams,
 	q_stMachineParams => PMPS_GVL_BeamParams.stCurrentBeamParameters
 	);]]></ST>
     </Implementation>
-    <Action Name="A_Arbitrate" Id="{cd232571-a3df-0041-3bcc-1fe44a9b9a88}">
-      <Implementation>
-        <ST><![CDATA[
-//Attenuation
-//Add something here to register the key that won for each param
-stOutputBP.fAtt := MAX(stOutputBP.fAtt, getBPStruct.fAtt);
-
-//Pulse energy
-stOutputBP.fPP_mJ := MIN(stOutputBP.fPP_mJ, getBPStruct.fPP_mJ);
-
-stOutputBP.fLower_eV := MAX(stOutputBP.fLower_eV, getBPStruct.fLower_eV);
-stOutputBP.fUpper_eV := MIN(stOutputBP.fUpper_eV, getBPStruct.fUpper_eV);]]></ST>
-      </Implementation>
-    </Action>
     <LineIds Name="PMPS_Arbiter">
-      <LineId Id="9" Count="2" />
-      <LineId Id="32" Count="0" />
-      <LineId Id="53" Count="1" />
-      <LineId Id="56" Count="0" />
-      <LineId Id="58" Count="3" />
-      <LineId Id="57" Count="0" />
-      <LineId Id="51" Count="0" />
-      <LineId Id="65" Count="0" />
-      <LineId Id="64" Count="0" />
-      <LineId Id="33" Count="0" />
-      <LineId Id="39" Count="4" />
-      <LineId Id="31" Count="0" />
-      <LineId Id="17" Count="1" />
-      <LineId Id="35" Count="0" />
-      <LineId Id="19" Count="0" />
-      <LineId Id="45" Count="5" />
-      <LineId Id="20" Count="8" />
+      <LineId Id="75" Count="0" />
       <LineId Id="16" Count="0" />
+      <LineId Id="74" Count="0" />
       <LineId Id="67" Count="1" />
       <LineId Id="66" Count="0" />
       <LineId Id="71" Count="2" />
-    </LineIds>
-    <LineIds Name="PMPS_Arbiter.A_Arbitrate">
-      <LineId Id="2" Count="0" />
-      <LineId Id="1" Count="0" />
-      <LineId Id="6" Count="0" />
-      <LineId Id="3" Count="0" />
-      <LineId Id="5" Count="0" />
-      <LineId Id="4" Count="0" />
-      <LineId Id="7" Count="0" />
-      <LineId Id="9" Count="0" />
-      <LineId Id="8" Count="0" />
-      <LineId Id="10" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>
