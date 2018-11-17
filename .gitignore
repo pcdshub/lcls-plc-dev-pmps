@@ -1,3 +1,5 @@
+_CompileInfo
+*.tclrs
 _Boot
 _Libraries
 *.suo
