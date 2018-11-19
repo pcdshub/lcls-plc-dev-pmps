@@ -32,7 +32,7 @@ END_VAR
 MEMSET( ADR( getValue ), 0, SIZEOF( getValue ) );
 getPosPtr := 0;
 
-fbTable.A_Add( hTable := hTable, key := key, putValue := 16#00000000(* we will set this value later *), getPosPtr=>getPosPtr, bOk=>bOk );(* Add new element to the table, getPosPtr points to the new entry *)
+fbTable.A_Add( hTable := hTable, key := key, putValue := PMPS_GVL_BeamParams.cstSafeBeam(* we will set this value later *), getPosPtr=>getPosPtr, bOk=>bOk );(* Add new element to the table, getPosPtr points to the new entry *)
 IF fbTable.bOk THEN(* Success *)
 	fbTable.A_GetIndexAtPosPtr( hTable := hTable, putPosPtr := getPosPtr, getValue =>indexOfElem, bOk=>bOk );(* Get array index of getPosPtr entry *)
 	IF fbTable.bOk THEN(* Success *)

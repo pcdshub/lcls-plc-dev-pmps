@@ -6,8 +6,10 @@ Implements the procedure for safely transitioning between device states by asser
 the state *)
 FUNCTION_BLOCK BeamClassTransitionManager
 VAR_INPUT
+	i_TransitionAssertionID	:	INT := 0;
 	i_stTransitionAssertion : ST_BeamParams := PMPS_GVL_BeamParams.cstSafeBeam; //Assertion required during transition (always safer than anything inbetween)
 	
+	i_nRequestedAssertionID	:	INT := 0;
 	i_stRequestedAssertion	:	ST_BeamParams := PMPS_GVL_BeamParams.cstSafeBeam; //Requested assertion, change whenever
 	
 	i_xMoving	:	BOOL := FALSE; //Provide rising edge when device begins moving

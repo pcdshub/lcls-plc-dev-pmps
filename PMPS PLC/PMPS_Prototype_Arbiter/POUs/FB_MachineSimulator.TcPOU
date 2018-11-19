@@ -12,11 +12,11 @@ VAR_OUTPUT
 END_VAR
 VAR
 	fTargetAtt: REAL;
-	tonAttTimer	:	TON(
+	tonAttTimer	:	TON := (
 		PT := T#2S
 		);
 	fTargetPP_mJ: REAL;
-	tonPPETimer: TON(
+	tonPPETimer: TON := (
 		PT := T#2S
 	);
 END_VAR

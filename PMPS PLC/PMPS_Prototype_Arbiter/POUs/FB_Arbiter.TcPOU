@@ -3,9 +3,12 @@
   <POU Name="FB_Arbiter" Id="{9cc1f6b7-c43c-0fbb-09be-271b21ce1be7}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_Arbiter
 VAR_INPUT
+	i_nStateID	:	INT;
+	i_stAssertBeamParams	:	ST_BeamParams;
 END_VAR
 VAR_OUTPUT
 	q_stBeamParams	:	ST_BeamParams;
+	q_xStateIDFound	:	BOOL;
 END_VAR
 VAR
 	fbBPAssertionPool	:	FB_BeamParamAssertionPool;
@@ -76,6 +79,33 @@ stOutputBP.fLower_eV := MAX(stOutputBP.fLower_eV, getBPStruct.fLower_eV);
 stOutputBP.fUpper_eV := MIN(stOutputBP.fUpper_eV, getBPStruct.fUpper_eV);]]></ST>
       </Implementation>
     </Action>
+    <Action Name="A_AssertBP" Id="{f6e89361-055c-0560-0933-bcdd7d87f7bb}">
+      <Implementation>
+        <ST><![CDATA[//fbTable.A_Add( key := 12345, putValue := putValue, getPosPtr=>getPosPtr, getValue=>getValue );
+fbBPAssertionPool.A_Add(
+	key := i_nStateID,
+	putValue := i_stAssertBeamParams,
+	getPosPtr=>getPosPtr,
+	getValue => getBPStruct
+);
+
+IF NOT fbBPAssertionPool.bOk THEN
+	; //Overflow <TODO>
+END_IF]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="A_VerifyAssertion" Id="{905e28be-7804-0837-3111-bddd3e35d311}">
+      <Implementation>
+        <ST><![CDATA[
+
+
+fbBPAssertionPool.A_Lookup( key := i_nStateID, getPosPtr=>getPosPtr, getValue=>getBPStruct );
+
+
+q_xStateIDFound	:= fbBPAssertionPool.bOk;
+]]></ST>
+      </Implementation>
+    </Action>
     <LineIds Name="FB_Arbiter">
       <LineId Id="16" Count="40" />
       <LineId Id="9" Count="0" />
@@ -93,6 +123,22 @@ stOutputBP.fUpper_eV := MIN(stOutputBP.fUpper_eV, getBPStruct.fUpper_eV);]]></ST
       <LineId Id="9" Count="0" />
       <LineId Id="8" Count="0" />
       <LineId Id="10" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Arbiter.A_AssertBP">
+      <LineId Id="2" Count="0" />
+      <LineId Id="1" Count="0" />
+      <LineId Id="3" Count="4" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="10" Count="1" />
+    </LineIds>
+    <LineIds Name="FB_Arbiter.A_VerifyAssertion">
+      <LineId Id="9" Count="1" />
+      <LineId Id="2" Count="0" />
+      <LineId Id="1" Count="0" />
+      <LineId Id="4" Count="0" />
+      <LineId Id="3" Count="0" />
+      <LineId Id="5" Count="1" />
     </LineIds>
   </POU>
 </TcPlcObject>
