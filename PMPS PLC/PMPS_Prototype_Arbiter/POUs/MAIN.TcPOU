@@ -22,6 +22,7 @@ Test := F_SafeBPCompare(BP1,BP2);
 
 IF Initialize THEN
 	fbDev1.Initialize();
+	fbArbiter.A_Init();
 	Initialize := FALSE;
 END_IF
 
@@ -44,6 +45,7 @@ PMPS_Arbiter();
       <LineId Id="36" Count="0" />
       <LineId Id="46" Count="1" />
       <LineId Id="50" Count="0" />
+      <LineId Id="55" Count="0" />
       <LineId Id="54" Count="0" />
       <LineId Id="51" Count="0" />
       <LineId Id="11" Count="0" />

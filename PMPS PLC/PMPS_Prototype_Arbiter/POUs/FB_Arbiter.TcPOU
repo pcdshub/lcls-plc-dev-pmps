@@ -3,7 +3,7 @@
   <POU Name="FB_Arbiter" Id="{9cc1f6b7-c43c-0fbb-09be-271b21ce1be7}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_Arbiter
 VAR_INPUT
-	i_nStateID	:	INT;
+	i_nStateID	:	UDINT;
 	i_stAssertBeamParams	:	ST_BeamParams;
 END_VAR
 VAR_OUTPUT
@@ -94,6 +94,23 @@ IF NOT fbBPAssertionPool.bOk THEN
 END_IF]]></ST>
       </Implementation>
     </Action>
+    <Action Name="A_Init" Id="{31a8de0d-caf8-01fc-1b86-c0ff1708d44b}">
+      <Implementation>
+        <ST><![CDATA[fbBPAssertionPool.A_Reset();]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="A_RemoveAssertion" Id="{024321c3-bc6f-0692-0562-0a65dc09776d}">
+      <Implementation>
+        <ST><![CDATA[
+fbBPAssertionPool.A_Remove(key := i_nStateId, getPosPtr=>getPosPtr, getValue=>getBPStruct);
+
+IF fbBPAssertionPool.bOk THEN
+	;
+ELSE
+	;
+END_IF]]></ST>
+      </Implementation>
+    </Action>
     <Action Name="A_VerifyAssertion" Id="{905e28be-7804-0837-3111-bddd3e35d311}">
       <Implementation>
         <ST><![CDATA[
@@ -131,6 +148,18 @@ q_xStateIDFound	:= fbBPAssertionPool.bOk;
       <LineId Id="9" Count="0" />
       <LineId Id="8" Count="0" />
       <LineId Id="10" Count="1" />
+    </LineIds>
+    <LineIds Name="FB_Arbiter.A_Init">
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Arbiter.A_RemoveAssertion">
+      <LineId Id="2" Count="0" />
+      <LineId Id="1" Count="0" />
+      <LineId Id="4" Count="0" />
+      <LineId Id="3" Count="0" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="7" Count="1" />
+      <LineId Id="6" Count="0" />
     </LineIds>
     <LineIds Name="FB_Arbiter.A_VerifyAssertion">
       <LineId Id="9" Count="1" />

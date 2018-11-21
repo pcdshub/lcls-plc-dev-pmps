@@ -1415,14 +1415,16 @@ END_VAR
       <Implementation>
         <ST><![CDATA[
 stDevice.astStates[1].rPosition := 100;
+stDevice.astStates[1].nStateRef := 16#1;
 stDevice.astStates[1].stReqBeamParam := F_SetBeamParams(
-	fAtt := 10,
+	fAtt := 20,
 	fPP_mJ := 1,
 	fLower_eV := 0,
 	fUpper_eV := 1500
 );
 
 stDevice.astStates[2].rPosition := 200;
+stDevice.astStates[1].nStateRef := 16#2;
 stDevice.astStates[2].stReqBeamParam := F_SetBeamParams(
 	fAtt := 50,
 	fPP_mJ := 1,
@@ -1431,6 +1433,7 @@ stDevice.astStates[2].stReqBeamParam := F_SetBeamParams(
 );
 
 stDevice.astStates[3].rPosition := 300;
+stDevice.astStates[1].nStateRef := 16#3;
 stDevice.astStates[3].stReqBeamParam := F_SetBeamParams(
 	fAtt := 50,
 	fPP_mJ := 0.5,
@@ -1438,6 +1441,7 @@ stDevice.astStates[3].stReqBeamParam := F_SetBeamParams(
 	fUpper_eV := 1500
 );
 
+stDevice.stTransitionState.nStateRef := 16#10;
 stDevice.stTransitionState.stReqBeamParam := F_SetBeamParams(
 	fAtt := 100,
 	fPP_mJ := 1,
@@ -1448,16 +1452,22 @@ stDevice.stTransitionState.stReqBeamParam := F_SetBeamParams(
     </Action>
     <LineIds Name="FB_ExampleDevice.Initialize">
       <LineId Id="45" Count="1" />
+      <LineId Id="50" Count="0" />
       <LineId Id="13" Count="0" />
       <LineId Id="19" Count="1" />
       <LineId Id="22" Count="1" />
       <LineId Id="21" Count="0" />
       <LineId Id="47" Count="0" />
-      <LineId Id="25" Count="5" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="51" Count="0" />
+      <LineId Id="26" Count="4" />
       <LineId Id="24" Count="0" />
       <LineId Id="48" Count="0" />
-      <LineId Id="32" Count="5" />
+      <LineId Id="32" Count="0" />
+      <LineId Id="52" Count="0" />
+      <LineId Id="33" Count="4" />
       <LineId Id="31" Count="0" />
+      <LineId Id="53" Count="0" />
       <LineId Id="39" Count="0" />
       <LineId Id="38" Count="0" />
       <LineId Id="40" Count="4" />

@@ -6,11 +6,15 @@ Implements the procedure for safely transitioning between device states by asser
 the state *)
 FUNCTION_BLOCK BeamClassTransitionManager
 VAR_INPUT
-	i_TransitionAssertionID	:	INT := 0;
+	i_TransitionAssertionID	:	UDINT := 0;
 	i_stTransitionAssertion : ST_BeamParams := PMPS_GVL_BeamParams.cstSafeBeam; //Assertion required during transition (always safer than anything inbetween)
 	
-	i_nRequestedAssertionID	:	INT := 0;
+	i_stTransitionState		:	ST_DeviceState;
+	
+	i_nRequestedAssertionID	:	UDINT := 0;
 	i_stRequestedAssertion	:	ST_BeamParams := PMPS_GVL_BeamParams.cstSafeBeam; //Requested assertion, change whenever
+	
+	i_stRequestedState		:	ST_DeviceState;
 	
 	i_xMoving	:	BOOL := FALSE; //Provide rising edge when device begins moving
 	i_xDoneMoving	:	BOOL := FALSE; //Provide rising edge when device is done with a move
@@ -1321,8 +1325,16 @@ WaitingForTransitionAssertion:INT:=9;"</v>
     <Action Name="AcquiringSafeBeamParams_DO" Id="{603c4e25-97d2-01fd-3380-8f019adaa760}">
       <Implementation>
         <ST><![CDATA[xNewBP := F_DifferentBeamParams(stTargetAssertion, i_stRequestedAssertion);
-xTranBP	:= F_SafeBPCompare(PMPS_GVL_BeamParams.stCurrentBeamParameters, i_stTransitionAssertion);
-xFinalBP := F_SafeBPCompare(PMPS_GVL_BeamParams.stCurrentBeamParameters, stTargetAssertion);]]></ST>
+
+//Transition Assertion Verification
+fbArbiter.A_VerifyAssertion( i_nStateID := i_TransitionAssertionID); //TODO this may be an expensive operation as it's constantly checking the hashtable, could move it to be checked only when waitingfortransitionassertion
+xTranBP	:= F_SafeBPCompare(PMPS_GVL_BeamParams.stCurrentBeamParameters, i_stTransitionAssertion) AND
+	fbArbiter.q_xStateIDFound;
+
+//Final Assertion Verification
+fbArbiter.A_VerifyAssertion( i_nStateID := i_nRequestedAssertionID);
+xFinalBP := F_SafeBPCompare(PMPS_GVL_BeamParams.stCurrentBeamParameters, stTargetAssertion) AND
+	fbArbiter.q_xStateIDFound;]]></ST>
       </Implementation>
     </Action>
     <Action Name="AssertFinalBP" Id="{3aacecc4-95cc-0b9d-1f9c-d6c9dec8e836}">
@@ -1332,7 +1344,13 @@ xFinalBP := F_SafeBPCompare(PMPS_GVL_BeamParams.stCurrentBeamParameters, stTarge
     </Action>
     <Action Name="AssertTransitionBP" Id="{09eb738b-7411-0821-2e23-c9281e93e49d}">
       <Implementation>
-        <ST><![CDATA[q_stTransitionAssertion := i_stTransitionAssertion;]]></ST>
+        <ST><![CDATA[q_stTransitionAssertion := i_stTransitionAssertion;
+
+fbArbiter.A_AssertBP(
+	i_nStateID := i_TransitionAssertionID,
+	i_stAssertBeamParams := i_stTransitionAssertion
+);
+	]]></ST>
       </Implementation>
     </Action>
     <Action Name="AuthorizeTransition" Id="{b727a18e-e395-0e7a-074b-b778698df218}">
@@ -1352,7 +1370,16 @@ xFinalBP := F_SafeBPCompare(PMPS_GVL_BeamParams.stCurrentBeamParameters, stTarge
     </Action>
     <Action Name="RemoveTransitionAssertion" Id="{fd3da30e-395a-0698-0f23-a3f0bc8df59f}">
       <Implementation>
-        <ST><![CDATA[q_stTransitionAssertion := PMPS_GVL_BeamParams.cstFullBeam;]]></ST>
+        <ST><![CDATA[q_stTransitionAssertion := PMPS_GVL_BeamParams.cstFullBeam;
+
+fbArbiter.A_RemoveAssertion( i_nStateID := i_TransitionAssertionID);
+
+//TODO add something to verify removal]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="RemoveTransitionAuthorization" Id="{ad498ce1-478c-0d24-0076-296638013077}">
+      <Implementation>
+        <ST><![CDATA[]]></ST>
       </Implementation>
     </Action>
     <Action Name="SetNewTarget" Id="{cb54fd73-aaf3-0c05-2881-782da729c59b}">
@@ -1361,13 +1388,28 @@ xFinalBP := F_SafeBPCompare(PMPS_GVL_BeamParams.stCurrentBeamParameters, stTarge
       </Implementation>
     </Action>
     <LineIds Name="BeamClassTransitionManager.AcquiringSafeBeamParams_DO">
-      <LineId Id="1" Count="2" />
+      <LineId Id="1" Count="0" />
+      <LineId Id="6" Count="0" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="2" Count="0" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="3" Count="0" />
+      <LineId Id="13" Count="0" />
     </LineIds>
     <LineIds Name="BeamClassTransitionManager.AssertFinalBP">
       <LineId Id="1" Count="0" />
     </LineIds>
     <LineIds Name="BeamClassTransitionManager.AssertTransitionBP">
       <LineId Id="1" Count="0" />
+      <LineId Id="3" Count="0" />
+      <LineId Id="2" Count="0" />
+      <LineId Id="4" Count="0" />
+      <LineId Id="6" Count="1" />
+      <LineId Id="5" Count="0" />
     </LineIds>
     <LineIds Name="BeamClassTransitionManager.AuthorizeTransition">
       <LineId Id="1" Count="0" />
@@ -1379,6 +1421,13 @@ xFinalBP := F_SafeBPCompare(PMPS_GVL_BeamParams.stCurrentBeamParameters, stTarge
       <LineId Id="1" Count="0" />
     </LineIds>
     <LineIds Name="BeamClassTransitionManager.RemoveTransitionAssertion">
+      <LineId Id="1" Count="0" />
+      <LineId Id="3" Count="0" />
+      <LineId Id="2" Count="0" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="BeamClassTransitionManager.RemoveTransitionAuthorization">
       <LineId Id="1" Count="0" />
     </LineIds>
     <LineIds Name="BeamClassTransitionManager.SetNewTarget">
