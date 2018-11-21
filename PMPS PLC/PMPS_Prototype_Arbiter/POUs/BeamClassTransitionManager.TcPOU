@@ -1325,7 +1325,7 @@ WaitingForTransitionAssertion:INT:=9;"</v>
     </Implementation>
     <Action Name="AcquiringSafeBeamParams_DO" Id="{603c4e25-97d2-01fd-3380-8f019adaa760}">
       <Implementation>
-        <ST><![CDATA[xNewBP := F_DifferentBeamParams(stTargetAssertion, i_stRequestedAssertion);
+        <ST><![CDATA[xNewBP := nTargetAssertionID <> i_nRequestedAssertionID;
 
 
 

@@ -16,7 +16,7 @@ STRUCT
 	stTransitionState	:	ST_DeviceState;
 	
 	//EPICS
-	stRequestedState	:	INT;
+	nRequestedState	:	INT;
 	stTargetState	:	INT;
 	stActiveState	:	INT;
 	

@@ -1463,7 +1463,7 @@ stDevice.astStates[1].stReqBeamParam := F_SetBeamParams(
 );
 
 stDevice.astStates[2].rPosition := 200;
-stDevice.astStates[1].nStateRef := 16#2;
+stDevice.astStates[2].nStateRef := 16#2;
 stDevice.astStates[2].stReqBeamParam := F_SetBeamParams(
 	fAtt := 50,
 	fPP_mJ := 1,
@@ -1472,7 +1472,7 @@ stDevice.astStates[2].stReqBeamParam := F_SetBeamParams(
 );
 
 stDevice.astStates[3].rPosition := 300;
-stDevice.astStates[1].nStateRef := 16#3;
+stDevice.astStates[3].nStateRef := 16#3;
 stDevice.astStates[3].stReqBeamParam := F_SetBeamParams(
 	fAtt := 50,
 	fPP_mJ := 0.5,
