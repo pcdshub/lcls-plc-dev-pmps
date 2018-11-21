@@ -41,7 +41,10 @@ ELSIF NOT tonAttTimer.Q THEN
 	tonPPETimer(IN:=TRUE);
 ELSE
 	q_stMachineParams.fPP_mJ := fTargetPP_mJ;
-END_IF]]></ST>
+END_IF
+
+q_stMachineParams.fLower_eV := i_stAssertedParams.fLower_eV;
+q_stMachineParams.fUpper_eV := i_stAssertedParams.fUpper_eV;]]></ST>
     </Implementation>
     <LineIds Name="FB_MachineSimulator">
       <LineId Id="14" Count="0" />
@@ -51,6 +54,9 @@ END_IF]]></ST>
       <LineId Id="17" Count="0" />
       <LineId Id="28" Count="8" />
       <LineId Id="27" Count="0" />
+      <LineId Id="57" Count="0" />
+      <LineId Id="56" Count="0" />
+      <LineId Id="58" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>

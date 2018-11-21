@@ -13,6 +13,7 @@ VAR_OUTPUT
 	q_xStartMove	:	BOOL; //Connect to MC_Absolute.Execute
 	q_xStop			:	BOOL; //Connect to MC_Stop.Execute
 	q_rTargetPosition	:	REAL; //Connect to MC_Absolute.Position
+	q_stRequiredBeamParametersID	:	UDINT;
 	q_stRequiredBeamParameters	:	ST_BeamParams; //Connect to BeamParameterTransitionManager
 END_VAR
 VAR_IN_OUT
@@ -1227,7 +1228,10 @@ stDevice.stRequestedState &gt;= 1"</v>
     </Implementation>
     <Action Name="AwaitingBeamParameters_ENTRY" Id="{162dff85-46a9-0c88-2f29-e0c5dd18aa3c}">
       <Implementation>
-        <ST><![CDATA[q_stRequiredBeamParameters := stDevice.astStates[stTargetState].stReqBeamParam;]]></ST>
+        <ST><![CDATA[q_stRequiredBeamParameters := stDevice.astStates[stTargetState].stReqBeamParam;
+q_stRequiredBeamParametersID := stDevice.astStates[stTargetState].nStateRef;
+
+]]></ST>
       </Implementation>
     </Action>
     <Action Name="Moving_ENTRY" Id="{d37cd748-fdee-084f-04e4-575f7ecd1e4e}">
@@ -1257,7 +1261,9 @@ q_rTargetPosition := stDevice.astStates[stTargetState].rPosition;]]></ST>
       </Implementation>
     </Action>
     <LineIds Name="FB_ExampleDeviceSM.AwaitingBeamParameters_ENTRY">
-      <LineId Id="1" Count="0" />
+      <LineId Id="1" Count="1" />
+      <LineId Id="4" Count="0" />
+      <LineId Id="3" Count="0" />
     </LineIds>
     <LineIds Name="FB_ExampleDeviceSM.Moving_ENTRY">
       <LineId Id="1" Count="1" />

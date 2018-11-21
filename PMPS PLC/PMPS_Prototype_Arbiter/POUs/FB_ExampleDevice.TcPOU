@@ -49,7 +49,7 @@ END_VAR
                         <v n="LValue">false</v>
                         <v n="Boolean">false</v>
                         <v n="IsInstance">true</v>
-                        <v n="Id">332L</v>
+                        <v n="Id">369L</v>
                       </o>
                       <o n="OutputItems" t="OutputItemList">
                         <l2 n="OutputItems" cet="Operand">
@@ -69,23 +69,6 @@ END_VAR
                             <v n="IsInstance">false</v>
                             <v n="Id">334L</v>
                           </o>
-                          <o>
-                            <v n="Operand">""</v>
-                            <n n="Type" />
-                            <v n="Comment">""</v>
-                            <v n="SymbolComment">""</v>
-                            <v n="Address">""</v>
-                            <o n="Flags" t="Flags">
-                              <v n="Flags">0</v>
-                              <v n="Fixed">false</v>
-                              <v n="Extensible">false</v>
-                            </o>
-                            <v n="LValue">true</v>
-                            <v n="Boolean">false</v>
-                            <v n="IsInstance">false</v>
-                            <v n="Id">335L</v>
-                          </o>
-                          <n />
                         </l2>
                       </o>
                       <o n="Flags" t="Flags">
@@ -95,6 +78,25 @@ END_VAR
                       </o>
                       <n n="InputFlags" />
                       <l2 n="InputItems" cet="BoxTreeOperand">
+                        <o>
+                          <o n="Operand" t="Operand">
+                            <v n="Operand">"stDevice.stTransitionState.nStateRef"</v>
+                            <v n="Type">"UDINT"</v>
+                            <v n="Comment">""</v>
+                            <v n="SymbolComment">""</v>
+                            <v n="Address">""</v>
+                            <o n="Flags" t="Flags">
+                              <v n="Flags">0</v>
+                              <v n="Fixed">false</v>
+                              <v n="Extensible">false</v>
+                            </o>
+                            <v n="LValue">false</v>
+                            <v n="Boolean">false</v>
+                            <v n="IsInstance">false</v>
+                            <v n="Id">364L</v>
+                          </o>
+                          <v n="Id">363L</v>
+                        </o>
                         <o>
                           <o n="Operand" t="Operand">
                             <v n="Operand">"stDevice.stTransitionState.stReqBeamParam"</v>
@@ -113,6 +115,25 @@ END_VAR
                             <v n="Id">337L</v>
                           </o>
                           <v n="Id">336L</v>
+                        </o>
+                        <o>
+                          <o n="Operand" t="Operand">
+                            <v n="Operand">"FB_ExampleDeviceSM_0.q_stRequiredBeamParametersID"</v>
+                            <v n="Type">"UDINT"</v>
+                            <v n="Comment">""</v>
+                            <v n="SymbolComment">""</v>
+                            <v n="Address">""</v>
+                            <o n="Flags" t="Flags">
+                              <v n="Flags">0</v>
+                              <v n="Fixed">false</v>
+                              <v n="Extensible">false</v>
+                            </o>
+                            <v n="LValue">false</v>
+                            <v n="Boolean">false</v>
+                            <v n="IsInstance">false</v>
+                            <v n="Id">366L</v>
+                          </o>
+                          <v n="Id">365L</v>
                         </o>
                         <o>
                           <o n="Operand" t="Operand">
@@ -193,14 +214,18 @@ END_VAR
                       </l2>
                       <o n="InputParam" t="ParamList">
                         <l2 n="Names" cet="String">
+                          <v>i_TransitionAssertionID</v>
                           <v>i_stTransitionAssertion</v>
+                          <v>i_nRequestedAssertionID</v>
                           <v>i_stRequestedAssertion</v>
                           <v>i_xMoving</v>
                           <v>i_xDoneMoving</v>
                           <v>i_stFullBeam</v>
                         </l2>
                         <l2 n="Types" cet="String">
+                          <v>UDINT</v>
                           <v>ST_BeamParams</v>
+                          <v>UDINT</v>
                           <v>ST_BeamParams</v>
                           <v>BOOL</v>
                           <v>BOOL</v>
@@ -209,13 +234,9 @@ END_VAR
                       </o>
                       <o n="OutputParam" t="ParamList">
                         <l2 n="Names" cet="String">
-                          <v>q_stTransitionAssertion</v>
-                          <v>q_stFinalAssertion</v>
                           <v>q_xTransitionAuthorized</v>
                         </l2>
                         <l2 n="Types" cet="String">
-                          <v>ST_BeamParams</v>
-                          <v>ST_BeamParams</v>
                           <v>BOOL</v>
                         </l2>
                       </o>
@@ -225,7 +246,7 @@ END_VAR
                       <n n="STSnippet" />
                       <v n="ContainsExtensibleInputs">false</v>
                       <v n="ProvidesSTSnippet">false</v>
-                      <v n="Id">333L</v>
+                      <v n="Id">370L</v>
                     </o>
                   </l2>
                   <l2 n="Connectors" />
@@ -435,7 +456,7 @@ END_VAR
                                 <v n="LValue">false</v>
                                 <v n="Boolean">false</v>
                                 <v n="IsInstance">true</v>
-                                <v n="Id">327L</v>
+                                <v n="Id">371L</v>
                               </o>
                               <o n="OutputItems" t="OutputItemList">
                                 <l2 n="OutputItems" cet="Operand">
@@ -471,6 +492,22 @@ END_VAR
                                     <v n="Boolean">false</v>
                                     <v n="IsInstance">false</v>
                                     <v n="Id">239L</v>
+                                  </o>
+                                  <o>
+                                    <v n="Operand">""</v>
+                                    <n n="Type" />
+                                    <v n="Comment">""</v>
+                                    <v n="SymbolComment">""</v>
+                                    <v n="Address">""</v>
+                                    <o n="Flags" t="Flags">
+                                      <v n="Flags">0</v>
+                                      <v n="Fixed">false</v>
+                                      <v n="Extensible">false</v>
+                                    </o>
+                                    <v n="LValue">true</v>
+                                    <v n="Boolean">false</v>
+                                    <v n="IsInstance">false</v>
+                                    <v n="Id">373L</v>
                                   </o>
                                   <o>
                                     <v n="Operand">""</v>
@@ -614,12 +651,14 @@ END_VAR
                                   <v>q_xStartMove</v>
                                   <v>q_xStop</v>
                                   <v>q_rTargetPosition</v>
+                                  <v>q_stRequiredBeamParametersID</v>
                                   <v>q_stRequiredBeamParameters</v>
                                 </l2>
                                 <l2 n="Types" cet="String">
                                   <v>BOOL</v>
                                   <v>BOOL</v>
                                   <v>REAL</v>
+                                  <v>UDINT</v>
                                   <v>ST_BeamParams</v>
                                 </l2>
                               </o>
@@ -629,7 +668,7 @@ END_VAR
                               <n n="STSnippet" />
                               <v n="ContainsExtensibleInputs">false</v>
                               <v n="ProvidesSTSnippet">false</v>
-                              <v n="Id">328L</v>
+                              <v n="Id">372L</v>
                             </o>
                           </l2>
                           <o n="InputParam" t="ParamList">
@@ -673,8 +712,8 @@ END_VAR
                         </o>
                         <o t="BoxTreeOperand">
                           <o n="Operand" t="Operand">
-                            <v n="Operand">""</v>
-                            <n n="Type" />
+                            <v n="Operand">"1"</v>
+                            <v n="Type">"INT"</v>
                             <v n="Comment">""</v>
                             <v n="SymbolComment">""</v>
                             <v n="Address">""</v>

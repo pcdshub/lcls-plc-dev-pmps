@@ -82,13 +82,17 @@ stOutputBP.fUpper_eV := MIN(stOutputBP.fUpper_eV, getBPStruct.fUpper_eV);]]></ST
     <Action Name="A_AssertBP" Id="{f6e89361-055c-0560-0933-bcdd7d87f7bb}">
       <Implementation>
         <ST><![CDATA[//fbTable.A_Add( key := 12345, putValue := putValue, getPosPtr=>getPosPtr, getValue=>getValue );
-fbBPAssertionPool.A_Add(
-	key := i_nStateID,
-	putValue := i_stAssertBeamParams,
-	getPosPtr=>getPosPtr,
-	getValue => getBPStruct
-);
 
+IF i_nStateID <> EXCLUDED_ASSERTION_ID THEN
+
+	fbBPAssertionPool.A_Add(
+		key := i_nStateID,
+		putValue := i_stAssertBeamParams,
+		getPosPtr=>getPosPtr,
+		getValue => getBPStruct
+	);
+END_IF
+	
 IF NOT fbBPAssertionPool.bOk THEN
 	; //Overflow <TODO>
 END_IF]]></ST>
@@ -102,12 +106,14 @@ END_IF]]></ST>
     <Action Name="A_RemoveAssertion" Id="{024321c3-bc6f-0692-0562-0a65dc09776d}">
       <Implementation>
         <ST><![CDATA[
-fbBPAssertionPool.A_Remove(key := i_nStateId, getPosPtr=>getPosPtr, getValue=>getBPStruct);
-
-IF fbBPAssertionPool.bOk THEN
-	;
-ELSE
-	;
+IF i_nStateId <> EXCLUDED_ASSERTION_ID THEN
+	fbBPAssertionPool.A_Remove(key := i_nStateId, getPosPtr=>getPosPtr, getValue=>getBPStruct);
+	
+	IF fbBPAssertionPool.bOk THEN
+		;
+	ELSE
+		;
+	END_IF
 END_IF]]></ST>
       </Implementation>
     </Action>
@@ -115,12 +121,15 @@ END_IF]]></ST>
       <Implementation>
         <ST><![CDATA[
 
+IF i_nStateID <> EXCLUDED_ASSERTION_ID THEN
+	
+	fbBPAssertionPool.A_Lookup( key := i_nStateID, getPosPtr=>getPosPtr, getValue=>getBPStruct );
 
-fbBPAssertionPool.A_Lookup( key := i_nStateID, getPosPtr=>getPosPtr, getValue=>getBPStruct );
+	q_xStateIDFound	:= fbBPAssertionPool.bOk;
 
-
-q_xStateIDFound	:= fbBPAssertionPool.bOk;
-]]></ST>
+ELSE
+	q_xStateIDFound := FALSE;
+END_IF]]></ST>
       </Implementation>
     </Action>
     <LineIds Name="FB_Arbiter">
@@ -143,9 +152,11 @@ q_xStateIDFound	:= fbBPAssertionPool.bOk;
     </LineIds>
     <LineIds Name="FB_Arbiter.A_AssertBP">
       <LineId Id="2" Count="0" />
+      <LineId Id="13" Count="1" />
+      <LineId Id="12" Count="0" />
       <LineId Id="1" Count="0" />
       <LineId Id="3" Count="4" />
-      <LineId Id="9" Count="0" />
+      <LineId Id="15" Count="1" />
       <LineId Id="8" Count="0" />
       <LineId Id="10" Count="1" />
     </LineIds>
@@ -153,6 +164,7 @@ q_xStateIDFound	:= fbBPAssertionPool.bOk;
       <LineId Id="1" Count="0" />
     </LineIds>
     <LineIds Name="FB_Arbiter.A_RemoveAssertion">
+      <LineId Id="9" Count="0" />
       <LineId Id="2" Count="0" />
       <LineId Id="1" Count="0" />
       <LineId Id="4" Count="0" />
@@ -160,14 +172,18 @@ q_xStateIDFound	:= fbBPAssertionPool.bOk;
       <LineId Id="5" Count="0" />
       <LineId Id="7" Count="1" />
       <LineId Id="6" Count="0" />
+      <LineId Id="10" Count="0" />
     </LineIds>
     <LineIds Name="FB_Arbiter.A_VerifyAssertion">
       <LineId Id="9" Count="1" />
       <LineId Id="2" Count="0" />
+      <LineId Id="14" Count="0" />
       <LineId Id="1" Count="0" />
-      <LineId Id="4" Count="0" />
       <LineId Id="3" Count="0" />
-      <LineId Id="5" Count="1" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="6" Count="0" />
+      <LineId Id="12" Count="1" />
     </LineIds>
   </POU>
 </TcPlcObject>

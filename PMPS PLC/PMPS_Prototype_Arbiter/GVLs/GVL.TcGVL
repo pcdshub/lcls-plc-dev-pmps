@@ -4,6 +4,10 @@
     <Declaration><![CDATA[
 VAR_GLOBAL
 	fbArbiter	:	FB_Arbiter;
+END_VAR
+
+VAR_GLOBAL CONSTANT
+	EXCLUDED_ASSERTION_ID	:	UDINT	:= 16#FFFFFFFF; //An assertion ID that should always return "not found" in the assertion pool
 END_VAR]]></Declaration>
   </GVL>
 </TcPlcObject>
