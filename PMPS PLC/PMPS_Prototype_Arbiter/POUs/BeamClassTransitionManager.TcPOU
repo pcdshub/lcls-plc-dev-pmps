@@ -22,8 +22,8 @@ VAR_INPUT
 END_VAR
 VAR_OUTPUT
 	
-	q_stTransitionAssertion	:	ST_BeamParams; //Transition assertion, connect to arbiter
-	q_stFinalAssertion	:	ST_BeamParams; //Final assertion, connect to arbiter
+	
+	
 	q_xTransitionAuthorized	:	BOOL := FALSE; //Rising edge indicating the device is safe to move, use as input to move execute (which requires a rising edge)
 END_VAR
 VAR
@@ -474,7 +474,7 @@ WaitingForTransitionAssertion:INT:=9;"</v>
                   <v n="ExitParametersString">""</v>
                   <v n="HasEntryAction">true</v>
                   <v n="HasDoAction">false</v>
-                  <v n="HasExitAction">false</v>
+                  <v n="HasExitAction">true</v>
                   <v n="PropertyID">0</v>
                   <v n="wasFork">false</v>
                   <d n="ActionList" t="Hashtable" />
@@ -491,7 +491,7 @@ WaitingForTransitionAssertion:INT:=9;"</v>
                     <v n="LeftPosition">740</v>
                     <v n="WidthValue">300</v>
                     <v n="MinWidthValue">0</v>
-                    <v n="Height">63</v>
+                    <v n="Height">87</v>
                     <v n="MinHeight">0</v>
                     <v n="AutomaticLayout">false</v>
                     <d n="DockingPoints" t="Hashtable" />
@@ -924,7 +924,7 @@ WaitingForTransitionAssertion:INT:=9;"</v>
                   <v n="ConditionText">"xTranBP"</v>
                   <v n="LengthConditionText">100</v>
                   <v n="RelationID">2</v>
-                  <v n="TriggerlessStatechartTransition">true</v>
+                  <v n="TriggerlessStatechartTransition">false</v>
                   <v n="EndUMLElement">{e79867e7-2b3a-47aa-af42-f5e58ca1d69c}</v>
                   <o n="UMLRelationVisualisation" t="UMLRelationVisualisation">
                     <v n="RelationID">{002c3585-6619-483d-a4ad-24e3c5556da1}</v>
@@ -1149,7 +1149,7 @@ WaitingForTransitionAssertion:INT:=9;"</v>
                   <v n="ConditionText">"xFinalBP"</v>
                   <v n="LengthConditionText">100</v>
                   <v n="RelationID">3</v>
-                  <v n="TriggerlessStatechartTransition">true</v>
+                  <v n="TriggerlessStatechartTransition">false</v>
                   <v n="EndUMLElement">{c9bd3ee8-ed1c-4da5-aaca-8e125e37e024}</v>
                   <o n="UMLRelationVisualisation" t="UMLRelationVisualisation">
                     <v n="RelationID">{21afc9f0-b07d-446b-b648-e3f8868ba4c8}</v>
