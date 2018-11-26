@@ -712,8 +712,8 @@ END_VAR
                         </o>
                         <o t="BoxTreeOperand">
                           <o n="Operand" t="Operand">
-                            <v n="Operand">"10"</v>
-                            <v n="Type">"INT"</v>
+                            <v n="Operand">"g_rTestingVelocity"</v>
+                            <v n="Type">"LREAL"</v>
                             <v n="Comment">""</v>
                             <v n="SymbolComment">""</v>
                             <v n="Address">""</v>

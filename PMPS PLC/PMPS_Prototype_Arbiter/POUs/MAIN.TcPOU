@@ -4,6 +4,7 @@
     <Declaration><![CDATA[PROGRAM MAIN
 VAR
 	fbDev1	:	FB_ExampleDevice;
+	fbDev2	:	FB_ExampleDeviceSM_All;
 	
 	BP1	:	ST_BeamParams;
 	BP2	:	ST_BeamParams;
@@ -22,12 +23,14 @@ Test := F_SafeBPCompare(BP1,BP2);
 
 IF Initialize THEN
 	fbDev1.Initialize();
+	//fbDev2 initialized with first call
 	fbArbiter.A_Init();
 	Initialize := FALSE;
 END_IF
 
 //Example devices
 fbDev1();
+fbDev2();
 
 PMPS_Arbiter();
 
@@ -45,12 +48,14 @@ PMPS_Arbiter();
       <LineId Id="36" Count="0" />
       <LineId Id="46" Count="1" />
       <LineId Id="50" Count="0" />
+      <LineId Id="71" Count="0" />
       <LineId Id="55" Count="0" />
       <LineId Id="54" Count="0" />
       <LineId Id="51" Count="0" />
       <LineId Id="11" Count="0" />
       <LineId Id="2" Count="0" />
       <LineId Id="12" Count="0" />
+      <LineId Id="70" Count="0" />
       <LineId Id="15" Count="0" />
       <LineId Id="32" Count="1" />
       <LineId Id="16" Count="0" />
