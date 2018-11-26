@@ -2238,11 +2238,6 @@ fbBPTM.i_nRequestedAssertionID := stDevice.astStates[nTargetState].nStateRef;
 ]]></ST>
       </Implementation>
     </Action>
-    <Action Name="ExecutingMove_DO" Id="{c8987dd6-c731-0f16-0c81-0e04fc187448}">
-      <Implementation>
-        <ST><![CDATA[]]></ST>
-      </Implementation>
-    </Action>
     <Action Name="Init" Id="{36a0d24a-22c6-0d0b-1731-1ec66408ff3d}">
       <Implementation>
         <ST><![CDATA[stDevice.astStates[1].rPosition := 100;
@@ -2307,45 +2302,6 @@ END_IF
 ]]></ST>
       </Implementation>
     </Action>
-    <Action Name="Stopping_DO" Id="{28ed5ff0-8706-0604-37e8-3eee92f5df29}">
-      <Implementation>
-        <NWL>
-          <XmlArchive>
-            <Data>
-              <o xml:space="preserve" t="NWLImplementationObject">
-                <v n="NetworkListComment">""</v>
-                <v n="DefaultViewMode">"Fbd"</v>
-                <l2 n="NetworkList" cet="Network">
-                  <o>
-                    <v n="ILActive">false</v>
-                    <v n="FBDValid">false</v>
-                    <v n="ILValid">false</v>
-                    <l2 n="ILLines" />
-                    <v n="Comment">""</v>
-                    <v n="Title">""</v>
-                    <v n="Label">""</v>
-                    <v n="OutCommented">false</v>
-                    <l2 n="NetworkItems" />
-                    <l2 n="Connectors" />
-                    <v n="Id">1L</v>
-                  </o>
-                </l2>
-                <v n="BranchCounter">0</v>
-                <v n="ValidIds">true</v>
-              </o>
-            </Data>
-            <TypeList>
-              <Type n="Boolean">System.Boolean</Type>
-              <Type n="Int32">System.Int32</Type>
-              <Type n="Int64">System.Int64</Type>
-              <Type n="Network">{d9a99d73-b633-47db-b876-a752acb25871}</Type>
-              <Type n="NWLImplementationObject">{25e509de-33d4-4447-93f8-c9e4ea381c8b}</Type>
-              <Type n="String">System.String</Type>
-            </TypeList>
-          </XmlArchive>
-        </NWL>
-      </Implementation>
-    </Action>
     <Action Name="Stopping_ENTRY" Id="{9349f20c-976c-005a-3b7a-9a689850c9c0}">
       <Implementation>
         <ST><![CDATA[mcStop.Execute := TRUE;]]></ST>
@@ -2359,9 +2315,6 @@ END_IF
     <LineIds Name="FB_ExampleDeviceSM_All.AwaitingBeamParameters_ENTRY">
       <LineId Id="5" Count="2" />
       <LineId Id="3" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_ExampleDeviceSM_All.ExecutingMove_DO">
-      <LineId Id="1" Count="0" />
     </LineIds>
     <LineIds Name="FB_ExampleDeviceSM_All.Init">
       <LineId Id="2" Count="32" />

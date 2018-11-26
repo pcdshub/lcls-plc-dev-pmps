@@ -56,9 +56,6 @@
     <Compile Include="POUs\FB_Arbiter.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\FB_BeamParameterArbiter.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="POUs\FB_ExampleDevice.TcPOU">
       <SubType>Code</SubType>
     </Compile>
