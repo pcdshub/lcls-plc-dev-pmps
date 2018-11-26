@@ -41,6 +41,16 @@
               <l n="LanguageTexts" t="ArrayList" />
             </o>
             <o>
+              <v n="TextID">"68"</v>
+              <v n="TextDefault">"Assertion Pool State"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"766"</v>
+              <v n="TextDefault">"Assertion Pool Stats"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
               <v n="TextID">"708"</v>
               <v n="TextDefault">"Att"</v>
               <l n="LanguageTexts" t="ArrayList" />
