@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.12">
+  <POU Name="FB_LinearGovernor" Id="{ef40f951-1e56-0d26-34ec-87da9b08d3b7}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_LinearGovernor
+VAR_INPUT
+	i_stCurrentBeamParams	:	ST_BeamParams; //Link to global beam params
+	i_xMPSOverride			:	BOOL; //True releases MPS limits after a delay
+	i_xTransitionRequested	:	BOOL; //Set true to request a transition
+END_VAR
+VAR_OUTPUT
+	q_xTransitionPermitted	:	BOOL; //True when governor has released restrictions
+	q_xFault	:	BOOL; //Set if MC_Power has an error, or override mode is requested
+END_VAR
+VAR_IN_OUT
+	stDevice	:	ST_Device; //The governed
+	Arbiter	:	FB_Arbiter;
+END_VAR
+VAR
+	mcPower	:	MC_Power;
+	
+	xActuatorPositiveEnable: BOOL;
+	xActuatorNegativeEnable: BOOL;
+	
+	xMPSPositiveEnable	:	BOOL;
+	xMPSNegativeEnable	:	BOOL;
+	lrPosition: LREAL;
+	
+	lrLatchedTargetPosition	:	LREAL;
+	lrLatchedTargetTolerance	:	LREAL;
+	
+	lrMPSUpperLimit: LREAL;
+	lrMPSLowerLimit: LREAL;
+	rtNewState: R_TRIG;
+	xTransitionOK: BOOL;
+	
+	tonOverrideMode	:	TON := (
+		PT := T#5S
+	);
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+lrPosition := stDevice.stAxis.NcToPlc.ActPos;
+
+
+//MPS limit switch logic
+//Calculate the limit positions for MPS based on current state
+lrMPSUpperLimit := lrLatchedTargetPosition + lrLatchedTargetTolerance/2;
+lrMPSLowerLimit := lrLatchedTargetPosition - lrLatchedTargetTolerance/2;
+
+//Evaluate MPS limit states
+xMPSPositiveEnable := lrPosition <= lrMPSUpperLimit;
+xMPSNegativeEnable := lrPosition >= lrMPSLowerLimit;
+
+//Determine if the MPS limits can be lifted
+IF i_xTransitionRequested THEN
+	Arbiter.A_VerifyAssertion(
+		i_nStateID := stDevice.stTransitionState.nStateRef
+	);
+	xTransitionOK := Arbiter.q_xStateIDFound;
+ELSE
+	xTransitionOK := FALSE;
+END_IF
+
+//MPS override
+//Permit motion after a small delay
+tonOverrideMode(IN:=i_xMPSOverride);
+
+//Virtual limit switch evaluation
+xActuatorPositiveEnable	:= stDevice.i_xHiLim AND lrPosition <= stDevice.lrUpperPositionLimit;
+xActuatorNegativeEnable	:= stDevice.i_xLoLim AND lrPosition <= stDevice.lrLowerPositionLimit;
+
+
+//Final Limit switch evaluation
+mcPower.Enable_Positive := xActuatorPositiveEnable AND (tonOverrideMode.Q OR xTransitionOK OR xMPSPositiveEnable);
+mcPower.Enable_Negative := xActuatorNegativeEnable AND (tonOverrideMode.Q OR xTransitionOK OR xMPSNegativeEnable);
+
+mcPower(
+	Axis := stDevice.stAxis,
+	Enable := stDevice.xEnable //link to device enable <TODO>
+);
+
+//An mcPower error or MPS override produces a fault. Faults can be masked by veto devices.
+q_xFault := mcPower.Error OR i_xMPSOverride;]]></ST>
+    </Implementation>
+    <LineIds Name="FB_LinearGovernor">
+      <LineId Id="37" Count="1" />
+      <LineId Id="71" Count="1" />
+      <LineId Id="47" Count="0" />
+      <LineId Id="73" Count="0" />
+      <LineId Id="48" Count="1" />
+      <LineId Id="74" Count="0" />
+      <LineId Id="32" Count="0" />
+      <LineId Id="26" Count="0" />
+      <LineId Id="44" Count="0" />
+      <LineId Id="75" Count="0" />
+      <LineId Id="51" Count="0" />
+      <LineId Id="50" Count="0" />
+      <LineId Id="59" Count="0" />
+      <LineId Id="63" Count="0" />
+      <LineId Id="62" Count="0" />
+      <LineId Id="65" Count="0" />
+      <LineId Id="52" Count="0" />
+      <LineId Id="66" Count="0" />
+      <LineId Id="53" Count="0" />
+      <LineId Id="76" Count="0" />
+      <LineId Id="68" Count="0" />
+      <LineId Id="77" Count="0" />
+      <LineId Id="85" Count="0" />
+      <LineId Id="67" Count="0" />
+      <LineId Id="27" Count="2" />
+      <LineId Id="69" Count="1" />
+      <LineId Id="18" Count="3" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="22" Count="2" />
+      <LineId Id="88" Count="0" />
+      <LineId Id="87" Count="0" />
+      <LineId Id="86" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -132,7 +132,7 @@ VerifyingNewTargetState:INT:=10;"</v>
                     <v n="ShowMethods">true</v>
                     <v n="RepresentedElement">1</v>
                     <v n="IsElementVisible">true</v>
-                    <v n="TopPosition">280</v>
+                    <v n="TopPosition">270</v>
                     <v n="LeftPosition">50</v>
                     <v n="WidthValue">165</v>
                     <v n="MinWidthValue">0</v>
@@ -166,7 +166,7 @@ VerifyingNewTargetState:INT:=10;"</v>
                   <v n="UMLPosition">-1L</v>
                   <v n="IsModified">false</v>
                   <v n="ARGBElementColor">-13447886</v>
-                  <v n="ZOrder">199U</v>
+                  <v n="ZOrder">202U</v>
                 </o>
                 <v>2ba29472-6687-48ed-b404-90b84d730001</v>
                 <o t="UMLStateChartPseudoElement">
@@ -475,16 +475,16 @@ VerifyingNewTargetState:INT:=10;"</v>
                   <v n="EntryParametersString">""</v>
                   <v n="EntryActionText">""</v>
                   <v n="InjectedDoImplementationCode">""</v>
-                  <v n="DoActionText">"ExecutingMove_DO"</v>
+                  <v n="DoActionText">""</v>
                   <v n="ExitActionText">""</v>
                   <v n="DoLocalVariableName">""</v>
-                  <v n="DoActionName">"ExecutingMove_DO"</v>
+                  <v n="DoActionName">""</v>
                   <v n="DoParametersString">""</v>
                   <v n="ExitLocalVariableName">""</v>
                   <v n="ExitActionName">""</v>
                   <v n="ExitParametersString">""</v>
                   <v n="HasEntryAction">false</v>
-                  <v n="HasDoAction">true</v>
+                  <v n="HasDoAction">false</v>
                   <v n="HasExitAction">false</v>
                   <v n="PropertyID">0</v>
                   <v n="wasFork">false</v>
@@ -810,7 +810,7 @@ VerifyingNewTargetState:INT:=10;"</v>
                   <v n="HasGraphicalRepresentation">true</v>
                   <v n="StartUMLElement">{6b6ed550-70d3-4aa7-8ab1-ebec1f28e744}</v>
                   <v n="HighlightedLine">true</v>
-                  <v n="ZOrder">191U</v>
+                  <v n="ZOrder">202U</v>
                   <v n="SpecialHandling">true</v>
                   <v n="ActionLocalVariableName">""</v>
                   <v n="ActionParametersString">""</v>
@@ -840,11 +840,11 @@ VerifyingNewTargetState:INT:=10;"</v>
                     <o n="EndAnchor" t="UMLAnchorPoint">
                       <v n="AnchorID">2</v>
                       <v n="AnchorLeftPosition">117</v>
-                      <v n="AnchorTopPosition">324</v>
+                      <v n="AnchorTopPosition">314</v>
                       <v n="AnchorRelationID">{51035e75-bd9b-4019-8ab7-a8a4a6b4ea39}</v>
                       <v n="StartAnchor">false</v>
                       <v n="EndAnchor">true</v>
-                      <v n="AnchorDockedState" t="Docked">Top</v>
+                      <v n="AnchorDockedState" t="Docked">NotDocked</v>
                     </o>
                     <v n="NextAnchorID">2</v>
                     <d n="AnchorPoints" t="Hashtable" ckt="Int32" cvt="UMLAnchorPoint">
@@ -1259,7 +1259,7 @@ VerifyingNewTargetState:INT:=10;"</v>
                   <v n="HasGraphicalRepresentation">true</v>
                   <v n="StartUMLElement">{985128e7-4000-430b-a441-6683df7f9809}</v>
                   <v n="HighlightedLine">false</v>
-                  <v n="ZOrder">201U</v>
+                  <v n="ZOrder">202U</v>
                   <v n="SpecialHandling">false</v>
                   <v n="ActionLocalVariableName">""</v>
                   <v n="ActionParametersString">""</v>
@@ -1289,7 +1289,7 @@ VerifyingNewTargetState:INT:=10;"</v>
                     <o n="EndAnchor" t="UMLAnchorPoint">
                       <v n="AnchorID">1</v>
                       <v n="AnchorLeftPosition">115</v>
-                      <v n="AnchorTopPosition">275</v>
+                      <v n="AnchorTopPosition">265</v>
                       <v n="AnchorRelationID">{5343f36a-6dbc-4272-a54d-f975d536f840}</v>
                       <v n="StartAnchor">false</v>
                       <v n="EndAnchor">true</v>
@@ -1332,7 +1332,7 @@ VerifyingNewTargetState:INT:=10;"</v>
                   <v n="HasGraphicalRepresentation">true</v>
                   <v n="StartUMLElement">{76c96307-6ce0-470e-af90-e0ccbc636998}</v>
                   <v n="HighlightedLine">false</v>
-                  <v n="ZOrder">191U</v>
+                  <v n="ZOrder">202U</v>
                   <v n="SpecialHandling">false</v>
                   <v n="ActionLocalVariableName">""</v>
                   <v n="ActionParametersString">""</v>
@@ -1353,7 +1353,7 @@ VerifyingNewTargetState:INT:=10;"</v>
                     <o n="StartAnchor" t="UMLAnchorPoint">
                       <v n="AnchorID">0</v>
                       <v n="AnchorLeftPosition">210</v>
-                      <v n="AnchorTopPosition">309</v>
+                      <v n="AnchorTopPosition">299</v>
                       <v n="AnchorRelationID">{8cdcbeb1-0b4f-4863-9a59-b595885f8d24}</v>
                       <v n="StartAnchor">true</v>
                       <v n="EndAnchor">false</v>
@@ -1362,7 +1362,7 @@ VerifyingNewTargetState:INT:=10;"</v>
                     <o n="EndAnchor" t="UMLAnchorPoint">
                       <v n="AnchorID">1</v>
                       <v n="AnchorLeftPosition">395</v>
-                      <v n="AnchorTopPosition">309</v>
+                      <v n="AnchorTopPosition">299</v>
                       <v n="AnchorRelationID">{8cdcbeb1-0b4f-4863-9a59-b595885f8d24}</v>
                       <v n="StartAnchor">false</v>
                       <v n="EndAnchor">true</v>

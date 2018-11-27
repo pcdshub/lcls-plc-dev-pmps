@@ -5,8 +5,16 @@
 STRUCT
 	//IO
 	stAxis	:	AXIS_REF;
-	i_xLoLim	AT %I*	:	BOOL;
-	i_xHiLim	AT %I*	:	BOOL;
+	//The following limit switches must be TRUE or high (ie. NC) to enable that direction of motion
+	//The EPICS display should show an inverted indicator to communicate end of travel reached
+	i_xLoLim	AT %I*	:	BOOL; //Wire normally-closed
+	i_xHiLim	AT %I*	:	BOOL; //Wire normally-closed
+	
+	//Acuator Parameters
+	lrUpperPositionLimit	:	LREAL := 10000000000; //Use in conjuntion with limit switches or set to a huge number to ignore
+	lrLowerPositionLimit	:	LREAL := -10000000000; //Use in conjuntion with limit switches or set to a huge number to ignore
+	
+	xEnable	:	BOOL := TRUE;
 	
 	//Supervisory System
 	
@@ -17,8 +25,8 @@ STRUCT
 	
 	//EPICS
 	nRequestedState	:	INT;
-	stTargetState	:	INT;
-	stActiveState	:	INT;
+	nTargetState	:	INT;
+	nActiveState	:	INT;
 	
 	
 END_STRUCT

@@ -68,6 +68,9 @@
     <Compile Include="POUs\FB_ExampleDeviceSM_All.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\FB_LinearGovernor.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="POUs\FB_MachineSimulator.TcPOU">
       <SubType>Code</SubType>
     </Compile>

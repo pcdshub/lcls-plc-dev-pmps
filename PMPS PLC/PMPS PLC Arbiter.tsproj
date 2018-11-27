@@ -951,10 +951,16 @@ External Setpoint Generation:
 						</Var>
 						<Var>
 							<Name>MAIN.fbDev1.stDevice.i_xLoLim</Name>
+							<Comment>
+								<![CDATA[Wire normally-closed]]>
+							</Comment>
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
 							<Name>MAIN.fbDev1.stDevice.i_xHiLim</Name>
+							<Comment>
+								<![CDATA[Wire normally-closed]]>
+							</Comment>
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
@@ -1008,10 +1014,16 @@ External Setpoint Generation:
 						</Var>
 						<Var>
 							<Name>MAIN.fbDev2.stDevice.i_xLoLim</Name>
+							<Comment>
+								<![CDATA[Wire normally-closed]]>
+							</Comment>
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
 							<Name>MAIN.fbDev2.stDevice.i_xHiLim</Name>
+							<Comment>
+								<![CDATA[Wire normally-closed]]>
+							</Comment>
 							<Type>BOOL</Type>
 						</Var>
 					</Vars>
