@@ -6,6 +6,7 @@ VAR_INPUT
 	i_stCurrentBeamParams	:	ST_BeamParams; //Link to global beam params
 	i_xMPSOverride			:	BOOL; //True releases MPS limits after a delay
 	i_xTransitionRequested	:	BOOL; //Set true to request a transition
+	i_xResetMPSFault	:	BOOL; //Set true to clear MPS fault 
 END_VAR
 VAR_OUTPUT
 	q_xTransitionPermitted	:	BOOL; //True when governor has released restrictions
@@ -33,20 +34,37 @@ VAR
 	rtNewState: R_TRIG;
 	xTransitionOK: BOOL;
 	
-	tonOverrideMode	:	TON := (
+	tonMPSOverrideMode	:	TON := (
 		PT := T#5S
 	);
+	
+	srMPSFault	:	SR;
+	// Actuator out of bounds fault
+	xActuatorOOB: BOOL;
+	xBeamParametersSafe: BOOL;
 END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[
 lrPosition := stDevice.stAxis.NcToPlc.ActPos;
 
+//MPS Faults
+//Fault if the position is outside of the permitted range
+//Allow for transitions
+IF xTransitionOK THEN
+	//Extend range to include target state
+ELSE
+	//Calculate the limit positions for MPS based on current state
+	lrMPSUpperLimit := lrLatchedTargetPosition + lrLatchedTargetTolerance/2;
+	lrMPSLowerLimit := lrLatchedTargetPosition - lrLatchedTargetTolerance/2;
+END_IF
+
+//Latch the MPS fault
+srMPSFault.SET1 := xActuatorOOB;
+srMPSFault(RESET:=i_xResetMPSFault); 
 
 //MPS limit switch logic
-//Calculate the limit positions for MPS based on current state
-lrMPSUpperLimit := lrLatchedTargetPosition + lrLatchedTargetTolerance/2;
-lrMPSLowerLimit := lrLatchedTargetPosition - lrLatchedTargetTolerance/2;
+
 
 //Evaluate MPS limit states
 xMPSPositiveEnable := lrPosition <= lrMPSUpperLimit;
@@ -63,58 +81,43 @@ ELSE
 END_IF
 
 //MPS override
+(* In override mode, the device will be free to move anywhere within it's travel range *)
 //Permit motion after a small delay
-tonOverrideMode(IN:=i_xMPSOverride);
+tonMPSOverrideMode(IN:=i_xMPSOverride);
 
 //Virtual limit switch evaluation
 xActuatorPositiveEnable	:= stDevice.i_xHiLim AND lrPosition <= stDevice.lrUpperPositionLimit;
 xActuatorNegativeEnable	:= stDevice.i_xLoLim AND lrPosition <= stDevice.lrLowerPositionLimit;
 
-
 //Final Limit switch evaluation
-mcPower.Enable_Positive := xActuatorPositiveEnable AND (tonOverrideMode.Q OR xTransitionOK OR xMPSPositiveEnable);
-mcPower.Enable_Negative := xActuatorNegativeEnable AND (tonOverrideMode.Q OR xTransitionOK OR xMPSNegativeEnable);
+mcPower.Enable_Positive := xActuatorPositiveEnable AND (tonMPSOverrideMode.Q OR xMPSPositiveEnable);
+mcPower.Enable_Negative := xActuatorNegativeEnable AND (tonMPSOverrideMode.Q OR xMPSNegativeEnable);
 
 mcPower(
 	Axis := stDevice.stAxis,
 	Enable := stDevice.xEnable //link to device enable <TODO>
 );
 
-//An mcPower error or MPS override produces a fault. Faults can be masked by veto devices.
-q_xFault := mcPower.Error OR i_xMPSOverride;]]></ST>
+//An mcPower error or MPS override, or MPS fault, produces a fault. Faults can be masked by veto devices.
+q_xFault := mcPower.Error OR i_xMPSOverride OR srMPSFault.Q1;]]></ST>
     </Implementation>
     <LineIds Name="FB_LinearGovernor">
-      <LineId Id="37" Count="1" />
-      <LineId Id="71" Count="1" />
-      <LineId Id="47" Count="0" />
-      <LineId Id="73" Count="0" />
-      <LineId Id="48" Count="1" />
-      <LineId Id="74" Count="0" />
-      <LineId Id="32" Count="0" />
-      <LineId Id="26" Count="0" />
-      <LineId Id="44" Count="0" />
-      <LineId Id="75" Count="0" />
-      <LineId Id="51" Count="0" />
-      <LineId Id="50" Count="0" />
-      <LineId Id="59" Count="0" />
-      <LineId Id="63" Count="0" />
-      <LineId Id="62" Count="0" />
-      <LineId Id="65" Count="0" />
-      <LineId Id="52" Count="0" />
-      <LineId Id="66" Count="0" />
-      <LineId Id="53" Count="0" />
-      <LineId Id="76" Count="0" />
-      <LineId Id="68" Count="0" />
-      <LineId Id="77" Count="0" />
-      <LineId Id="85" Count="0" />
-      <LineId Id="67" Count="0" />
-      <LineId Id="27" Count="2" />
-      <LineId Id="69" Count="1" />
-      <LineId Id="18" Count="3" />
-      <LineId Id="9" Count="0" />
-      <LineId Id="22" Count="2" />
-      <LineId Id="88" Count="0" />
-      <LineId Id="87" Count="0" />
+      <LineId Id="127" Count="1" />
+      <LineId Id="172" Count="3" />
+      <LineId Id="177" Count="0" />
+      <LineId Id="179" Count="0" />
+      <LineId Id="188" Count="0" />
+      <LineId Id="190" Count="1" />
+      <LineId Id="189" Count="0" />
+      <LineId Id="180" Count="0" />
+      <LineId Id="186" Count="0" />
+      <LineId Id="176" Count="0" />
+      <LineId Id="183" Count="0" />
+      <LineId Id="178" Count="0" />
+      <LineId Id="130" Count="1" />
+      <LineId Id="134" Count="16" />
+      <LineId Id="187" Count="0" />
+      <LineId Id="151" Count="16" />
       <LineId Id="86" Count="0" />
     </LineIds>
   </POU>
