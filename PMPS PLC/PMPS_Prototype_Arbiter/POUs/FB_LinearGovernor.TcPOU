@@ -1,7 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.12">
   <POU Name="FB_LinearGovernor" Id="{ef40f951-1e56-0d26-34ec-87da9b08d3b7}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK FB_LinearGovernor
+    <Declaration><![CDATA[
+(* The governor is meant to check your work and keep you from making mistakes.
+
+Checks:
+Does your state match the device position and visa versa?
+Are the beam parameters safe for the device state?
+Did you properly assert the transition and final beam parameters?
+
+This is done by 
+
+*)
+FUNCTION_BLOCK FB_LinearGovernor
 VAR_INPUT
 	i_stCurrentBeamParams	:	ST_BeamParams; //Link to global beam params
 	i_xMPSOverride			:	BOOL; //True releases MPS limits after a delay
@@ -41,7 +52,8 @@ VAR
 	srMPSFault	:	SR;
 	// Actuator out of bounds fault
 	xActuatorOOB: BOOL;
-	xBeamParametersSafe: BOOL;
+	//Beam parameters out of spec
+	xBeamParamsOOS: BOOL;
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -49,6 +61,9 @@ END_VAR
 lrPosition := stDevice.stAxis.NcToPlc.ActPos;
 
 //MPS Faults
+//Fault if the beam is unsafe for current state
+xBeamParamsOOS := NOT F_SafeBPCompare(PMPS_GVL_BeamParams.stCurrentBeamParameters, stBeamParamsOfCurrentState);
+
 //Fault if the position is outside of the permitted range
 //Allow for transitions
 IF xTransitionOK THEN
@@ -103,7 +118,11 @@ q_xFault := mcPower.Error OR i_xMPSOverride OR srMPSFault.Q1;]]></ST>
     </Implementation>
     <LineIds Name="FB_LinearGovernor">
       <LineId Id="127" Count="1" />
-      <LineId Id="172" Count="3" />
+      <LineId Id="172" Count="1" />
+      <LineId Id="197" Count="0" />
+      <LineId Id="211" Count="0" />
+      <LineId Id="198" Count="0" />
+      <LineId Id="174" Count="1" />
       <LineId Id="177" Count="0" />
       <LineId Id="179" Count="0" />
       <LineId Id="188" Count="0" />
