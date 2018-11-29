@@ -18,7 +18,7 @@ STRUCT
 	//Position
 	rPosition	:	REAL := 0;
 	//Tolerance
-	rTolerance :	REAL := 0;
+	rTolerance :	REAL := 0; //+/- amount
 	//////////////////
 	//Required beam parameters
 	stReqBeamParam	:	ST_BeamParams;

@@ -21,12 +21,11 @@ STRUCT
 	//Device States
 	astStates	:	ARRAY[1..PMPS_GVL_BeamParams.cnMaxStateArrayLen] OF	ST_DeviceState;
 	
-	stTransitionState	:	ST_DeviceState;
+	stTransitionState	:	ST_DeviceState; //The transition state might have non-zero beam parameters
 	
-	//EPICS
-	nRequestedState	:	INT;
-	nTargetState	:	INT;
-	nActiveState	:	INT;
+	nRequestedState	:	INT; //EPICS control, cleaned (checked against array limits) and deposited in nTargetState
+	nTargetState	:	INT; //The requested state should be deposited here after cleaning
+	nActiveState	:	INT; //The last successfully reached state
 	
 	
 END_STRUCT

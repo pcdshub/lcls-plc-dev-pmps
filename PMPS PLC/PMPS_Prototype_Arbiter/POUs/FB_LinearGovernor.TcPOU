@@ -9,8 +9,6 @@ Does your state match the device position and visa versa?
 Are the beam parameters safe for the device state?
 Did you properly assert the transition and final beam parameters?
 
-This is done by 
-
 *)
 FUNCTION_BLOCK FB_LinearGovernor
 VAR_INPUT
@@ -54,46 +52,91 @@ VAR
 	xActuatorOOB: BOOL;
 	//Beam parameters out of spec
 	xBeamParamsOOS: BOOL;
+	//Beam parameters of currently latched state
+	
+	stLatchedBeamParams: ST_BeamParams;
+	stTargetState: ST_DeviceState;
+	
+	ftLatchNewState	:	F_TRIG;
 END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[
-lrPosition := stDevice.stAxis.NcToPlc.ActPos;
+lrPosition := stDevice.stAxis.NcToPlc.ActPos; //Actuator position
 
-//MPS Faults
-//Fault if the beam is unsafe for current state
-xBeamParamsOOS := NOT F_SafeBPCompare(PMPS_GVL_BeamParams.stCurrentBeamParameters, stBeamParamsOfCurrentState);
-
-//Fault if the position is outside of the permitted range
-//Allow for transitions
-IF xTransitionOK THEN
-	//Extend range to include target state
-ELSE
-	//Calculate the limit positions for MPS based on current state
-	lrMPSUpperLimit := lrLatchedTargetPosition + lrLatchedTargetTolerance/2;
-	lrMPSLowerLimit := lrLatchedTargetPosition - lrLatchedTargetTolerance/2;
-END_IF
-
-//Latch the MPS fault
-srMPSFault.SET1 := xActuatorOOB;
-srMPSFault(RESET:=i_xResetMPSFault); 
-
-//MPS limit switch logic
-
-
-//Evaluate MPS limit states
-xMPSPositiveEnable := lrPosition <= lrMPSUpperLimit;
-xMPSNegativeEnable := lrPosition >= lrMPSLowerLimit;
-
-//Determine if the MPS limits can be lifted
+// The governor will permit transitions once it verifies the transition assertion is active
+// Note the governor does not verify the target state beam params are asserted, perhaps it should <TODO>
 IF i_xTransitionRequested THEN
 	Arbiter.A_VerifyAssertion(
 		i_nStateID := stDevice.stTransitionState.nStateRef
 	);
-	xTransitionOK := Arbiter.q_xStateIDFound;
+	xTransitionOK := Arbiter.q_xStateIDFound AND F_SafeBPCompare(PMPS_GVL_BeamParams.stCurrentBeamParameters, stDevice.stTransitionState.stReqBeamParam);
+	stTargetState := stDevice.astStates[stDevice.nTargetState];
 ELSE
 	xTransitionOK := FALSE;
 END_IF
+
+(* Note about TransitionRequested
+
+If TransitionRequested goes false during a transition, an MPS fault may be induced. This occurs
+because the Actuator Out of Bounds fault will go back to using the original state limits, which
+the axis may have already moved beyond.
+
+To avoid this transient fault, make sure your device state machine is implemented such that the 
+transition request to the governor block remains high until the target position is reached.
+*)
+
+//Let other blocks know the governor won't interfer with transitions
+q_xTransitionPermitted := xTransitionOK;
+
+//Adjust limit ranges based on active state and current target
+IF xTransitionOK THEN
+	//Extend range to include target state
+	lrMPSUpperLimit := MAX(lrMPSUpperLimit, stTargetState.rPosition + stTargetState.rTolerance);
+	lrMPSLowerLimit := MIN(lrMPSLowerLimit, stTargetState.rPosition + stTargetState.rTolerance);
+ELSE
+	//Calculate the limit positions for MPS based on current state
+	lrMPSUpperLimit := lrLatchedTargetPosition + lrLatchedTargetTolerance;
+	lrMPSLowerLimit := lrLatchedTargetPosition - lrLatchedTargetTolerance;
+END_IF
+
+//Determine if a transition is complete and latch the new state
+(* A transition is complete when:
+
+Axis at standstill.
+Axis within tolerance.
+No transition req.
+
+Once these conditions are met, the MPS limits shall re-engage to restrict the
+axis motion to the tolerance around the state position and the MPS fault monitors
+shall evaluate based on the newly latched target state.
+*)
+
+ftLatchNewState.CLK := stDevice.stAxis.Status.StandStill AND
+	lrPosition <= stTargetState.rPosition + stTargetState.rTolerance AND
+	lrPosition >= stTargetState.rPosition - stTargetState.rTolerance AND
+	NOT i_xTransitionRequested;
+
+IF ftLatchNewState.Q THEN
+	lrLatchedTargetPosition := stTargetState.rPosition;
+	lrLatchedTargetTolerance := stTargetState.rTolerance;
+	stLatchedBeamParams := stTargetState.stReqBeamParam;
+END_IF
+
+
+//MPS Faults
+//Fault if the beam is unsafe for current state
+xBeamParamsOOS := NOT F_SafeBPCompare(PMPS_GVL_BeamParams.stCurrentBeamParameters, stLatchedBeamParams);
+
+//Fault if the position is outside of the permitted range
+xActuatorOOB := lrPosition >= lrMPSUpperLimit OR lrPosition <= lrMPSLowerLimit;
+
+
+
+//Latch the MPS faults
+srMPSFault.SET1 := xActuatorOOB OR xBeamParamsOOS;
+srMPSFault(RESET:=i_xResetMPSFault); 
+
 
 //MPS override
 (* In override mode, the device will be free to move anywhere within it's travel range *)
@@ -104,6 +147,10 @@ tonMPSOverrideMode(IN:=i_xMPSOverride);
 xActuatorPositiveEnable	:= stDevice.i_xHiLim AND lrPosition <= stDevice.lrUpperPositionLimit;
 xActuatorNegativeEnable	:= stDevice.i_xLoLim AND lrPosition <= stDevice.lrLowerPositionLimit;
 
+//Evaluate MPS limit states
+xMPSPositiveEnable := lrPosition <= lrMPSUpperLimit;
+xMPSNegativeEnable := lrPosition >= lrMPSLowerLimit;
+
 //Final Limit switch evaluation
 mcPower.Enable_Positive := xActuatorPositiveEnable AND (tonMPSOverrideMode.Q OR xMPSPositiveEnable);
 mcPower.Enable_Negative := xActuatorNegativeEnable AND (tonMPSOverrideMode.Q OR xMPSNegativeEnable);
@@ -113,30 +160,36 @@ mcPower(
 	Enable := stDevice.xEnable //link to device enable <TODO>
 );
 
-//An mcPower error or MPS override, or MPS fault, produces a fault. Faults can be masked by veto devices.
+//An mcPower error or MPS override, or MPS fault, produces a fault.
 q_xFault := mcPower.Error OR i_xMPSOverride OR srMPSFault.Q1;]]></ST>
     </Implementation>
     <LineIds Name="FB_LinearGovernor">
-      <LineId Id="127" Count="1" />
-      <LineId Id="172" Count="1" />
-      <LineId Id="197" Count="0" />
-      <LineId Id="211" Count="0" />
-      <LineId Id="198" Count="0" />
-      <LineId Id="174" Count="1" />
-      <LineId Id="177" Count="0" />
-      <LineId Id="179" Count="0" />
-      <LineId Id="188" Count="0" />
-      <LineId Id="190" Count="1" />
-      <LineId Id="189" Count="0" />
-      <LineId Id="180" Count="0" />
-      <LineId Id="186" Count="0" />
-      <LineId Id="176" Count="0" />
-      <LineId Id="183" Count="0" />
-      <LineId Id="178" Count="0" />
-      <LineId Id="130" Count="1" />
-      <LineId Id="134" Count="16" />
-      <LineId Id="187" Count="0" />
-      <LineId Id="151" Count="16" />
+      <LineId Id="321" Count="3" />
+      <LineId Id="417" Count="0" />
+      <LineId Id="325" Count="8" />
+      <LineId Id="407" Count="0" />
+      <LineId Id="406" Count="0" />
+      <LineId Id="411" Count="0" />
+      <LineId Id="410" Count="0" />
+      <LineId Id="412" Count="1" />
+      <LineId Id="415" Count="0" />
+      <LineId Id="414" Count="0" />
+      <LineId Id="416" Count="0" />
+      <LineId Id="408" Count="0" />
+      <LineId Id="334" Count="15" />
+      <LineId Id="395" Count="0" />
+      <LineId Id="399" Count="0" />
+      <LineId Id="398" Count="0" />
+      <LineId Id="400" Count="1" />
+      <LineId Id="403" Count="0" />
+      <LineId Id="402" Count="0" />
+      <LineId Id="404" Count="1" />
+      <LineId Id="396" Count="0" />
+      <LineId Id="419" Count="4" />
+      <LineId Id="418" Count="0" />
+      <LineId Id="350" Count="2" />
+      <LineId Id="393" Count="0" />
+      <LineId Id="353" Count="39" />
       <LineId Id="86" Count="0" />
     </LineIds>
   </POU>
