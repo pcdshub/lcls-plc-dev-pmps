@@ -4,9 +4,14 @@
     <Declaration><![CDATA[TYPE ST_BeamParams :
 STRUCT
 	// Beam parameters
-	// These must be filled in by the caller. They are safest by default.
-	//Reques
+	// These must be filled in by the caller.
+	
+	//Note: fAtt is a local parameter, meaning it is distributed to the nearest
+	// upstream attenuator component.
 	fAtt : REAL := 100; //Requested attenuation %
+	
+	//Machine parameters
+	nRate	:	UINT	:= 10; //Pulse-rate
 	fPP_mJ : REAL := 20; //Requested per pulse max energy (mJ)
 	fUpper_eV	:	REAL	:= 20000; //Requested max eV
 	fLower_eV	:	REAL	:= 0; //Requested lower eV

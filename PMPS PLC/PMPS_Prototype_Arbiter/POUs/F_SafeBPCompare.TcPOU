@@ -15,6 +15,8 @@ VAR
 	xPPmjOK: BOOL := FALSE;
 	// Internal photon energy OK boolean
 	xEvOK: BOOL := FALSE;
+	// Internal Beam Rate OK boolean
+	xRateOK: BOOL;
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -23,12 +25,14 @@ xPPmjOK := BeamParam1.fPP_mJ <= BeamParam2.fPP_mJ;
 xEvOK := BeamParam1.fUpper_eV <= BeamParam2.fUpper_eV AND
 	BeamParam1.fLower_eV >= BeamParam2.fLower_eV;
 
+xRateOK	:= BeamParam1.nRate <= BeamParam2.nRate;
 
-F_SafeBPCompare := xAttOK AND xPPmjOK AND xEvOK;]]></ST>
+F_SafeBPCompare := xAttOK AND xPPmjOK AND xEvOK AND xRateOK;]]></ST>
     </Implementation>
     <LineIds Name="F_SafeBPCompare">
       <LineId Id="8" Count="0" />
       <LineId Id="21" Count="2" />
+      <LineId Id="40" Count="0" />
       <LineId Id="9" Count="1" />
       <LineId Id="7" Count="0" />
     </LineIds>
