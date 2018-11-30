@@ -10,6 +10,8 @@ STRUCT
 	// upstream attenuator component.
 	fAtt : REAL := 100; //Requested attenuation %
 	
+	
+	
 	//Machine parameters
 	nRate	:	UINT	:= 10; //Pulse-rate
 	fPP_mJ : REAL := 20; //Requested per pulse max energy (mJ)

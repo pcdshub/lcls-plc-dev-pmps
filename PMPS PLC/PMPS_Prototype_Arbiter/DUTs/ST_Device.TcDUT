@@ -18,10 +18,14 @@ STRUCT
 	
 	//Supervisory System
 	
+	//MPS Override
+	xOverrideMPSLimits	: BOOL := FALSE; //Set true to move beyond MPS limits. Note this will trip beam off.
+	
 	//Device States
-	astStates	:	ARRAY[1..PMPS_GVL_BeamParams.cnMaxStateArrayLen] OF	ST_DeviceState;
+	astStates	:	ARRAY[0..PMPS_GVL_BeamParams.cnMaxStateArrayLen] OF	ST_DeviceState;
 	
 	stTransitionState	:	ST_DeviceState; //The transition state might have non-zero beam parameters
+	nSafeState			:	INT; //State where the device is considered safe
 	
 	nRequestedState	:	INT; //EPICS control, cleaned (checked against array limits) and deposited in nTargetState
 	nTargetState	:	INT; //The requested state should be deposited here after cleaning
