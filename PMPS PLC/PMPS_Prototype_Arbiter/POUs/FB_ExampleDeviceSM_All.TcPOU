@@ -2514,7 +2514,10 @@ IF stDevice.stAxis.NcToPlc.ActPos <= stCheckstate.rPosition + stCheckState.rTole
 	stDevice.stAxis.NcToPlc.ActPos >= stCheckState.rPosition - stCheckState.rTolerance THEN
 	stDevice.nActiveState := nLastActiveState;
 END_IF
-]]></ST>
+
+//Simulation Limit Switches
+stDevice.i_xHiLim := TRUE;
+stDevice.i_xLoLim := TRUE;]]></ST>
       </Implementation>
     </Action>
     <Action Name="Initialize" Id="{2aa2d54e-87a7-0e29-2ee0-00f6a86237f0}">
@@ -2584,7 +2587,9 @@ END_IF
       <LineId Id="43" Count="0" />
       <LineId Id="45" Count="0" />
       <LineId Id="44" Count="0" />
+      <LineId Id="49" Count="0" />
       <LineId Id="41" Count="0" />
+      <LineId Id="50" Count="1" />
     </LineIds>
     <LineIds Name="FB_ExampleDeviceSM_All.Initialize">
       <LineId Id="1" Count="0" />

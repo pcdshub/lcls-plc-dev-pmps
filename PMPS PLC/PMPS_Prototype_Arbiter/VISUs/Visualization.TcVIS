@@ -5207,7 +5207,7 @@
                         </o>
                         <o>
                           <v n="Id">1255297995L</v>
-                          <v n="Value">1</v>
+                          <v n="Value">0</v>
                         </o>
                         <o>
                           <v n="Id">3729828405L</v>
@@ -5265,16 +5265,16 @@
                         </o>
                         <o>
                           <v n="Id">1636615684L</v>
-                          <v n="Value">1</v>
+                          <v n="Value">0</v>
                         </o>
                         <o>
                           <v n="Id">3234392039L</v>
                           <o n="Value" t="DataVariableInformation">
-                            <v n="DataArrayType">"ARRAY [1..PMPS_GVL_BeamParams.cnMaxStateArrayLen] OF ST_DeviceState"</v>
+                            <v n="DataArrayType">"ARRAY [0..PMPS_GVL_BeamParams.cnMaxStateArrayLen] OF ST_DeviceState"</v>
                             <v n="ColumnCount">6</v>
-                            <v n="RowCount">20</v>
+                            <v n="RowCount">21</v>
                             <v n="FirstColumnIndex">0</v>
-                            <v n="FirstRowIndex">1</v>
+                            <v n="FirstRowIndex">0</v>
                             <a n="ColumnTypes" cet="TypeClass">
                               <v>String</v>
                               <v>String</v>
@@ -5370,124 +5370,28 @@
                           <v n="Value">"MAIN.fbDev1.stDevice.astStates[INDEX].stReqBeamParam"</v>
                         </o>
                         <o>
-                          <v n="Id">2232123230L</v>
-                          <v n="Value">"sParentDevice"</v>
-                        </o>
-                        <o>
-                          <v n="Id">511219082L</v>
-                          <v n="Value">"sStateName"</v>
-                        </o>
-                        <o>
-                          <v n="Id">1755163831L</v>
-                          <v n="Value">"nStateRef"</v>
-                        </o>
-                        <o>
-                          <v n="Id">4092479075L</v>
-                          <v n="Value">"rPosition"</v>
-                        </o>
-                        <o>
-                          <v n="Id">2237128397L</v>
-                          <v n="Value">"rTolerance"</v>
-                        </o>
-                        <o>
-                          <v n="Id">505689113L</v>
-                          <v n="Value">"stReqBeamParam"</v>
-                        </o>
-                        <o>
-                          <v n="Id">2685023577L</v>
-                          <v n="Value">"MAIN.fbDev1.stDevice.astStates[INDEX].sParentDevice"</v>
-                        </o>
-                        <o>
-                          <v n="Id">3312258591L</v>
-                          <v n="Value">"MAIN.fbDev1.stDevice.astStates[INDEX].sStateName"</v>
-                        </o>
-                        <o>
-                          <v n="Id">1791247317L</v>
-                          <v n="Value">"MAIN.fbDev1.stDevice.astStates[INDEX].nStateRef"</v>
-                        </o>
-                        <o>
-                          <v n="Id">262371475L</v>
-                          <v n="Value">"MAIN.fbDev1.stDevice.astStates[INDEX].rPosition"</v>
-                        </o>
-                        <o>
-                          <v n="Id">4008173056L</v>
-                          <v n="Value">"MAIN.fbDev1.stDevice.astStates[INDEX].rTolerance"</v>
-                        </o>
-                        <o>
-                          <v n="Id">2340480326L</v>
-                          <v n="Value">"MAIN.fbDev1.stDevice.astStates[INDEX].stReqBeamParam"</v>
-                        </o>
-                        <o>
-                          <v n="Id">4036189354L</v>
-                          <v n="Value" t="Int16">100</v>
-                        </o>
-                        <o>
-                          <v n="Id">1010392116L</v>
-                          <v n="Value" t="Int16">100</v>
-                        </o>
-                        <o>
-                          <v n="Id">2998295511L</v>
-                          <v n="Value" t="Int16">60</v>
-                        </o>
-                        <o>
-                          <v n="Id">2115787593L</v>
-                          <v n="Value" t="Int16">100</v>
-                        </o>
-                        <o>
-                          <v n="Id">1960399440L</v>
-                          <v n="Value" t="Int16">100</v>
-                        </o>
-                        <o>
-                          <v n="Id">3094565582L</v>
-                          <v n="Value" t="Int16">200</v>
-                        </o>
-                        <o>
-                          <v n="Id">3669839856L</v>
-                          <v n="Value">"HCENTER"</v>
-                        </o>
-                        <o>
-                          <v n="Id">1960173153L</v>
-                          <v n="Value">"HCENTER"</v>
-                        </o>
-                        <o>
-                          <v n="Id">1562208915L</v>
-                          <v n="Value">"HCENTER"</v>
-                        </o>
-                        <o>
-                          <v n="Id">4084595458L</v>
-                          <v n="Value">"HCENTER"</v>
-                        </o>
-                        <o>
-                          <v n="Id">244056951L</v>
-                          <v n="Value">"HCENTER"</v>
-                        </o>
-                        <o>
-                          <v n="Id">2699334374L</v>
-                          <v n="Value">"HCENTER"</v>
-                        </o>
-                        <o>
                           <v n="Id">2318311169L</v>
-                          <v n="Value">20</v>
+                          <v n="Value">21</v>
                         </o>
                         <o>
                           <v n="Id">1268793537L</v>
-                          <v n="Value">20</v>
+                          <v n="Value">21</v>
                         </o>
                         <o>
                           <v n="Id">3527550656L</v>
-                          <v n="Value">20</v>
+                          <v n="Value">21</v>
                         </o>
                         <o>
                           <v n="Id">332200192L</v>
-                          <v n="Value">20</v>
+                          <v n="Value">21</v>
                         </o>
                         <o>
                           <v n="Id">989326467L</v>
-                          <v n="Value">20</v>
+                          <v n="Value">21</v>
                         </o>
                         <o>
                           <v n="Id">4219024195L</v>
-                          <v n="Value">20</v>
+                          <v n="Value">21</v>
                         </o>
                         <o>
                           <v n="Id">3146216842L</v>
@@ -5538,28 +5442,124 @@
                           <v n="Value">false</v>
                         </o>
                         <o>
+                          <v n="Id">2232123230L</v>
+                          <v n="Value">"sParentDevice"</v>
+                        </o>
+                        <o>
+                          <v n="Id">2685023577L</v>
+                          <v n="Value">"MAIN.fbDev1.stDevice.astStates[INDEX].sParentDevice"</v>
+                        </o>
+                        <o>
                           <v n="Id">175837068L</v>
                           <v n="Value">false</v>
+                        </o>
+                        <o>
+                          <v n="Id">4036189354L</v>
+                          <v n="Value" t="Int16">100</v>
+                        </o>
+                        <o>
+                          <v n="Id">3669839856L</v>
+                          <v n="Value">"HCENTER"</v>
+                        </o>
+                        <o>
+                          <v n="Id">511219082L</v>
+                          <v n="Value">"sStateName"</v>
+                        </o>
+                        <o>
+                          <v n="Id">3312258591L</v>
+                          <v n="Value">"MAIN.fbDev1.stDevice.astStates[INDEX].sStateName"</v>
                         </o>
                         <o>
                           <v n="Id">2541022970L</v>
                           <v n="Value">false</v>
                         </o>
                         <o>
+                          <v n="Id">1010392116L</v>
+                          <v n="Value" t="Int16">100</v>
+                        </o>
+                        <o>
+                          <v n="Id">1960173153L</v>
+                          <v n="Value">"HCENTER"</v>
+                        </o>
+                        <o>
+                          <v n="Id">1755163831L</v>
+                          <v n="Value">"nStateRef"</v>
+                        </o>
+                        <o>
+                          <v n="Id">1791247317L</v>
+                          <v n="Value">"MAIN.fbDev1.stDevice.astStates[INDEX].nStateRef"</v>
+                        </o>
+                        <o>
                           <v n="Id">3944074017L</v>
                           <v n="Value">false</v>
+                        </o>
+                        <o>
+                          <v n="Id">2998295511L</v>
+                          <v n="Value" t="Int16">60</v>
+                        </o>
+                        <o>
+                          <v n="Id">1562208915L</v>
+                          <v n="Value">"HCENTER"</v>
+                        </o>
+                        <o>
+                          <v n="Id">4092479075L</v>
+                          <v n="Value">"rPosition"</v>
+                        </o>
+                        <o>
+                          <v n="Id">262371475L</v>
+                          <v n="Value">"MAIN.fbDev1.stDevice.astStates[INDEX].rPosition"</v>
                         </o>
                         <o>
                           <v n="Id">1981426263L</v>
                           <v n="Value">false</v>
                         </o>
                         <o>
+                          <v n="Id">2115787593L</v>
+                          <v n="Value" t="Int16">100</v>
+                        </o>
+                        <o>
+                          <v n="Id">4084595458L</v>
+                          <v n="Value">"HCENTER"</v>
+                        </o>
+                        <o>
+                          <v n="Id">2237128397L</v>
+                          <v n="Value">"rTolerance"</v>
+                        </o>
+                        <o>
+                          <v n="Id">4008173056L</v>
+                          <v n="Value">"MAIN.fbDev1.stDevice.astStates[INDEX].rTolerance"</v>
+                        </o>
+                        <o>
                           <v n="Id">332890263L</v>
                           <v n="Value">false</v>
                         </o>
                         <o>
+                          <v n="Id">1960399440L</v>
+                          <v n="Value" t="Int16">100</v>
+                        </o>
+                        <o>
+                          <v n="Id">244056951L</v>
+                          <v n="Value">"HCENTER"</v>
+                        </o>
+                        <o>
+                          <v n="Id">505689113L</v>
+                          <v n="Value">"stReqBeamParam"</v>
+                        </o>
+                        <o>
+                          <v n="Id">2340480326L</v>
+                          <v n="Value">"MAIN.fbDev1.stDevice.astStates[INDEX].stReqBeamParam"</v>
+                        </o>
+                        <o>
                           <v n="Id">2396545505L</v>
                           <v n="Value">false</v>
+                        </o>
+                        <o>
+                          <v n="Id">3094565582L</v>
+                          <v n="Value" t="Int16">200</v>
+                        </o>
+                        <o>
+                          <v n="Id">2699334374L</v>
+                          <v n="Value">"HCENTER"</v>
                         </o>
                       </l>
                     </o>
@@ -11974,12 +11974,12 @@
                           <v n="Value">false</v>
                         </o>
                         <o>
-                          <v n="Id">823443203L</v>
-                          <v n="Value">"419"</v>
-                        </o>
-                        <o>
                           <v n="Id">743958181L</v>
                           <v n="Value">"MAIN.fbDev2.stDevice.xOverrideMPSLimits"</v>
+                        </o>
+                        <o>
+                          <v n="Id">823443203L</v>
+                          <v n="Value">"419"</v>
                         </o>
                       </l>
                     </o>
@@ -12314,7 +12314,7 @@
             </o>
             <v n="DialogDut">{06f2b9a3-8c41-4f69-8e43-15670c6ae37f}</v>
           </o>
-          <v n="LastUsedIdForIdentifier">61</v>
+          <v n="LastUsedIdForIdentifier">66</v>
           <o n="TextDocument" t="TextDocument">
             <a n="TextLines" cet="TextLine">
               <o>
