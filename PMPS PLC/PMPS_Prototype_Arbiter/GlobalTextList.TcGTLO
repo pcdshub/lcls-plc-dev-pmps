@@ -136,6 +136,11 @@
               <l n="LanguageTexts" t="ArrayList" />
             </o>
             <o>
+              <v n="TextID">"479"</v>
+              <v n="TextDefault">"Rate"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
               <v n="TextID">"326"</v>
               <v n="TextDefault">"rPosition"</v>
               <l n="LanguageTexts" t="ArrayList" />

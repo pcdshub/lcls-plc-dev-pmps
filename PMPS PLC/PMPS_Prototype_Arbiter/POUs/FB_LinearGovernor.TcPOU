@@ -61,6 +61,10 @@ VAR
 	xInit: BOOL := TRUE;
 	
 	stInitDeviceState: ST_DeviceState;
+	// Indicates an error with initialization
+	xInitFault: BOOL;
+	// Indicates the state could not be found in the state table. There may be something wrong in the device state machine implementation or state table instantiation.
+	xStateLookupError: BOOL;
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -71,7 +75,13 @@ stDevice.stAxis.ReadStatus();
 
 IF xInit THEN
 	xInit := FALSE;
-	stInitDeviceState := stDevice.astStates[stDevice.nActiveState];
+	stDevice.StateTable.A_Lookup(key := stDevice.nActiveState);
+	IF stDevice.StateTable.bOk THEN
+		stInitDeviceState := stDevice.StateTable.getValue;
+		xInitFault := FALSE;
+	ELSE
+		xInitFault := TRUE;
+	END_IF
 	lrLatchedTargetPosition := stInitDeviceState.rPosition;
 	lrLatchedTargetTolerance := stInitDeviceState.rTolerance;
 	stLatchedBeamParams := stInitDeviceState.stReqBeamParam;
@@ -84,7 +94,15 @@ IF i_xTransitionRequested THEN
 		i_nStateID := stDevice.stTransitionState.nStateRef
 	);
 	xTransitionOK := Arbiter.q_xStateIDFound AND F_SafeBPCompare(PMPS_GVL_BeamParams.stCurrentBeamParameters, stDevice.stTransitionState.stReqBeamParam);
-	stTargetState := stDevice.astStates[stDevice.nTargetState];
+	
+	//Set the target state for evaluation in further logic
+	stdevice.StateTable.A_Lookup(key := stDevice.nTargetState);
+	IF stDevice.StateTable.bOk THEN
+		stTargetState := stDevice.StateTable.getValue;
+		xStateLookupError := FALSE;
+	ELSE
+		xStateLookupError := TRUE;
+	END_IF
 ELSE
 	xTransitionOK := FALSE;
 END_IF
@@ -146,8 +164,11 @@ xActuatorOOB := lrPosition >= lrMPSUpperLimit OR lrPosition <= lrMPSLowerLimit;
 
 
 //Latch the MPS faults
-srMPSFault.SET1 := xActuatorOOB OR xBeamParamsOOS;
+srMPSFault.SET1 := xActuatorOOB OR xBeamParamsOOS OR xStateLookupError;
 srMPSFault(RESET:=i_xResetMPSFault); 
+
+(* Note: The state lookup error is recoverable, because a different target state might be valid.
+*)
 
 
 //MPS override
@@ -173,7 +194,7 @@ mcPower(
 );
 
 //An mcPower error or MPS override, or MPS fault, produces a fault.
-q_xFault := mcPower.Error OR i_xMPSOverride OR srMPSFault.Q1;]]></ST>
+q_xFault := mcPower.Error OR i_xMPSOverride OR srMPSFault.Q1 OR xInitFault;]]></ST>
     </Implementation>
     <LineIds Name="FB_LinearGovernor">
       <LineId Id="482" Count="1" />
@@ -181,16 +202,29 @@ q_xFault := mcPower.Error OR i_xMPSOverride OR srMPSFault.Q1;]]></ST>
       <LineId Id="606" Count="0" />
       <LineId Id="605" Count="0" />
       <LineId Id="607" Count="0" />
-      <LineId Id="619" Count="0" />
+      <LineId Id="684" Count="2" />
+      <LineId Id="692" Count="0" />
+      <LineId Id="688" Count="1" />
+      <LineId Id="687" Count="0" />
       <LineId Id="610" Count="0" />
       <LineId Id="621" Count="1" />
       <LineId Id="608" Count="0" />
-      <LineId Id="484" Count="21" />
+      <LineId Id="484" Count="8" />
+      <LineId Id="702" Count="0" />
+      <LineId Id="694" Count="2" />
+      <LineId Id="707" Count="0" />
+      <LineId Id="698" Count="1" />
+      <LineId Id="697" Count="0" />
+      <LineId Id="493" Count="12" />
       <LineId Id="582" Count="0" />
       <LineId Id="584" Count="20" />
       <LineId Id="583" Count="0" />
       <LineId Id="506" Count="13" />
-      <LineId Id="544" Count="37" />
+      <LineId Id="544" Count="12" />
+      <LineId Id="704" Count="0" />
+      <LineId Id="703" Count="0" />
+      <LineId Id="705" Count="0" />
+      <LineId Id="557" Count="24" />
       <LineId Id="86" Count="0" />
     </LineIds>
   </POU>

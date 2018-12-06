@@ -37,7 +37,8 @@ stOutputBP := F_SetBeamParams(
 	fAtt := 100,
 	fPP_mJ := 0,
 	fLower_eV := 0,
-	fUpper_eV := 1800
+	fUpper_eV := 1800,
+	nRate := 0
 	);
 
 fbBPAssertionPool.A_GetFirst( putPosPtr := 0, getPosPtr=>getPosPtr, getValue=>getBPStruct );
@@ -48,7 +49,8 @@ IF fbBPAssertionPool.bOk THEN
 		fAtt := getBPStruct.fAtt,
 		fPP_mJ := getBPStruct.fPP_mJ,
 		fLower_eV := getBPStruct.fLower_eV,
-		fUpper_eV := getBPStruct.fUpper_eV
+		fUpper_eV := getBPStruct.fUpper_eV,
+		nRate := getBPStruct.nRate
 	);
 
 	REPEAT
@@ -73,8 +75,12 @@ stOutputBP.fAtt := MAX(stOutputBP.fAtt, getBPStruct.fAtt);
 //Pulse energy
 stOutputBP.fPP_mJ := MIN(stOutputBP.fPP_mJ, getBPStruct.fPP_mJ);
 
+//Photon Energy
 stOutputBP.fLower_eV := MAX(stOutputBP.fLower_eV, getBPStruct.fLower_eV);
-stOutputBP.fUpper_eV := MIN(stOutputBP.fUpper_eV, getBPStruct.fUpper_eV);]]></ST>
+stOutputBP.fUpper_eV := MIN(stOutputBP.fUpper_eV, getBPStruct.fUpper_eV);
+
+//Rate
+stOutputBP.nRate := MIN(stOutputBP.nRate, getBPStruct.nRate);]]></ST>
       </Implementation>
     </Action>
     <Action Name="A_AssertBP" Id="{f6e89361-055c-0560-0933-bcdd7d87f7bb}">
@@ -131,7 +137,11 @@ END_IF]]></ST>
       </Implementation>
     </Action>
     <LineIds Name="FB_Arbiter">
-      <LineId Id="18" Count="38" />
+      <LineId Id="18" Count="17" />
+      <LineId Id="77" Count="0" />
+      <LineId Id="36" Count="10" />
+      <LineId Id="78" Count="0" />
+      <LineId Id="47" Count="9" />
       <LineId Id="9" Count="0" />
       <LineId Id="59" Count="0" />
       <LineId Id="58" Count="0" />
@@ -144,9 +154,13 @@ END_IF]]></ST>
       <LineId Id="5" Count="0" />
       <LineId Id="4" Count="0" />
       <LineId Id="7" Count="0" />
+      <LineId Id="13" Count="0" />
       <LineId Id="9" Count="0" />
       <LineId Id="8" Count="0" />
       <LineId Id="10" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="14" Count="0" />
     </LineIds>
     <LineIds Name="FB_Arbiter.A_AssertBP">
       <LineId Id="2" Count="0" />

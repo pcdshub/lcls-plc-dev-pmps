@@ -14,7 +14,7 @@ VAR_INPUT
 	
 	i_xMoving	:	BOOL := FALSE; //Provide rising edge when device begins moving
 	i_xDoneMoving	:	BOOL := FALSE; //Provide rising edge when device is done with a move
-	i_stFullBeam	:	ST_BeamParams := PMPS_GVL_BeamParams.cstFullBeam; //Beam parameters applied to transition assertion once transition is complete
+	
 END_VAR
 VAR_OUTPUT
 	
@@ -85,9 +85,9 @@ WaitingForTransitionAssertion:INT:=9;"</v>
               <n n="StateNamesInitString" />
               <v n="ForceActionRemove">false</v>
               <d n="RegionsWithStartStatesTable" t="Hashtable" ckt="Guid" cvt="Int32">
-                <v>00000000-0000-0000-0000-000000000000</v>
-                <v>1</v>
                 <v>6f7e44ba-88b2-43d7-909b-74059e90ad45</v>
+                <v>1</v>
+                <v>00000000-0000-0000-0000-000000000000</v>
                 <v>1</v>
               </d>
               <d n="RegionsWithHistoryStatesTable" t="Hashtable" ckt="Guid" cvt="Int32">
@@ -286,9 +286,9 @@ WaitingForTransitionAssertion:INT:=9;"</v>
                     <v n="IsElementVisible">true</v>
                     <v n="TopPosition">420</v>
                     <v n="LeftPosition">740</v>
-                    <v n="WidthValue">167</v>
+                    <v n="WidthValue">239</v>
                     <v n="MinWidthValue">0</v>
-                    <v n="Height">66</v>
+                    <v n="Height">87</v>
                     <v n="MinHeight">0</v>
                     <v n="AutomaticLayout">false</v>
                     <d n="DockingPoints" t="Hashtable" />
@@ -354,9 +354,9 @@ WaitingForTransitionAssertion:INT:=9;"</v>
                     <v n="IsElementVisible">true</v>
                     <v n="TopPosition">270</v>
                     <v n="LeftPosition">740</v>
-                    <v n="WidthValue">213</v>
+                    <v n="WidthValue">308</v>
                     <v n="MinWidthValue">0</v>
-                    <v n="Height">83</v>
+                    <v n="Height">111</v>
                     <v n="MinHeight">0</v>
                     <v n="AutomaticLayout">false</v>
                     <d n="DockingPoints" t="Hashtable" />
@@ -422,9 +422,9 @@ WaitingForTransitionAssertion:INT:=9;"</v>
                     <v n="IsElementVisible">true</v>
                     <v n="TopPosition">230</v>
                     <v n="LeftPosition">250</v>
-                    <v n="WidthValue">142</v>
+                    <v n="WidthValue">201</v>
                     <v n="MinWidthValue">0</v>
-                    <v n="Height">49</v>
+                    <v n="Height">63</v>
                     <v n="MinHeight">0</v>
                     <v n="AutomaticLayout">false</v>
                     <d n="DockingPoints" t="Hashtable" />
@@ -490,9 +490,9 @@ WaitingForTransitionAssertion:INT:=9;"</v>
                     <v n="IsElementVisible">true</v>
                     <v n="TopPosition">600</v>
                     <v n="LeftPosition">740</v>
-                    <v n="WidthValue">208</v>
+                    <v n="WidthValue">300</v>
                     <v n="MinWidthValue">0</v>
-                    <v n="Height">66</v>
+                    <v n="Height">87</v>
                     <v n="MinHeight">0</v>
                     <v n="AutomaticLayout">false</v>
                     <d n="DockingPoints" t="Hashtable" />
@@ -635,9 +635,9 @@ WaitingForTransitionAssertion:INT:=9;"</v>
                     <v n="IsElementVisible">true</v>
                     <v n="TopPosition">130</v>
                     <v n="LeftPosition">730</v>
-                    <v n="WidthValue">237</v>
+                    <v n="WidthValue">344</v>
                     <v n="MinWidthValue">0</v>
-                    <v n="Height">83</v>
+                    <v n="Height">111</v>
                     <v n="MinHeight">0</v>
                     <v n="AutomaticLayout">false</v>
                     <d n="DockingPoints" t="Hashtable" />
@@ -941,7 +941,7 @@ WaitingForTransitionAssertion:INT:=9;"</v>
                     <o n="StartAnchor" t="UMLAnchorPoint">
                       <v n="AnchorID">0</v>
                       <v n="AnchorLeftPosition">795</v>
-                      <v n="AnchorTopPosition">208</v>
+                      <v n="AnchorTopPosition">236</v>
                       <v n="AnchorRelationID">{002c3585-6619-483d-a4ad-24e3c5556da1}</v>
                       <v n="StartAnchor">true</v>
                       <v n="EndAnchor">false</v>
@@ -1013,7 +1013,7 @@ WaitingForTransitionAssertion:INT:=9;"</v>
                     <d n="flagsY" t="Hashtable" />
                     <o n="StartAnchor" t="UMLAnchorPoint">
                       <v n="AnchorID">0</v>
-                      <v n="AnchorLeftPosition">387</v>
+                      <v n="AnchorLeftPosition">446</v>
                       <v n="AnchorTopPosition">245</v>
                       <v n="AnchorRelationID">{c69b9e26-460f-49f6-a4c8-f415f63e2679}</v>
                       <v n="StartAnchor">true</v>
@@ -1087,7 +1087,7 @@ WaitingForTransitionAssertion:INT:=9;"</v>
                     <o n="StartAnchor" t="UMLAnchorPoint">
                       <v n="AnchorID">0</v>
                       <v n="AnchorLeftPosition">802</v>
-                      <v n="AnchorTopPosition">481</v>
+                      <v n="AnchorTopPosition">502</v>
                       <v n="AnchorRelationID">{9029f252-54cc-4dd0-a293-39c809826399}</v>
                       <v n="StartAnchor">true</v>
                       <v n="EndAnchor">false</v>
@@ -1166,7 +1166,7 @@ WaitingForTransitionAssertion:INT:=9;"</v>
                     <o n="StartAnchor" t="UMLAnchorPoint">
                       <v n="AnchorID">0</v>
                       <v n="AnchorLeftPosition">795</v>
-                      <v n="AnchorTopPosition">348</v>
+                      <v n="AnchorTopPosition">376</v>
                       <v n="AnchorRelationID">{21afc9f0-b07d-446b-b648-e3f8868ba4c8}</v>
                       <v n="StartAnchor">true</v>
                       <v n="EndAnchor">false</v>

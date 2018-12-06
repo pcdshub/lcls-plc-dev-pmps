@@ -3,7 +3,7 @@
   <POU Name="MAIN" Id="{8a7bcfd2-1a2b-4363-aa47-c19391bf1f9c}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM MAIN
 VAR
-	fbDev1	:	FB_ExampleDevice;
+	fbDev1	:	FB_ExampleDeviceSM_All;
 	fbDev2	:	FB_ExampleDeviceSM_All;
 	
 	BP1	:	ST_BeamParams;
@@ -22,8 +22,8 @@ END_VAR
 Test := F_SafeBPCompare(BP1,BP2);
 
 IF Initialize THEN
-	fbDev1.Initialize();
-	//fbDev2 initialized with first call
+	fbDev1(cBase := 10);
+	fbDev2(cBase := 1000);
 	fbArbiter.A_Init();
 	Initialize := FALSE;
 END_IF

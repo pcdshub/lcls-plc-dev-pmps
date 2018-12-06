@@ -12,13 +12,15 @@ VAR_GLOBAL CONSTANT
 		fAtt := 0,
 		fPP_mJ := 1E4,
 		fUpper_eV := 1E4,
-		fLower_eV := 0
+		fLower_eV := 0,
+		nRate	:= UDINT#1000000
 );
 	cstSafeBeam	:	ST_BeamParams := (
 		fAtt := 100,
 		fPP_mJ := 0,
 		fUpper_eV := 0,
-		fLower_eV := 0
+		fLower_eV := 0,
+		nRate	:= 0
 );
 	cnMaxStateArrayLen : INT := 20;
 	

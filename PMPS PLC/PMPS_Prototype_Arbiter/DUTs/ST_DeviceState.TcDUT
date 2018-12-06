@@ -4,11 +4,6 @@
     <Declaration><![CDATA[TYPE ST_DeviceState :
 STRUCT
 	
-	//Database key
-	
-	//Parent Device
-	sParentDevice	:	STRING;
-	
 	//State name
 	sStateName	:	STRING;
 	nStateRef	:	UDINT; //Primary key of device state database
@@ -16,7 +11,7 @@ STRUCT
 	//////////////////
 	// This stuff may belong in a sub-class or something
 	//Position
-	rPosition	:	REAL := 0;
+	rPosition	:	REAL := 0; //Center of the state
 	//Tolerance
 	rTolerance :	REAL := 0; //+/- amount
 	//////////////////
