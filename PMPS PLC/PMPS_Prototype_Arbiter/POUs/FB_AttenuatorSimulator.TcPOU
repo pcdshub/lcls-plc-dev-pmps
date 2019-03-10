@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.12">
+  <POU Name="FB_AttenuatorSimulator" Id="{a3cc3cd5-f2d4-0113-3766-5daec5c567cb}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_AttenuatorSimulator
+VAR_INPUT
+	i_rRequestedAttenuation	:	REAL;
+END_VAR
+VAR_OUTPUT
+	q_xFault	:	BOOL;
+	q_rCurrentAttenuation	:	REAL;
+END_VAR
+VAR_IN_OUT
+	Arbiter	:	FB_Arbiter; //Higher level arbiter from which upstream attenuation can be requested
+END_VAR
+VAR
+	tonDelay	:	TON := (
+		PT := T#3S
+		);
+	rLower_eVThreshold	:	REAL := 300;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// Really basic delay
+tonDelay(IN := i_rRequestedAttenuation <> q_rCurrentAttenuation);
+
+IF tonDelay.Q THEN
+	q_rCurrentAttenuation := i_rRequestedAttenuation;
+END_IF]]></ST>
+    </Implementation>
+    <LineIds Name="FB_AttenuatorSimulator">
+      <LineId Id="23" Count="0" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="27" Count="0" />
+      <LineId Id="26" Count="0" />
+      <LineId Id="28" Count="1" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

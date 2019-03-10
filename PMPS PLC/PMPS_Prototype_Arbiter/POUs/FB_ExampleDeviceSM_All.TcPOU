@@ -8,16 +8,18 @@ VAR_INPUT
 END_VAR
 VAR_OUTPUT
 END_VAR
-VAR_IN_OUT	
+VAR_IN_OUT
+	
 END_VAR
 VAR
 	stDevice	:	ST_Device;
+	fbGovernor	:	FB_LinearGovernor;
 	mcPower	:	MC_Power;
 	mcStop: MC_Stop;
 	mcAbsolute	:	MC_MoveAbsolute;
 	fbBPTM	:	BeamClassTransitionManager;
 	xStartMove: BOOL;
-	fbGovernor	:	FB_LinearGovernor;
+	
 	stCheckState: ST_DeviceState;
 	stTargetState	:	ST_DeviceState; //Target device state
 
