@@ -896,6 +896,15 @@ External Setpoint Generation:
 				</Relation>
 			</Relations>
 		</DataType>
+		<DataType>
+			<Name GUID="{732480A7-5392-0A1F-50AB-897A82278634}" IecBaseType="true" AutoDeleteType="true">ARRAY [0..15] OF BOOL</Name>
+			<BitSize>128</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000000000030}">BOOL</BaseType>
+			<ArrayInfo>
+				<LBound>0</LBound>
+				<Elements>16</Elements>
+			</ArrayInfo>
+		</DataType>
 	</DataTypes>
 	<Project ProjectGUID="{73B7DCEE-B417-4E72-B2B4-BAB1C744A291}" Target64Bit="true" ShowHideConfigurations="#x106">
 		<System>
@@ -1061,6 +1070,10 @@ External Setpoint Generation:
 						<Var>
 							<Name>MAIN.fbDev2.stDevice.stAxis.PlcToNc</Name>
 							<Type GUID="{63A84524-72E3-41C8-BEAB-4CCE44690A13}" Namespace="MC">PLCTONC_AXIS_REF</Type>
+						</Var>
+						<Var>
+							<Name>PMPS_Arbiter.fbMPSInterface.q_BC_ASSERTION_LINES</Name>
+							<Type GUID="{732480A7-5392-0A1F-50AB-897A82278634}">ARRAY [0..15] OF BOOL</Type>
 						</Var>
 					</Vars>
 					<TaskPouOids>

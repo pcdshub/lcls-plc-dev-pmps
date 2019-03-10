@@ -13,10 +13,12 @@ STRUCT
 	
 	
 	//Machine parameters
+	nBeamClass	:	BYTE := 16#F;
 	nRate	:	UDINT	:= 10; //Pulse-rate
-	fPP_mJ : REAL := 20; //Requested per pulse max energy (mJ)
+	fPP_mJ : REAL := 20; //Per pulse max energy (mJ)
 	fUpper_eV	:	REAL	:= 20000; //Requested max eV
 	fLower_eV	:	REAL	:= 0; //Requested lower eV
+	reV	:	REAL	:=0; //Photon energy (calculated by undulator gap)
 END_STRUCT
 END_TYPE
 ]]></Declaration>

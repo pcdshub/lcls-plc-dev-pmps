@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.12">
+  <POU Name="FB_BeamClassOutputs" Id="{a28c1376-360b-0b96-3d68-05f53a5ce904}" SpecialFunc="None">
+    <Declaration><![CDATA[(*
+Sets the beam class assertion lines for a given beam class.
+*)
+FUNCTION_BLOCK FB_BeamClassOutputs
+VAR_INPUT
+	i_ArbiterBP	:	ST_BeamParams;
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	wBeamClass	:	BYTE;
+	q_BC_ASSERTION_LINES	AT	%Q*	: ARRAY [0..15] OF	BOOL;
+	InitCounter: INT;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+//Beam Class
+////////////////////////////////////
+//0x0 = 0000 0000 0000 0000
+//0xF = 1111 1111 1111 1111
+
+//Initialize BC lines to zero on every pass
+FOR InitCounter := 0 TO 15 DO
+	q_BC_ASSERTION_LINES[InitCounter] := FALSE;
+END_FOR
+
+//Set BC lines according to beam class
+FOR wBeamClass:=i_ArbiterBP.nBeamClass TO 0 BY -1 DO
+	q_BC_ASSERTION_LINES[wBeamClass] := TRUE;
+END_FOR
+]]></ST>
+    </Implementation>
+    <LineIds Name="FB_BeamClassOutputs">
+      <LineId Id="69" Count="1" />
+      <LineId Id="37" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="56" Count="0" />
+      <LineId Id="43" Count="0" />
+      <LineId Id="57" Count="0" />
+      <LineId Id="59" Count="2" />
+      <LineId Id="58" Count="0" />
+      <LineId Id="53" Count="0" />
+      <LineId Id="52" Count="0" />
+      <LineId Id="54" Count="1" />
+      <LineId Id="36" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -24,10 +24,16 @@
     <Compile Include="DUTs\ST_BeamParams.TcDUT">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DUTs\ST_BinarySolidAttenuator.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="DUTs\ST_Device.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DUTs\ST_DeviceState.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DUTs\ST_SolidAttenuatorBlade.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="GlobalTextList.TcGTLO">
@@ -53,6 +59,9 @@
     <Compile Include="POUs\FB_Arbiter.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\FB_AttenuatorSimulator.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="POUs\FB_LinearDeviceStateTable.TcPOU">
       <SubType>Code</SubType>
     </Compile>
@@ -72,6 +81,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\FB_MachineSimulator.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\FB_BeamClassOutputs.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\FB_SolidAttenuator.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\F_SafeBPCompare.TcPOU">
@@ -182,6 +197,10 @@
       <Namespace>UML_SC</Namespace>
       <SystemLibrary>true</SystemLibrary>
       <ResolverGuid>d9a6b70a-92f0-4827-8ca3-8ce8a61652d9</ResolverGuid>
+    </PlaceholderReference>
+    <PlaceholderReference Include="VisuDialogs">
+      <DefaultResolution>VisuDialogs, * (System)</DefaultResolution>
+      <Namespace>VisuDialogs</Namespace>
     </PlaceholderReference>
   </ItemGroup>
   <ItemGroup>

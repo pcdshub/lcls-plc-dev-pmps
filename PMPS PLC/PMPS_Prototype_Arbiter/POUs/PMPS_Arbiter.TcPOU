@@ -6,12 +6,16 @@ VAR
 	
 	
 	fbMachine	:	FB_MachineSimulator;
+	
+	fbMPSInterface	:	FB_BeamClassOutputs;
 END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[
 //Execute arbiter
 fbArbiter();
+
+fbMPSInterface();
 
 //Machine simulator
 fbMachine(
@@ -23,6 +27,7 @@ fbMachine(
       <LineId Id="75" Count="0" />
       <LineId Id="16" Count="0" />
       <LineId Id="74" Count="0" />
+      <LineId Id="84" Count="1" />
       <LineId Id="67" Count="1" />
       <LineId Id="66" Count="0" />
       <LineId Id="71" Count="2" />
