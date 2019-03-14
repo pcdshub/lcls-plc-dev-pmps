@@ -1,10 +1,33 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.12">
   <POU Name="FB_Arbiter" Id="{9cc1f6b7-c43c-0fbb-09be-271b21ce1be7}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK FB_Arbiter
+    <Declaration><![CDATA[(* FB Arbiter
+
+The arbiter primary objectives are:
+- Provide a simple interface for devices to request beam parameter sets
+- Provide a way for devices to verify their BPS is active in the arbiter
+- Provide a way for devices remove their requests from evaluation
+- Evaluate all active beam parameter requests registered with the aribiter,
+to determine the safest combination of all sets, provide this set as an output.
+- Do all of this with minimal overhead
+
+To these ends, the arbiter uses a hash-table, the rows being a state-id as the key, and a corresponding
+ beam parameter set to be evaluated against all the other sets (or rows), in the table.
+ 
+The hash table can be thought of as an array on steriods, they are worth reading about, suffice to say
+the hash table will tell you when you reach the end of all the entries, and enables us to find entries quickly.
+
+These features efficiently address the addition, removal, and verification of beam parameter sets listed in the above requirements.
+
+An important thing to pay attention to is the A_Arbitrate action. This action implements the evaluation of beam parameter
+sets against each other.
+
+*)
+
+FUNCTION_BLOCK FB_Arbiter
 VAR_INPUT
-	i_nStateID	:	UDINT;
-	i_stAssertBeamParams	:	ST_BeamParams;
+	i_nStateID	:	UDINT; //Set to the stateID of the state requesting the beam parameter set
+	i_stAssertBeamParams	:	ST_BeamParams; //Set to the beam parameter set of the state required
 END_VAR
 VAR_OUTPUT
 	q_stBeamParams	:	ST_BeamParams;
