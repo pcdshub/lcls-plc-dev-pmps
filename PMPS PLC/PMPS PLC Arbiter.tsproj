@@ -897,11 +897,11 @@ External Setpoint Generation:
 			</Relations>
 		</DataType>
 		<DataType>
-			<Name GUID="{732480A7-5392-0A1F-50AB-897A82278634}" IecBaseType="true" AutoDeleteType="true">ARRAY [0..15] OF BOOL</Name>
+			<Name GUID="{0B37E936-53FE-6A1D-9723-D7016BFD8546}" IecBaseType="true" AutoDeleteType="true">ARRAY [1..16] OF BOOL</Name>
 			<BitSize>128</BitSize>
 			<BaseType GUID="{18071995-0000-0000-0000-000000000030}">BOOL</BaseType>
 			<ArrayInfo>
-				<LBound>0</LBound>
+				<LBound>1</LBound>
 				<Elements>16</Elements>
 			</ArrayInfo>
 		</DataType>
@@ -1073,7 +1073,7 @@ External Setpoint Generation:
 						</Var>
 						<Var>
 							<Name>PMPS_Arbiter.fbMPSInterface.q_BC_ASSERTION_LINES</Name>
-							<Type GUID="{732480A7-5392-0A1F-50AB-897A82278634}">ARRAY [0..15] OF BOOL</Type>
+							<Type GUID="{0B37E936-53FE-6A1D-9723-D7016BFD8546}">ARRAY [1..16] OF BOOL</Type>
 						</Var>
 					</Vars>
 					<TaskPouOids>

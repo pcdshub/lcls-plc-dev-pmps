@@ -12,8 +12,9 @@ VAR_OUTPUT
 END_VAR
 VAR
 	wBeamClass	:	BYTE;
-	q_BC_ASSERTION_LINES	AT	%Q*	: ARRAY [0..15] OF	BOOL;
+	q_BC_ASSERTION_LINES	AT	%Q*	: ARRAY [1..16] OF	BOOL;
 	InitCounter: INT;
+	counter	:	INT;
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -21,15 +22,19 @@ END_VAR
 //Beam Class
 ////////////////////////////////////
 //0x0 = 0000 0000 0000 0000
+//0x1 = 0000 0000 0000 0001
 //0xF = 1111 1111 1111 1111
 
 //Initialize BC lines to zero on every pass
-FOR InitCounter := 0 TO 15 DO
+FOR InitCounter := 1 TO 16 DO
 	q_BC_ASSERTION_LINES[InitCounter] := FALSE;
 END_FOR
 
 //Set BC lines according to beam class
-FOR wBeamClass:=i_ArbiterBP.nBeamClass TO 0 BY -1 DO
+//A BC of 0x0 would pass over this loop, setting none of the lines high
+// , as FOR loops check the initialized variable at the top to see if it's >
+// than the "TO" variable.
+FOR wBeamClass:=1 TO i_ArbiterBP.nBeamClass DO
 	q_BC_ASSERTION_LINES[wBeamClass] := TRUE;
 END_FOR
 ]]></ST>
@@ -38,12 +43,16 @@ END_FOR
       <LineId Id="69" Count="1" />
       <LineId Id="37" Count="0" />
       <LineId Id="11" Count="0" />
+      <LineId Id="87" Count="0" />
       <LineId Id="56" Count="0" />
       <LineId Id="43" Count="0" />
       <LineId Id="57" Count="0" />
       <LineId Id="59" Count="2" />
       <LineId Id="58" Count="0" />
       <LineId Id="53" Count="0" />
+      <LineId Id="90" Count="0" />
+      <LineId Id="94" Count="0" />
+      <LineId Id="93" Count="0" />
       <LineId Id="52" Count="0" />
       <LineId Id="54" Count="1" />
       <LineId Id="36" Count="0" />
