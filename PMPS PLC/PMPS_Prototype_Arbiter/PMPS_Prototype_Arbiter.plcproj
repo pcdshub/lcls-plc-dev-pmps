@@ -53,7 +53,7 @@
     <Compile Include="PlcTask.TcTTO">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\BeamClassTransitionManager.TcPOU">
+    <Compile Include="POUs\BeamParameterTransitionManager.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\FB_Arbiter.TcPOU">

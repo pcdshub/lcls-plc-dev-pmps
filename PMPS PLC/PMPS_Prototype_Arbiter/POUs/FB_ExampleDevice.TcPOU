@@ -8,7 +8,7 @@ VAR_OUTPUT
 END_VAR
 VAR
 	MC_MoveAbsolute_0: MC_MoveAbsolute;
-	fbBCTM: BeamClassTransitionManager;
+	fbBCTM: BeamParameterTransitionManager;
 	FB_ExampleDeviceSM_0: FB_ExampleDeviceSM;
 	stDevice	:	ST_Device;
 	MC_Power_0: MC_Power;
@@ -424,7 +424,7 @@ END_VAR
                             <o t="BoxTreeOperand">
                               <o n="Operand" t="Operand">
                                 <v n="Operand">"fbBCTM.q_xTransitionAuthorized"</v>
-                                <v n="Type">"BOOL"</v>
+                                <n n="Type" />
                                 <v n="Comment">""</v>
                                 <v n="SymbolComment">""</v>
                                 <v n="Address">""</v>

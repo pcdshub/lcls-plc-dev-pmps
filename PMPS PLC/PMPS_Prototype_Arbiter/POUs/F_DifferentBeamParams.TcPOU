@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.12">
   <POU Name="F_DifferentBeamParams" Id="{4b2866e2-397b-0a58-04c2-840d09e73211}" SpecialFunc="None">
-    <Declaration><![CDATA[(*Compares BeamParam1 to BeamParam2, if all parameters of BeamParam1 are more conservative than BeamParam2
+    <Declaration><![CDATA[(*Compares BeamParam1 to BeamParam2, if any parameters of BeamParam1 are different than BeamParam2
 the result will be true *)
 FUNCTION F_DifferentBeamParams : BOOL
 VAR_INPUT
