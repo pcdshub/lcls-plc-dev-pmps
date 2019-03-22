@@ -97,15 +97,15 @@ WaitingForTransitionAssertion:INT:=9;"</v>
               <d n="RegionsWithEndStatesTable" t="Hashtable" />
               <n n="BreakPointGuids" />
               <v n="UmlEditorRestrictions" t="EditorRestrictions">None</v>
-              <v n="DUTObjectGuid">{30ee93d5-3e61-4df3-ad6b-5bc4ebc590ae}</v>
-              <v n="DUTNamesObjectGuid">{6d0bfabb-992e-4569-9aa0-ce56c51940d4}</v>
+              <v n="DUTObjectGuid">{0769c105-72c4-4fa3-87f7-5eb2e12cf1f2}</v>
+              <v n="DUTNamesObjectGuid">{6d6689a1-5f59-4d85-9244-bcb27aed730c}</v>
               <v n="TraceObject">{00000000-0000-0000-0000-000000000000}</v>
               <v n="IsCompiling">false</v>
               <v n="HideLanguageModel">false</v>
               <v n="DefaultStateSizeX">62</v>
               <v n="DefaultStateSizeY">32</v>
               <v n="SuppressAutomaticLibraryLoading">false</v>
-              <v n="DiagramName">"BeamClassTransitionManager_1"</v>
+              <v n="DiagramName">"BeamParameterTransitionManager"</v>
               <v n="DiagramGuid">{6c96fc2d-5036-4d98-8cd4-c5e5ec510912}</v>
               <v n="IsActionRemoving">false</v>
               <v n="ForceRepaintDiagram">false</v>

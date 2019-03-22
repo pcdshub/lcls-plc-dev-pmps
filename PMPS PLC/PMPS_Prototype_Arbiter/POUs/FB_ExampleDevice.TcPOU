@@ -37,7 +37,7 @@ END_VAR
                       <v n="BoxType">"BeamClassTransitionManager"</v>
                       <o n="Instance" t="Operand">
                         <v n="Operand">"fbBCTM"</v>
-                        <v n="Type">"BeamClassTransitionManager"</v>
+                        <v n="Type">"BeamParameterTransitionManager"</v>
                         <v n="Comment">""</v>
                         <v n="SymbolComment">""</v>
                         <v n="Address">""</v>
@@ -424,7 +424,7 @@ END_VAR
                             <o t="BoxTreeOperand">
                               <o n="Operand" t="Operand">
                                 <v n="Operand">"fbBCTM.q_xTransitionAuthorized"</v>
-                                <n n="Type" />
+                                <v n="Type">"BOOL"</v>
                                 <v n="Comment">""</v>
                                 <v n="SymbolComment">""</v>
                                 <v n="Address">""</v>
