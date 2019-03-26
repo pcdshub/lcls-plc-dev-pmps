@@ -53,58 +53,58 @@
     <Compile Include="PlcTask.TcTTO">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\BeamParameterTransitionManager.TcPOU">
+    <Compile Include="POUs\DeviceImplementationEx1\FB_ExampleDevice.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\FB_Arbiter.TcPOU">
+    <Compile Include="POUs\DeviceImplementationEx1\FB_ExampleDeviceSM.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\FB_AttenuatorSimulator.TcPOU">
+    <Compile Include="POUs\DeviceImplementationEx2\FB_ExampleDeviceSM_All.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\FB_BeamClassOutputs.TcPOU">
+    <Compile Include="POUs\HelperFunctions\F_DifferentBeamParams.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\FB_BeamParamAssertionPool.TcPOU">
+    <Compile Include="POUs\HelperFunctions\F_SafeBPCompare.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\FB_ExampleDevice.TcPOU">
+    <Compile Include="POUs\HelperFunctions\F_SetBeamParams.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\FB_ExampleDeviceSM.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\FB_ExampleDeviceSM_All.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\FB_LinearDeviceStateTable.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\FB_LinearGovernor.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\FB_MachineSimulator.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\FB_SolidAttenuator.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\F_DifferentBeamParams.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\F_SafeBPCompare.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\F_SetBeamParams.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\F_SetStateParams.TcPOU">
+    <Compile Include="POUs\HelperFunctions\F_SetStateParams.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\MAIN.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\MajorComponents\FB_BeamClassOutputs.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\MajorComponents\FB_LinearGovernor.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="POUs\PMPS_Arbiter.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\MajorComponents\BeamParameterTransitionManager.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\MajorComponents\FB_Arbiter.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\MajorComponents\FB_BeamParamAssertionPool.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\MajorComponents\FB_LinearDeviceStateTable.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\TestComponents\FB_AttenuatorSimulator.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\TestComponents\FB_MachineSimulator.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\TestComponents\FB_SolidAttenuator.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Visualization Manager.TcVMO">
