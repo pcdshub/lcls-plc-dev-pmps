@@ -101,9 +101,8 @@ stOutputBP.fAtt := MAX(stOutputBP.fAtt, getBPStruct.fAtt);
 //Pulse energy
 stOutputBP.fPP_mJ := MIN(stOutputBP.fPP_mJ, getBPStruct.fPP_mJ);
 
-//Photon Energy
-stOutputBP.fLower_eV := MAX(stOutputBP.fLower_eV, getBPStruct.fLower_eV);
-stOutputBP.fUpper_eV := MIN(stOutputBP.fUpper_eV, getBPStruct.fUpper_eV);
+//Photon energy ranges
+stOutputBP.neVReqRange := stOutputBP.neVReqRange AND getBPStruct.neVReqRange;
 
 //Rate
 stOutputBP.nRate := MIN(stOutputBP.nRate, getBPStruct.nRate);]]></ST>
@@ -217,8 +216,7 @@ END_IF]]></ST>
       <LineId Id="7" Count="0" />
       <LineId Id="13" Count="0" />
       <LineId Id="9" Count="0" />
-      <LineId Id="8" Count="0" />
-      <LineId Id="10" Count="0" />
+      <LineId Id="15" Count="0" />
       <LineId Id="12" Count="0" />
       <LineId Id="11" Count="0" />
       <LineId Id="14" Count="0" />
