@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.12">
-  <POU Name="BeamClassTransitionManager" Id="{843312b6-3630-0fa6-1e20-da1ce4aaad4c}" SpecialFunc="None">
+  <POU Name="BeamParameterTransitionManager" Id="{843312b6-3630-0fa6-1e20-da1ce4aaad4c}" SpecialFunc="None">
     <Declaration><![CDATA[(*
 Implements the procedure for safely transitioning between device states by asserting the correct beam parameters for 
 the state *)
-FUNCTION_BLOCK BeamClassTransitionManager
+FUNCTION_BLOCK BeamParameterTransitionManager
 VAR_INPUT
 	i_TransitionAssertionID	:	UDINT := 0;
 	i_stTransitionAssertion : ST_BeamParams := PMPS_GVL_BeamParams.cstSafeBeam; //Assertion required during transition (always safer than anything inbetween)
@@ -97,15 +97,15 @@ WaitingForTransitionAssertion:INT:=9;"</v>
               <d n="RegionsWithEndStatesTable" t="Hashtable" />
               <n n="BreakPointGuids" />
               <v n="UmlEditorRestrictions" t="EditorRestrictions">None</v>
-              <v n="DUTObjectGuid">{30ee93d5-3e61-4df3-ad6b-5bc4ebc590ae}</v>
-              <v n="DUTNamesObjectGuid">{6d0bfabb-992e-4569-9aa0-ce56c51940d4}</v>
+              <v n="DUTObjectGuid">{0769c105-72c4-4fa3-87f7-5eb2e12cf1f2}</v>
+              <v n="DUTNamesObjectGuid">{6d6689a1-5f59-4d85-9244-bcb27aed730c}</v>
               <v n="TraceObject">{00000000-0000-0000-0000-000000000000}</v>
               <v n="IsCompiling">false</v>
               <v n="HideLanguageModel">false</v>
               <v n="DefaultStateSizeX">62</v>
               <v n="DefaultStateSizeY">32</v>
               <v n="SuppressAutomaticLibraryLoading">false</v>
-              <v n="DiagramName">"BeamClassTransitionManager_1"</v>
+              <v n="DiagramName">"BeamParameterTransitionManager"</v>
               <v n="DiagramGuid">{6c96fc2d-5036-4d98-8cd4-c5e5ec510912}</v>
               <v n="IsActionRemoving">false</v>
               <v n="ForceRepaintDiagram">false</v>
@@ -121,8 +121,8 @@ WaitingForTransitionAssertion:INT:=9;"</v>
                     <v n="ShowMethods">true</v>
                     <v n="RepresentedElement">1</v>
                     <v n="IsElementVisible">true</v>
-                    <v n="TopPosition">60</v>
-                    <v n="LeftPosition">840</v>
+                    <v n="TopPosition">80</v>
+                    <v n="LeftPosition">620</v>
                     <v n="WidthValue">20</v>
                     <v n="MinWidthValue">0</v>
                     <v n="Height">20</v>
@@ -181,7 +181,7 @@ WaitingForTransitionAssertion:INT:=9;"</v>
                   <v n="UMLPosition">-1L</v>
                   <v n="IsModified">false</v>
                   <v n="ARGBElementColor">0</v>
-                  <v n="ZOrder">120U</v>
+                  <v n="ZOrder">130U</v>
                 </o>
                 <v>99c581e9-b63f-46b6-97d6-d2139c7110b0</v>
                 <o t="UMLStateChartPseudoElement">
@@ -190,7 +190,7 @@ WaitingForTransitionAssertion:INT:=9;"</v>
                     <v n="ShowMethods">true</v>
                     <v n="RepresentedElement">1</v>
                     <v n="IsElementVisible">true</v>
-                    <v n="TopPosition">410</v>
+                    <v n="TopPosition">50</v>
                     <v n="LeftPosition">440</v>
                     <v n="WidthValue">20</v>
                     <v n="MinWidthValue">0</v>
@@ -250,7 +250,7 @@ WaitingForTransitionAssertion:INT:=9;"</v>
                   <v n="UMLPosition">-1L</v>
                   <v n="IsModified">false</v>
                   <v n="ARGBElementColor">0</v>
-                  <v n="ZOrder">80U</v>
+                  <v n="ZOrder">128U</v>
                 </o>
                 <v>c9bd3ee8-ed1c-4da5-aaca-8e125e37e024</v>
                 <o t="UMLStateChartElement">
@@ -284,11 +284,11 @@ WaitingForTransitionAssertion:INT:=9;"</v>
                     <v n="ShowMethods">true</v>
                     <v n="RepresentedElement">1</v>
                     <v n="IsElementVisible">true</v>
-                    <v n="TopPosition">420</v>
-                    <v n="LeftPosition">740</v>
-                    <v n="WidthValue">239</v>
+                    <v n="TopPosition">400</v>
+                    <v n="LeftPosition">620</v>
+                    <v n="WidthValue">167</v>
                     <v n="MinWidthValue">0</v>
-                    <v n="Height">87</v>
+                    <v n="Height">66</v>
                     <v n="MinHeight">0</v>
                     <v n="AutomaticLayout">false</v>
                     <d n="DockingPoints" t="Hashtable" />
@@ -353,10 +353,10 @@ WaitingForTransitionAssertion:INT:=9;"</v>
                     <v n="RepresentedElement">1</v>
                     <v n="IsElementVisible">true</v>
                     <v n="TopPosition">270</v>
-                    <v n="LeftPosition">740</v>
-                    <v n="WidthValue">308</v>
+                    <v n="LeftPosition">610</v>
+                    <v n="WidthValue">213</v>
                     <v n="MinWidthValue">0</v>
-                    <v n="Height">111</v>
+                    <v n="Height">83</v>
                     <v n="MinHeight">0</v>
                     <v n="AutomaticLayout">false</v>
                     <d n="DockingPoints" t="Hashtable" />
@@ -421,10 +421,10 @@ WaitingForTransitionAssertion:INT:=9;"</v>
                     <v n="RepresentedElement">1</v>
                     <v n="IsElementVisible">true</v>
                     <v n="TopPosition">230</v>
-                    <v n="LeftPosition">250</v>
-                    <v n="WidthValue">201</v>
+                    <v n="LeftPosition">310</v>
+                    <v n="WidthValue">142</v>
                     <v n="MinWidthValue">0</v>
-                    <v n="Height">63</v>
+                    <v n="Height">49</v>
                     <v n="MinHeight">0</v>
                     <v n="AutomaticLayout">false</v>
                     <d n="DockingPoints" t="Hashtable" />
@@ -488,11 +488,11 @@ WaitingForTransitionAssertion:INT:=9;"</v>
                     <v n="ShowMethods">true</v>
                     <v n="RepresentedElement">1</v>
                     <v n="IsElementVisible">true</v>
-                    <v n="TopPosition">600</v>
-                    <v n="LeftPosition">740</v>
-                    <v n="WidthValue">300</v>
+                    <v n="TopPosition">510</v>
+                    <v n="LeftPosition">620</v>
+                    <v n="WidthValue">208</v>
                     <v n="MinWidthValue">0</v>
-                    <v n="Height">87</v>
+                    <v n="Height">66</v>
                     <v n="MinHeight">0</v>
                     <v n="AutomaticLayout">false</v>
                     <d n="DockingPoints" t="Hashtable" />
@@ -522,7 +522,7 @@ WaitingForTransitionAssertion:INT:=9;"</v>
                   <v n="UMLPosition">-1L</v>
                   <v n="IsModified">false</v>
                   <v n="ARGBElementColor">-13447886</v>
-                  <v n="ZOrder">117U</v>
+                  <v n="ZOrder">126U</v>
                 </o>
                 <v>05b85c88-bc4c-449a-8d4b-fa14df9e06e9</v>
                 <o t="UMLStateChartComposite">
@@ -535,9 +535,9 @@ WaitingForTransitionAssertion:INT:=9;"</v>
                     <v n="IsElementVisible">true</v>
                     <v n="TopPosition">10</v>
                     <v n="LeftPosition">550</v>
-                    <v n="WidthValue">569</v>
+                    <v n="WidthValue">305</v>
                     <v n="MinWidthValue">0</v>
-                    <v n="Height">762</v>
+                    <v n="Height">581</v>
                     <v n="MinHeight">0</v>
                     <v n="AutomaticLayout">false</v>
                     <d n="DockingPoints" t="Hashtable" />
@@ -633,11 +633,11 @@ WaitingForTransitionAssertion:INT:=9;"</v>
                     <v n="ShowMethods">true</v>
                     <v n="RepresentedElement">1</v>
                     <v n="IsElementVisible">true</v>
-                    <v n="TopPosition">130</v>
-                    <v n="LeftPosition">730</v>
-                    <v n="WidthValue">344</v>
+                    <v n="TopPosition">140</v>
+                    <v n="LeftPosition">600</v>
+                    <v n="WidthValue">237</v>
                     <v n="MinWidthValue">0</v>
-                    <v n="Height">111</v>
+                    <v n="Height">83</v>
                     <v n="MinHeight">0</v>
                     <v n="AutomaticLayout">false</v>
                     <d n="DockingPoints" t="Hashtable" />
@@ -678,7 +678,7 @@ WaitingForTransitionAssertion:INT:=9;"</v>
                   <v n="HasGraphicalRepresentation">true</v>
                   <v n="StartUMLElement">{99c581e9-b63f-46b6-97d6-d2139c7110b0}</v>
                   <v n="HighlightedLine">false</v>
-                  <v n="ZOrder">99U</v>
+                  <v n="ZOrder">128U</v>
                   <v n="SpecialHandling">false</v>
                   <v n="ActionLocalVariableName">""</v>
                   <v n="ActionParametersString">""</v>
@@ -699,7 +699,7 @@ WaitingForTransitionAssertion:INT:=9;"</v>
                     <o n="StartAnchor" t="UMLAnchorPoint">
                       <v n="AnchorID">0</v>
                       <v n="AnchorLeftPosition">455</v>
-                      <v n="AnchorTopPosition">420</v>
+                      <v n="AnchorTopPosition">55</v>
                       <v n="AnchorRelationID">{86f0c859-fdc1-437b-98e7-58a9ee939bd0}</v>
                       <v n="StartAnchor">true</v>
                       <v n="EndAnchor">false</v>
@@ -708,7 +708,7 @@ WaitingForTransitionAssertion:INT:=9;"</v>
                     <o n="EndAnchor" t="UMLAnchorPoint">
                       <v n="AnchorID">1</v>
                       <v n="AnchorLeftPosition">545</v>
-                      <v n="AnchorTopPosition">420</v>
+                      <v n="AnchorTopPosition">55</v>
                       <v n="AnchorRelationID">{86f0c859-fdc1-437b-98e7-58a9ee939bd0}</v>
                       <v n="StartAnchor">false</v>
                       <v n="EndAnchor">true</v>
@@ -736,7 +736,7 @@ WaitingForTransitionAssertion:INT:=9;"</v>
                   <v n="EndElementRoleName">""</v>
                   <v n="UserCreated">true</v>
                   <v n="GeneratedByCode">false</v>
-                  <v n="AllowRoutingOptimisation">true</v>
+                  <v n="AllowRoutingOptimisation">false</v>
                   <d n="flagTexts" t="Hashtable" ckt="String" cvt="String">
                     <v>Priority</v>
                     <v>1</v>
@@ -751,7 +751,7 @@ WaitingForTransitionAssertion:INT:=9;"</v>
                   <v n="HasGraphicalRepresentation">true</v>
                   <v n="StartUMLElement">{c067c11e-e023-4514-a231-82c5f30e68a1}</v>
                   <v n="HighlightedLine">false</v>
-                  <v n="ZOrder">120U</v>
+                  <v n="ZOrder">130U</v>
                   <v n="SpecialHandling">false</v>
                   <v n="ActionLocalVariableName">""</v>
                   <v n="ActionParametersString">""</v>
@@ -771,8 +771,8 @@ WaitingForTransitionAssertion:INT:=9;"</v>
                     <d n="flagsY" t="Hashtable" />
                     <o n="StartAnchor" t="UMLAnchorPoint">
                       <v n="AnchorID">0</v>
-                      <v n="AnchorLeftPosition">835</v>
-                      <v n="AnchorTopPosition">75</v>
+                      <v n="AnchorLeftPosition">625</v>
+                      <v n="AnchorTopPosition">95</v>
                       <v n="AnchorRelationID">{679a7860-22ee-4881-81e5-d597c23564ff}</v>
                       <v n="StartAnchor">true</v>
                       <v n="EndAnchor">false</v>
@@ -780,8 +780,8 @@ WaitingForTransitionAssertion:INT:=9;"</v>
                     </o>
                     <o n="EndAnchor" t="UMLAnchorPoint">
                       <v n="AnchorID">1</v>
-                      <v n="AnchorLeftPosition">835</v>
-                      <v n="AnchorTopPosition">125</v>
+                      <v n="AnchorLeftPosition">625</v>
+                      <v n="AnchorTopPosition">135</v>
                       <v n="AnchorRelationID">{679a7860-22ee-4881-81e5-d597c23564ff}</v>
                       <v n="StartAnchor">false</v>
                       <v n="EndAnchor">true</v>
@@ -859,7 +859,7 @@ WaitingForTransitionAssertion:INT:=9;"</v>
                     </o>
                     <o n="EndAnchor" t="UMLAnchorPoint">
                       <v n="AnchorID">2</v>
-                      <v n="AnchorLeftPosition">285</v>
+                      <v n="AnchorLeftPosition">345</v>
                       <v n="AnchorTopPosition">225</v>
                       <v n="AnchorRelationID">{e62a680c-8a65-40ca-950a-e942320f20e1}</v>
                       <v n="StartAnchor">false</v>
@@ -871,7 +871,7 @@ WaitingForTransitionAssertion:INT:=9;"</v>
                       <v>1</v>
                       <o>
                         <v n="AnchorID">1</v>
-                        <v n="AnchorLeftPosition">285</v>
+                        <v n="AnchorLeftPosition">345</v>
                         <v n="AnchorTopPosition">135</v>
                         <v n="AnchorRelationID">{e62a680c-8a65-40ca-950a-e942320f20e1}</v>
                         <v n="StartAnchor">false</v>
@@ -936,12 +936,12 @@ WaitingForTransitionAssertion:INT:=9;"</v>
                     </d>
                     <d n="flagsY" t="Hashtable" ckt="String" cvt="Int32">
                       <v>ConditionPosition</v>
-                      <v>20</v>
+                      <v>10</v>
                     </d>
                     <o n="StartAnchor" t="UMLAnchorPoint">
                       <v n="AnchorID">0</v>
-                      <v n="AnchorLeftPosition">795</v>
-                      <v n="AnchorTopPosition">236</v>
+                      <v n="AnchorLeftPosition">665</v>
+                      <v n="AnchorTopPosition">218</v>
                       <v n="AnchorRelationID">{002c3585-6619-483d-a4ad-24e3c5556da1}</v>
                       <v n="StartAnchor">true</v>
                       <v n="EndAnchor">false</v>
@@ -949,7 +949,7 @@ WaitingForTransitionAssertion:INT:=9;"</v>
                     </o>
                     <o n="EndAnchor" t="UMLAnchorPoint">
                       <v n="AnchorID">1</v>
-                      <v n="AnchorLeftPosition">795</v>
+                      <v n="AnchorLeftPosition">665</v>
                       <v n="AnchorTopPosition">265</v>
                       <v n="AnchorRelationID">{002c3585-6619-483d-a4ad-24e3c5556da1}</v>
                       <v n="StartAnchor">false</v>
@@ -1013,7 +1013,7 @@ WaitingForTransitionAssertion:INT:=9;"</v>
                     <d n="flagsY" t="Hashtable" />
                     <o n="StartAnchor" t="UMLAnchorPoint">
                       <v n="AnchorID">0</v>
-                      <v n="AnchorLeftPosition">446</v>
+                      <v n="AnchorLeftPosition">447</v>
                       <v n="AnchorTopPosition">245</v>
                       <v n="AnchorRelationID">{c69b9e26-460f-49f6-a4c8-f415f63e2679}</v>
                       <v n="StartAnchor">true</v>
@@ -1066,7 +1066,7 @@ WaitingForTransitionAssertion:INT:=9;"</v>
                   <v n="HasGraphicalRepresentation">true</v>
                   <v n="StartUMLElement">{c9bd3ee8-ed1c-4da5-aaca-8e125e37e024}</v>
                   <v n="HighlightedLine">false</v>
-                  <v n="ZOrder">117U</v>
+                  <v n="ZOrder">126U</v>
                   <v n="SpecialHandling">false</v>
                   <v n="ActionLocalVariableName">""</v>
                   <v n="ActionParametersString">""</v>
@@ -1082,12 +1082,18 @@ WaitingForTransitionAssertion:INT:=9;"</v>
                   <o n="UMLRelationVisualisation" t="UMLRelationVisualisation">
                     <v n="RelationID">{9029f252-54cc-4dd0-a293-39c809826399}</v>
                     <v n="FlagPosition" t="Double">0.5</v>
-                    <d n="flagsX" t="Hashtable" />
-                    <d n="flagsY" t="Hashtable" />
+                    <d n="flagsX" t="Hashtable" ckt="String" cvt="Int32">
+                      <v>ConditionPosition</v>
+                      <v>20</v>
+                    </d>
+                    <d n="flagsY" t="Hashtable" ckt="String" cvt="Int32">
+                      <v>ConditionPosition</v>
+                      <v>10</v>
+                    </d>
                     <o n="StartAnchor" t="UMLAnchorPoint">
                       <v n="AnchorID">0</v>
-                      <v n="AnchorLeftPosition">802</v>
-                      <v n="AnchorTopPosition">502</v>
+                      <v n="AnchorLeftPosition">682</v>
+                      <v n="AnchorTopPosition">461</v>
                       <v n="AnchorRelationID">{9029f252-54cc-4dd0-a293-39c809826399}</v>
                       <v n="StartAnchor">true</v>
                       <v n="EndAnchor">false</v>
@@ -1095,8 +1101,8 @@ WaitingForTransitionAssertion:INT:=9;"</v>
                     </o>
                     <o n="EndAnchor" t="UMLAnchorPoint">
                       <v n="AnchorID">1</v>
-                      <v n="AnchorLeftPosition">802</v>
-                      <v n="AnchorTopPosition">595</v>
+                      <v n="AnchorLeftPosition">682</v>
+                      <v n="AnchorTopPosition">505</v>
                       <v n="AnchorRelationID">{9029f252-54cc-4dd0-a293-39c809826399}</v>
                       <v n="StartAnchor">false</v>
                       <v n="EndAnchor">true</v>
@@ -1157,16 +1163,16 @@ WaitingForTransitionAssertion:INT:=9;"</v>
                     <v n="FlagPosition" t="Double">0.5</v>
                     <d n="flagsX" t="Hashtable" ckt="String" cvt="Int32">
                       <v>ConditionPosition</v>
-                      <v>20</v>
+                      <v>10</v>
                     </d>
                     <d n="flagsY" t="Hashtable" ckt="String" cvt="Int32">
                       <v>ConditionPosition</v>
-                      <v>30</v>
+                      <v>10</v>
                     </d>
                     <o n="StartAnchor" t="UMLAnchorPoint">
                       <v n="AnchorID">0</v>
-                      <v n="AnchorLeftPosition">795</v>
-                      <v n="AnchorTopPosition">376</v>
+                      <v n="AnchorLeftPosition">665</v>
+                      <v n="AnchorTopPosition">348</v>
                       <v n="AnchorRelationID">{21afc9f0-b07d-446b-b648-e3f8868ba4c8}</v>
                       <v n="StartAnchor">true</v>
                       <v n="EndAnchor">false</v>
@@ -1174,8 +1180,8 @@ WaitingForTransitionAssertion:INT:=9;"</v>
                     </o>
                     <o n="EndAnchor" t="UMLAnchorPoint">
                       <v n="AnchorID">1</v>
-                      <v n="AnchorLeftPosition">795</v>
-                      <v n="AnchorTopPosition">415</v>
+                      <v n="AnchorLeftPosition">665</v>
+                      <v n="AnchorTopPosition">395</v>
                       <v n="AnchorRelationID">{21afc9f0-b07d-446b-b648-e3f8868ba4c8}</v>
                       <v n="StartAnchor">false</v>
                       <v n="EndAnchor">true</v>
@@ -1429,14 +1435,14 @@ xTranBP	:= F_SafeBPCompare(PMPS_GVL_BeamParams.stCurrentBeamParameters, i_stTran
         <ST><![CDATA[xTranBP := FALSE;]]></ST>
       </Implementation>
     </Action>
-    <LineIds Name="BeamClassTransitionManager.AcquiringSafeBeamParams_DO">
+    <LineIds Name="BeamParameterTransitionManager.AcquiringSafeBeamParams_DO">
       <LineId Id="1" Count="0" />
       <LineId Id="6" Count="0" />
       <LineId Id="9" Count="0" />
       <LineId Id="11" Count="0" />
       <LineId Id="13" Count="0" />
     </LineIds>
-    <LineIds Name="BeamClassTransitionManager.AssertFinalBP">
+    <LineIds Name="BeamParameterTransitionManager.AssertFinalBP">
       <LineId Id="1" Count="0" />
       <LineId Id="11" Count="6" />
       <LineId Id="10" Count="0" />
@@ -1445,23 +1451,23 @@ xTranBP	:= F_SafeBPCompare(PMPS_GVL_BeamParams.stCurrentBeamParameters, i_stTran
       <LineId Id="8" Count="1" />
       <LineId Id="7" Count="0" />
     </LineIds>
-    <LineIds Name="BeamClassTransitionManager.AssertTransitionBP">
+    <LineIds Name="BeamParameterTransitionManager.AssertTransitionBP">
       <LineId Id="3" Count="0" />
       <LineId Id="2" Count="0" />
       <LineId Id="4" Count="0" />
       <LineId Id="6" Count="1" />
       <LineId Id="5" Count="0" />
     </LineIds>
-    <LineIds Name="BeamClassTransitionManager.AuthorizeTransition">
+    <LineIds Name="BeamParameterTransitionManager.AuthorizeTransition">
       <LineId Id="1" Count="0" />
     </LineIds>
-    <LineIds Name="BeamClassTransitionManager.DeauthorizeMove">
+    <LineIds Name="BeamParameterTransitionManager.DeauthorizeMove">
       <LineId Id="1" Count="0" />
     </LineIds>
-    <LineIds Name="BeamClassTransitionManager.DeauthorizeTransition">
+    <LineIds Name="BeamParameterTransitionManager.DeauthorizeTransition">
       <LineId Id="1" Count="0" />
     </LineIds>
-    <LineIds Name="BeamClassTransitionManager.RemoveTransitionAssertion">
+    <LineIds Name="BeamParameterTransitionManager.RemoveTransitionAssertion">
       <LineId Id="1" Count="0" />
       <LineId Id="6" Count="0" />
       <LineId Id="3" Count="0" />
@@ -1470,26 +1476,26 @@ xTranBP	:= F_SafeBPCompare(PMPS_GVL_BeamParams.stCurrentBeamParameters, i_stTran
       <LineId Id="5" Count="0" />
       <LineId Id="4" Count="0" />
     </LineIds>
-    <LineIds Name="BeamClassTransitionManager.RemoveTransitionAuthorization">
+    <LineIds Name="BeamParameterTransitionManager.RemoveTransitionAuthorization">
       <LineId Id="1" Count="0" />
     </LineIds>
-    <LineIds Name="BeamClassTransitionManager.SetNewTarget">
+    <LineIds Name="BeamParameterTransitionManager.SetNewTarget">
       <LineId Id="3" Count="0" />
       <LineId Id="1" Count="1" />
     </LineIds>
-    <LineIds Name="BeamClassTransitionManager.WaitingForFinalAssertion_DO">
+    <LineIds Name="BeamParameterTransitionManager.WaitingForFinalAssertion_DO">
       <LineId Id="2" Count="2" />
       <LineId Id="1" Count="0" />
     </LineIds>
-    <LineIds Name="BeamClassTransitionManager.WaitingForFinalAssertion_EXIT">
+    <LineIds Name="BeamParameterTransitionManager.WaitingForFinalAssertion_EXIT">
       <LineId Id="2" Count="0" />
       <LineId Id="1" Count="0" />
     </LineIds>
-    <LineIds Name="BeamClassTransitionManager.WaitingForTransitionAssertion_DO">
+    <LineIds Name="BeamParameterTransitionManager.WaitingForTransitionAssertion_DO">
       <LineId Id="2" Count="2" />
       <LineId Id="1" Count="0" />
     </LineIds>
-    <LineIds Name="BeamClassTransitionManager.WaitingForTransitionAssertion_EXIT">
+    <LineIds Name="BeamParameterTransitionManager.WaitingForTransitionAssertion_EXIT">
       <LineId Id="1" Count="0" />
     </LineIds>
   </POU>

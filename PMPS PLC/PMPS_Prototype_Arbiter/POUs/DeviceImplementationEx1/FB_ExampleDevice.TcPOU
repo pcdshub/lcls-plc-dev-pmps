@@ -8,7 +8,7 @@ VAR_OUTPUT
 END_VAR
 VAR
 	MC_MoveAbsolute_0: MC_MoveAbsolute;
-	fbBCTM: BeamClassTransitionManager;
+	fbBCTM: BeamParameterTransitionManager;
 	FB_ExampleDeviceSM_0: FB_ExampleDeviceSM;
 	stDevice	:	ST_Device;
 	MC_Power_0: MC_Power;
@@ -37,7 +37,7 @@ END_VAR
                       <v n="BoxType">"BeamClassTransitionManager"</v>
                       <o n="Instance" t="Operand">
                         <v n="Operand">"fbBCTM"</v>
-                        <v n="Type">"BeamClassTransitionManager"</v>
+                        <v n="Type">"BeamParameterTransitionManager"</v>
                         <v n="Comment">""</v>
                         <v n="SymbolComment">""</v>
                         <v n="Address">""</v>
