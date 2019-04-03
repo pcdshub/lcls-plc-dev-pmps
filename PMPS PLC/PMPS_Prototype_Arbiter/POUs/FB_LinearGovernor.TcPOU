@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4020.12">
   <POU Name="FB_LinearGovernor" Id="{ef40f951-1e56-0d26-34ec-87da9b08d3b7}" SpecialFunc="None">
     <Declaration><![CDATA[
 (* The governor is meant to check your work and keep you from making mistakes.
@@ -19,6 +19,7 @@ VAR_INPUT
 END_VAR
 VAR_OUTPUT
 	q_xTransitionPermitted	:	BOOL; //True when governor has released restrictions
+	{attribute 'ff'}
 	q_xFault	:	BOOL; //Set if MC_Power has an error, or override mode is requested
 END_VAR
 VAR_IN_OUT
@@ -72,40 +73,42 @@ END_VAR
 lrPosition := stDevice.stAxis.NcToPlc.ActPos; //Actuator position
 
 stDevice.stAxis.ReadStatus();
-
-IF xInit THEN
-	xInit := FALSE;
-	stDevice.StateTable.A_Lookup(key := stDevice.nActiveState);
-	IF stDevice.StateTable.bOk THEN
-		stInitDeviceState := stDevice.StateTable.getValue;
-		xInitFault := FALSE;
-	ELSE
-		xInitFault := TRUE;
+//Init
+////////////////////////////////
+	IF xInit THEN
+		xInit := FALSE;
+		stDevice.StateTable.A_Lookup(key := stDevice.nActiveState);
+		IF stDevice.StateTable.bOk THEN
+			stInitDeviceState := stDevice.StateTable.getValue;
+			xInitFault := FALSE;
+		ELSE
+			xInitFault := TRUE;
+		END_IF
+		lrLatchedTargetPosition := stInitDeviceState.rPosition;
+		lrLatchedTargetTolerance := stInitDeviceState.rTolerance;
+		stLatchedBeamParams := stInitDeviceState.stReqBeamParam;
 	END_IF
-	lrLatchedTargetPosition := stInitDeviceState.rPosition;
-	lrLatchedTargetTolerance := stInitDeviceState.rTolerance;
-	stLatchedBeamParams := stInitDeviceState.stReqBeamParam;
-END_IF
 
 // The governor will permit transitions once it verifies the transition assertion is active
 // Note the governor does not verify the target state beam params are asserted, perhaps it should <TODO>
-IF i_xTransitionRequested THEN
-	Arbiter.A_VerifyAssertion(
-		i_nStateID := stDevice.stTransitionState.nStateRef
-	);
-	xTransitionOK := Arbiter.q_xStateIDFound AND F_SafeBPCompare(PMPS_GVL_BeamParams.stCurrentBeamParameters, stDevice.stTransitionState.stReqBeamParam);
-	
-	//Set the target state for evaluation in further logic
-	stdevice.StateTable.A_Lookup(key := stDevice.nTargetState);
-	IF stDevice.StateTable.bOk THEN
-		stTargetState := stDevice.StateTable.getValue;
-		xStateLookupError := FALSE;
+////////////////////////////////
+	IF i_xTransitionRequested THEN
+		Arbiter.A_VerifyAssertion(
+			i_nStateID := stDevice.stTransitionState.nStateRef
+		);
+		xTransitionOK := Arbiter.q_xStateIDFound AND F_SafeBPCompare(PMPS_GVL_BeamParams.stCurrentBeamParameters, stDevice.stTransitionState.stReqBeamParam);
+		
+		//Set the target state for evaluation in further logic
+		stdevice.StateTable.A_Lookup(key := stDevice.nTargetState);
+		IF stDevice.StateTable.bOk THEN
+			stTargetState := stDevice.StateTable.getValue;
+			xStateLookupError := FALSE;
+		ELSE
+			xStateLookupError := TRUE;
+		END_IF
 	ELSE
-		xStateLookupError := TRUE;
+		xTransitionOK := FALSE;
 	END_IF
-ELSE
-	xTransitionOK := FALSE;
-END_IF
 
 (* Note about TransitionRequested
 
@@ -172,22 +175,23 @@ srMPSFault(RESET:=i_xResetMPSFault);
 
 
 //MPS override
-(* In override mode, the device will be free to move anywhere within it's travel range *)
+(* In override mode, the device will be free to move anywhere within its travel range *)
 //Permit motion after a small delay
-tonMPSOverrideMode(IN:=i_xMPSOverride OR stDevice.xOverrideMPSLimits);
+	tonMPSOverrideMode(IN:=i_xMPSOverride OR stDevice.xOverrideMPSLimits);
 
 //Virtual limit switch evaluation
-xActuatorPositiveEnable	:= stDevice.i_xHiLim AND lrPosition <= stDevice.lrUpperPositionLimit;
-xActuatorNegativeEnable	:= stDevice.i_xLoLim AND lrPosition >= stDevice.lrLowerPositionLimit;
+	xActuatorPositiveEnable	:= stDevice.i_xHiLim AND lrPosition <= stDevice.lrUpperPositionLimit;
+	xActuatorNegativeEnable	:= stDevice.i_xLoLim AND lrPosition >= stDevice.lrLowerPositionLimit;
 
 //Evaluate MPS limit states
-xMPSPositiveEnable := lrPosition <= lrMPSUpperLimit;
-xMPSNegativeEnable := lrPosition >= lrMPSLowerLimit;
+	xMPSPositiveEnable := lrPosition <= lrMPSUpperLimit;
+	xMPSNegativeEnable := lrPosition >= lrMPSLowerLimit;
 
 //Final Limit switch evaluation
-mcPower.Enable_Positive := xActuatorPositiveEnable AND (tonMPSOverrideMode.Q OR xMPSPositiveEnable);
-mcPower.Enable_Negative := xActuatorNegativeEnable AND (tonMPSOverrideMode.Q OR xMPSNegativeEnable);
+	mcPower.Enable_Positive := xActuatorPositiveEnable AND (tonMPSOverrideMode.Q OR xMPSPositiveEnable);
+	mcPower.Enable_Negative := xActuatorNegativeEnable AND (tonMPSOverrideMode.Q OR xMPSNegativeEnable);
 
+//Motor enable MC block	
 mcPower(
 	Axis := stDevice.stAxis,
 	Enable := stDevice.xEnable //link to device enable <TODO>
@@ -199,6 +203,7 @@ q_xFault := mcPower.Error OR i_xMPSOverride OR srMPSFault.Q1 OR xInitFault;]]></
     <LineIds Name="FB_LinearGovernor">
       <LineId Id="482" Count="1" />
       <LineId Id="615" Count="1" />
+      <LineId Id="775" Count="0" />
       <LineId Id="606" Count="0" />
       <LineId Id="605" Count="0" />
       <LineId Id="607" Count="0" />
@@ -209,7 +214,9 @@ q_xFault := mcPower.Error OR i_xMPSOverride OR srMPSFault.Q1 OR xInitFault;]]></
       <LineId Id="610" Count="0" />
       <LineId Id="621" Count="1" />
       <LineId Id="608" Count="0" />
-      <LineId Id="484" Count="8" />
+      <LineId Id="484" Count="1" />
+      <LineId Id="776" Count="0" />
+      <LineId Id="486" Count="6" />
       <LineId Id="702" Count="0" />
       <LineId Id="694" Count="2" />
       <LineId Id="707" Count="0" />
@@ -224,7 +231,9 @@ q_xFault := mcPower.Error OR i_xMPSOverride OR srMPSFault.Q1 OR xInitFault;]]></
       <LineId Id="704" Count="0" />
       <LineId Id="703" Count="0" />
       <LineId Id="705" Count="0" />
-      <LineId Id="557" Count="24" />
+      <LineId Id="557" Count="17" />
+      <LineId Id="774" Count="0" />
+      <LineId Id="575" Count="6" />
       <LineId Id="86" Count="0" />
     </LineIds>
   </POU>
