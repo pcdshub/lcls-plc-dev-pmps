@@ -65,6 +65,8 @@ VAR
 	xInitFault: BOOL;
 	// Indicates the state could not be found in the state table. There may be something wrong in the device state machine implementation or state table instantiation.
 	xStateLookupError: BOOL;
+	// Failure to restore state at init
+	xInitRestoreStateFail: BOOL;
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -73,18 +75,30 @@ lrPosition := stDevice.stAxis.NcToPlc.ActPos; //Actuator position
 
 stDevice.stAxis.ReadStatus();
 
+
+(* Initialization
+Devices must be restored to any known state, with an active
+beam parameter set before their MPS faults can be reset. 
+*)
 IF xInit THEN
 	xInit := FALSE;
+	
+	//Attempt to restore to previously active state
+	//TODO this might be a bad idea, and may need to be avoided
 	stDevice.StateTable.A_Lookup(key := stDevice.nActiveState);
 	IF stDevice.StateTable.bOk THEN
 		stInitDeviceState := stDevice.StateTable.getValue;
-		xInitFault := FALSE;
+		xInitRestoreStateFail := FALSE;
 	ELSE
-		xInitFault := TRUE;
+		xInitRestoreStateFail := TRUE;
 	END_IF
+	
 	lrLatchedTargetPosition := stInitDeviceState.rPosition;
 	lrLatchedTargetTolerance := stInitDeviceState.rTolerance;
 	stLatchedBeamParams := stInitDeviceState.stReqBeamParam;
+	
+	//Init fault summary
+	xInitFault := xInitRestoreStateFail;
 END_IF
 
 // The governor will permit transitions once it verifies the transition assertion is active
@@ -199,15 +213,23 @@ q_xFault := mcPower.Error OR i_xMPSOverride OR srMPSFault.Q1 OR xInitFault;]]></
     <LineIds Name="FB_LinearGovernor">
       <LineId Id="482" Count="1" />
       <LineId Id="615" Count="1" />
+      <LineId Id="773" Count="1" />
       <LineId Id="606" Count="0" />
+      <LineId Id="779" Count="0" />
+      <LineId Id="791" Count="0" />
+      <LineId Id="775" Count="0" />
       <LineId Id="605" Count="0" />
       <LineId Id="607" Count="0" />
+      <LineId Id="781" Count="1" />
+      <LineId Id="788" Count="0" />
       <LineId Id="684" Count="2" />
       <LineId Id="692" Count="0" />
       <LineId Id="688" Count="1" />
       <LineId Id="687" Count="0" />
+      <LineId Id="789" Count="0" />
       <LineId Id="610" Count="0" />
       <LineId Id="621" Count="1" />
+      <LineId Id="783" Count="2" />
       <LineId Id="608" Count="0" />
       <LineId Id="484" Count="8" />
       <LineId Id="702" Count="0" />
