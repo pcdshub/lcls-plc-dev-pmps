@@ -65,8 +65,6 @@ VAR
 	xInitFault: BOOL;
 	// Indicates the state could not be found in the state table. There may be something wrong in the device state machine implementation or state table instantiation.
 	xStateLookupError: BOOL;
-	// Failure to restore state at init
-	xInitRestoreStateFail: BOOL;
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -74,52 +72,42 @@ END_VAR
 lrPosition := stDevice.stAxis.NcToPlc.ActPos; //Actuator position
 
 stDevice.stAxis.ReadStatus();
-
-
-(* Initialization
-Devices must be restored to any known state, with an active
-beam parameter set before their MPS faults can be reset. 
-*)
-IF xInit THEN
-	xInit := FALSE;
-	
-	//Attempt to restore to previously active state
-	//TODO this might be a bad idea, and may need to be avoided
-	stDevice.StateTable.A_Lookup(key := stDevice.nActiveState);
-	IF stDevice.StateTable.bOk THEN
-		stInitDeviceState := stDevice.StateTable.getValue;
-		xInitRestoreStateFail := FALSE;
-	ELSE
-		xInitRestoreStateFail := TRUE;
+//Init
+////////////////////////////////
+	IF xInit THEN
+		xInit := FALSE;
+		stDevice.StateTable.A_Lookup(key := stDevice.nActiveState);
+		IF stDevice.StateTable.bOk THEN
+			stInitDeviceState := stDevice.StateTable.getValue;
+			xInitFault := FALSE;
+		ELSE
+			xInitFault := TRUE;
+		END_IF
+		lrLatchedTargetPosition := stInitDeviceState.rPosition;
+		lrLatchedTargetTolerance := stInitDeviceState.rTolerance;
+		stLatchedBeamParams := stInitDeviceState.stReqBeamParam;
 	END_IF
-	
-	lrLatchedTargetPosition := stInitDeviceState.rPosition;
-	lrLatchedTargetTolerance := stInitDeviceState.rTolerance;
-	stLatchedBeamParams := stInitDeviceState.stReqBeamParam;
-	
-	//Init fault summary
-	xInitFault := xInitRestoreStateFail;
-END_IF
 
 // The governor will permit transitions once it verifies the transition assertion is active
 // Note the governor does not verify the target state beam params are asserted, perhaps it should <TODO>
-IF i_xTransitionRequested THEN
-	Arbiter.A_VerifyAssertion(
-		i_nStateID := stDevice.stTransitionState.nStateRef
-	);
-	xTransitionOK := Arbiter.q_xStateIDFound AND F_SafeBPCompare(PMPS_GVL_BeamParams.stCurrentBeamParameters, stDevice.stTransitionState.stReqBeamParam);
-	
-	//Set the target state for evaluation in further logic
-	stdevice.StateTable.A_Lookup(key := stDevice.nTargetState);
-	IF stDevice.StateTable.bOk THEN
-		stTargetState := stDevice.StateTable.getValue;
-		xStateLookupError := FALSE;
+////////////////////////////////
+	IF i_xTransitionRequested THEN
+		Arbiter.A_VerifyAssertion(
+			i_nStateID := stDevice.stTransitionState.nStateRef
+		);
+		xTransitionOK := Arbiter.q_xStateIDFound AND F_SafeBPCompare(PMPS_GVL_BeamParams.stCurrentBeamParameters, stDevice.stTransitionState.stReqBeamParam);
+		
+		//Set the target state for evaluation in further logic
+		stdevice.StateTable.A_Lookup(key := stDevice.nTargetState);
+		IF stDevice.StateTable.bOk THEN
+			stTargetState := stDevice.StateTable.getValue;
+			xStateLookupError := FALSE;
+		ELSE
+			xStateLookupError := TRUE;
+		END_IF
 	ELSE
-		xStateLookupError := TRUE;
+		xTransitionOK := FALSE;
 	END_IF
-ELSE
-	xTransitionOK := FALSE;
-END_IF
 
 (* Note about TransitionRequested
 
@@ -211,42 +199,7 @@ mcPower(
 q_xFault := mcPower.Error OR i_xMPSOverride OR srMPSFault.Q1 OR xInitFault;]]></ST>
     </Implementation>
     <LineIds Name="FB_LinearGovernor">
-      <LineId Id="482" Count="1" />
-      <LineId Id="615" Count="1" />
-      <LineId Id="773" Count="1" />
-      <LineId Id="606" Count="0" />
-      <LineId Id="779" Count="0" />
-      <LineId Id="791" Count="0" />
-      <LineId Id="775" Count="0" />
-      <LineId Id="605" Count="0" />
-      <LineId Id="607" Count="0" />
-      <LineId Id="781" Count="1" />
-      <LineId Id="788" Count="0" />
-      <LineId Id="684" Count="2" />
-      <LineId Id="692" Count="0" />
-      <LineId Id="688" Count="1" />
-      <LineId Id="687" Count="0" />
-      <LineId Id="789" Count="0" />
-      <LineId Id="610" Count="0" />
-      <LineId Id="621" Count="1" />
-      <LineId Id="783" Count="2" />
-      <LineId Id="608" Count="0" />
-      <LineId Id="484" Count="8" />
-      <LineId Id="702" Count="0" />
-      <LineId Id="694" Count="2" />
-      <LineId Id="707" Count="0" />
-      <LineId Id="698" Count="1" />
-      <LineId Id="697" Count="0" />
-      <LineId Id="493" Count="12" />
-      <LineId Id="582" Count="0" />
-      <LineId Id="584" Count="20" />
-      <LineId Id="583" Count="0" />
-      <LineId Id="506" Count="13" />
-      <LineId Id="544" Count="12" />
-      <LineId Id="704" Count="0" />
-      <LineId Id="703" Count="0" />
-      <LineId Id="705" Count="0" />
-      <LineId Id="557" Count="24" />
+      <LineId Id="924" Count="127" />
       <LineId Id="86" Count="0" />
     </LineIds>
   </POU>
