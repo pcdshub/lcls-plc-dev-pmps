@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.18">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.12">
   <GlobalTextList Name="GlobalTextList" Id="{95f283fb-7802-0cd6-2262-927cde0262ca}">
     <XmlArchive>
       <Data>
@@ -68,6 +68,16 @@
             <o>
               <v n="TextID">"276"</v>
               <v n="TextDefault">"Attenuation"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"637"</v>
+              <v n="TextDefault">"cBase + 1 to move to a non-zero state. cBase is always "safe" state."</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"386"</v>
+              <v n="TextDefault">"cBase: %d"</v>
               <l n="LanguageTexts" t="ArrayList" />
             </o>
             <o>
