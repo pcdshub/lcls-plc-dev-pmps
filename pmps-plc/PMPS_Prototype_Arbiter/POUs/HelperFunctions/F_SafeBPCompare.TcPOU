@@ -22,8 +22,7 @@ END_VAR
     <Implementation>
       <ST><![CDATA[xAttOK := BeamParam1.fAtt >= BeamParam2.fAtt;
 xPPmjOK := BeamParam1.fPP_mJ <= BeamParam2.fPP_mJ;
-xEvOK := BeamParam1.fUpper_eV <= BeamParam2.fUpper_eV AND
-	BeamParam1.fLower_eV >= BeamParam2.fLower_eV;
+xEvOK := TRUE;
 
 xRateOK	:= BeamParam1.nRate <= BeamParam2.nRate;
 
@@ -31,7 +30,7 @@ F_SafeBPCompare := xAttOK AND xPPmjOK AND xEvOK AND xRateOK;]]></ST>
     </Implementation>
     <LineIds Name="F_SafeBPCompare">
       <LineId Id="8" Count="0" />
-      <LineId Id="21" Count="2" />
+      <LineId Id="21" Count="1" />
       <LineId Id="40" Count="0" />
       <LineId Id="9" Count="1" />
       <LineId Id="7" Count="0" />

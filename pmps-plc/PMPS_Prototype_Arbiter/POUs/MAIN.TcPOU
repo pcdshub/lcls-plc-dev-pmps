@@ -13,9 +13,7 @@ VAR
 	rtInit	:	R_TRIG;
 	Initialize	:	BOOL := TRUE;
 	
-	BeamClassTransitionManager_0: BeamClassTransitionManager;
-	FB_ExampleDeviceSM_All_0: FB_ExampleDeviceSM_All;
-	FB_ExampleDeviceSM_All_1: FB_ExampleDeviceSM_All;
+
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -62,7 +60,7 @@ PMPS_Arbiter();
                         <v n="BoxType">"BeamParameterTransitionManager"</v>
                         <o n="Instance" t="Operand">
                           <v n="Operand">"BeamClassTransitionManager_0"</v>
-                          <v n="Type">"BeamClassTransitionManager"</v>
+                          <n n="Type" />
                           <v n="Comment">""</v>
                           <v n="SymbolComment">""</v>
                           <v n="Address">""</v>

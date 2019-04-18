@@ -906,13 +906,13 @@ External Setpoint Generation:
 			</ArrayInfo>
 		</DataType>
 	</DataTypes>
-	<Project ProjectGUID="{73B7DCEE-B417-4E72-B2B4-BAB1C744A291}" Target64Bit="true" ShowHideConfigurations="#x106">
+	<Project ProjectGUID="{11D93138-2D8B-49C5-B84D-11A4D2CA3157}" Target64Bit="true" ShowHideConfigurations="#x106">
 		<System>
 			<Settings>
 				<Cpu BaseTime="500"/>
 			</Settings>
 			<Tasks>
-				<Task Id="3" Priority="20" CycleTime="10000" AmsPort="350" AdtTasks="true">
+				<Task Id="3" Priority="20" CycleTime="10000" AmsPort="350">
 					<Name>PlcTask</Name>
 				</Task>
 			</Tasks>
@@ -921,7 +921,7 @@ External Setpoint Generation:
 			<NC File="NC.xti"/>
 		</Motion>
 		<Plc>
-			<Project GUID="{E8A5EE9B-6606-423E-92F4-1FF908FBA45E}" Name="PMPS_Prototype_Arbiter" PrjFilePath="PMPS_Prototype_Arbiter\PMPS_Prototype_Arbiter.plcproj" TmcFilePath="PMPS_Prototype_Arbiter\PMPS_Prototype_Arbiter.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
+			<Project GUID="{E8A5EE9B-6606-423E-92F4-1FF908FBA45E}" Name="PMPS_Prototype_Arbiter" PrjFilePath="PMPS_Prototype_Arbiter\PMPS_Prototype_Arbiter.plcproj" TmcFilePath="PMPS_Prototype_Arbiter\PMPS_Prototype_Arbiter.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e">
 				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="PMPS_Prototype_Arbiter\PMPS_Prototype_Arbiter.tmc">
 					<Name>PMPS_Prototype_Arbiter Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>

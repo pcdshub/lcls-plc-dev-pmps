@@ -33,6 +33,9 @@
     <Compile Include="DUTs\ST_DeviceState.TcDUT">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DUTs\ST_DeviceStateExt.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="DUTs\ST_SolidAttenuatorBlade.TcDUT">
       <SubType>Code</SubType>
     </Compile>
@@ -60,6 +63,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\DeviceImplementationEx2\FB_ExampleDeviceSM_All.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\HelperFunctions\F_DeviceState_To_DeviceStateExt.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\HelperFunctions\F_DifferentBeamParams.TcPOU">
@@ -222,6 +228,11 @@
     <PlaceholderResolution Include="LCLS General">
       <Resolution>LCLS General, * (SLAC)</Resolution>
     </PlaceholderResolution>
+  </ItemGroup>
+  <ItemGroup>
+    <SubObject Include="MAIN.FB_Vis">
+      <ExcludeFromBuild>true</ExcludeFromBuild>
+    </SubObject>
   </ItemGroup>
   <ProjectExtensions>
     <PlcProjectOptions>

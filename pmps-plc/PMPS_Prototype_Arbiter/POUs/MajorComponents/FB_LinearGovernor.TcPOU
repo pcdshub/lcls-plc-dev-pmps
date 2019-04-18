@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4020.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.12">
   <POU Name="FB_LinearGovernor" Id="{ef40f951-1e56-0d26-34ec-87da9b08d3b7}" SpecialFunc="None">
     <Declaration><![CDATA[
 (* The governor is meant to check your work and keep you from making mistakes.
@@ -19,8 +19,9 @@ VAR_INPUT
 END_VAR
 VAR_OUTPUT
 	q_xTransitionPermitted	:	BOOL; //True when governor has released restrictions
-	{attribute 'ff'}
 	q_xFault	:	BOOL; //Set if MC_Power has an error, or override mode is requested
+	// Indicates override mode is active
+	q_xMPSLimitsOverridden: BOOL;
 END_VAR
 VAR_IN_OUT
 	stDevice	:	ST_Device; //The governed
@@ -38,6 +39,7 @@ VAR
 	
 	lrLatchedTargetPosition	:	LREAL;
 	lrLatchedTargetTolerance	:	LREAL;
+	stLatchedTargetState	:	ST_DeviceStateExt;
 	
 	lrMPSUpperLimit: LREAL;
 	lrMPSLowerLimit: LREAL;
@@ -56,16 +58,18 @@ VAR
 	//Beam parameters of currently latched state
 	
 	stLatchedBeamParams: ST_BeamParams;
-	stTargetState: ST_DeviceState;
+	stTargetState: ST_DeviceStateExt;
 	
 	rtLatchNewState	:	R_TRIG;
 	xInit: BOOL := TRUE;
 	
-	stInitDeviceState: ST_DeviceState;
+	stInitDeviceState: ST_DeviceStateExt;
 	// Indicates an error with initialization
 	xInitFault: BOOL;
 	// Indicates the state could not be found in the state table. There may be something wrong in the device state machine implementation or state table instantiation.
 	xStateLookupError: BOOL;
+	// A transition needs to be requested at least once before we start latching any state.
+	xTransitionHasBeenRequested: BOOL := FALSE;
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -74,15 +78,20 @@ lrPosition := stDevice.stAxis.NcToPlc.ActPos; //Actuator position
 
 stDevice.stAxis.ReadStatus();
 //Init
+(* The init strategy is:
+If the device is restored and it's residing at the safe position,
+no PMPS faults. *)
 ////////////////////////////////
 	IF xInit THEN
 		xInit := FALSE;
-		stDevice.StateTable.A_Lookup(key := stDevice.nActiveState);
+		//Use nSafeSate for initialization. 
+		stDevice.StateTable.A_Lookup(key := stDevice.nSafeState);
 		IF stDevice.StateTable.bOk THEN
-			stInitDeviceState := stDevice.StateTable.getValue;
+			stInitDeviceState := F_DeviceState_To_DeviceStateExt(stDevice.StateTable.getValue, TRUE);
 			xInitFault := FALSE;
 		ELSE
 			xInitFault := TRUE;
+			stInitDeviceState.xValid := FALSE;
 		END_IF
 		lrLatchedTargetPosition := stInitDeviceState.rPosition;
 		lrLatchedTargetTolerance := stInitDeviceState.rTolerance;
@@ -93,6 +102,7 @@ stDevice.stAxis.ReadStatus();
 // Note the governor does not verify the target state beam params are asserted, perhaps it should <TODO>
 ////////////////////////////////
 	IF i_xTransitionRequested THEN
+		xTransitionHasBeenRequested	:= TRUE;
 		Arbiter.A_VerifyAssertion(
 			i_nStateID := stDevice.stTransitionState.nStateRef
 		);
@@ -101,10 +111,11 @@ stDevice.stAxis.ReadStatus();
 		//Set the target state for evaluation in further logic
 		stdevice.StateTable.A_Lookup(key := stDevice.nTargetState);
 		IF stDevice.StateTable.bOk THEN
-			stTargetState := stDevice.StateTable.getValue;
+			stTargetState := F_DeviceState_To_DeviceStateExt(stDevice.StateTable.getValue, TRUE);
 			xStateLookupError := FALSE;
 		ELSE
 			xStateLookupError := TRUE;
+			stTargetState.xValid := FALSE;
 		END_IF
 	ELSE
 		xTransitionOK := FALSE;
@@ -135,12 +146,13 @@ shall evaluate based on the newly latched target state.
 rtLatchNewState(CLK := stDevice.stAxis.Status.StandStill AND
 	lrPosition <= stTargetState.rPosition + stTargetState.rTolerance AND
 	lrPosition >= stTargetState.rPosition - stTargetState.rTolerance AND
-	NOT i_xTransitionRequested);
+	NOT i_xTransitionRequested AND xTransitionHasBeenRequested);
 	
 IF rtLatchNewState.Q THEN
 	lrLatchedTargetPosition := stTargetState.rPosition;
 	lrLatchedTargetTolerance := stTargetState.rTolerance;
 	stLatchedBeamParams := stTargetState.stReqBeamParam;
+	stLatchedTargetState := stTargetState;
 END_IF
 
 //Let other blocks know the governor won't interfer with transitions
@@ -175,23 +187,22 @@ srMPSFault(RESET:=i_xResetMPSFault);
 
 
 //MPS override
-(* In override mode, the device will be free to move anywhere within its travel range *)
+(* In override mode, the device will be free to move anywhere within it's travel range *)
 //Permit motion after a small delay
-	tonMPSOverrideMode(IN:=i_xMPSOverride OR stDevice.xOverrideMPSLimits);
+tonMPSOverrideMode(IN:=i_xMPSOverride OR stDevice.xOverrideMPSLimits, Q=>q_xMPSLimitsOverridden);
 
 //Virtual limit switch evaluation
-	xActuatorPositiveEnable	:= stDevice.i_xHiLim AND lrPosition <= stDevice.lrUpperPositionLimit;
-	xActuatorNegativeEnable	:= stDevice.i_xLoLim AND lrPosition >= stDevice.lrLowerPositionLimit;
+xActuatorPositiveEnable	:= stDevice.i_xHiLim AND lrPosition <= stDevice.lrUpperPositionLimit;
+xActuatorNegativeEnable	:= stDevice.i_xLoLim AND lrPosition >= stDevice.lrLowerPositionLimit;
 
 //Evaluate MPS limit states
-	xMPSPositiveEnable := lrPosition <= lrMPSUpperLimit;
-	xMPSNegativeEnable := lrPosition >= lrMPSLowerLimit;
+xMPSPositiveEnable := lrPosition <= lrMPSUpperLimit;
+xMPSNegativeEnable := lrPosition >= lrMPSLowerLimit;
 
 //Final Limit switch evaluation
-	mcPower.Enable_Positive := xActuatorPositiveEnable AND (tonMPSOverrideMode.Q OR xMPSPositiveEnable);
-	mcPower.Enable_Negative := xActuatorNegativeEnable AND (tonMPSOverrideMode.Q OR xMPSNegativeEnable);
+mcPower.Enable_Positive := xActuatorPositiveEnable AND (tonMPSOverrideMode.Q OR xMPSPositiveEnable);
+mcPower.Enable_Negative := xActuatorNegativeEnable AND (tonMPSOverrideMode.Q OR xMPSNegativeEnable);
 
-//Motor enable MC block	
 mcPower(
 	Axis := stDevice.stAxis,
 	Enable := stDevice.xEnable //link to device enable <TODO>
@@ -201,39 +212,19 @@ mcPower(
 q_xFault := mcPower.Error OR i_xMPSOverride OR srMPSFault.Q1 OR xInitFault;]]></ST>
     </Implementation>
     <LineIds Name="FB_LinearGovernor">
-      <LineId Id="482" Count="1" />
-      <LineId Id="615" Count="1" />
-      <LineId Id="775" Count="0" />
-      <LineId Id="606" Count="0" />
-      <LineId Id="605" Count="0" />
-      <LineId Id="607" Count="0" />
-      <LineId Id="684" Count="2" />
-      <LineId Id="692" Count="0" />
-      <LineId Id="688" Count="1" />
-      <LineId Id="687" Count="0" />
-      <LineId Id="610" Count="0" />
-      <LineId Id="621" Count="1" />
-      <LineId Id="608" Count="0" />
-      <LineId Id="484" Count="1" />
-      <LineId Id="776" Count="0" />
-      <LineId Id="486" Count="6" />
-      <LineId Id="702" Count="0" />
-      <LineId Id="694" Count="2" />
-      <LineId Id="707" Count="0" />
-      <LineId Id="698" Count="1" />
-      <LineId Id="697" Count="0" />
-      <LineId Id="493" Count="12" />
-      <LineId Id="582" Count="0" />
-      <LineId Id="584" Count="20" />
-      <LineId Id="583" Count="0" />
-      <LineId Id="506" Count="13" />
-      <LineId Id="544" Count="12" />
-      <LineId Id="704" Count="0" />
-      <LineId Id="703" Count="0" />
-      <LineId Id="705" Count="0" />
-      <LineId Id="557" Count="17" />
-      <LineId Id="774" Count="0" />
-      <LineId Id="575" Count="6" />
+      <LineId Id="924" Count="3" />
+      <LineId Id="1118" Count="2" />
+      <LineId Id="928" Count="2" />
+      <LineId Id="1117" Count="0" />
+      <LineId Id="931" Count="6" />
+      <LineId Id="1188" Count="0" />
+      <LineId Id="938" Count="9" />
+      <LineId Id="1260" Count="0" />
+      <LineId Id="948" Count="11" />
+      <LineId Id="1259" Count="0" />
+      <LineId Id="960" Count="35" />
+      <LineId Id="1190" Count="0" />
+      <LineId Id="996" Count="55" />
       <LineId Id="86" Count="0" />
     </LineIds>
   </POU>

@@ -6,6 +6,11 @@
         <o xml:space="preserve" t="GlobalTextListObject">
           <l n="TextList" t="ArrayList" cet="TextListRow">
             <o>
+              <v n="TextID">"788"</v>
+              <v n="TextDefault">"%1.4f"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
               <v n="TextID">"108"</v>
               <v n="TextDefault">"%3.2f"</v>
               <l n="LanguageTexts" t="ArrayList" />
@@ -13,6 +18,11 @@
             <o>
               <v n="TextID">"632"</v>
               <v n="TextDefault">"%d"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"441"</v>
+              <v n="TextDefault">"Actuator Position"</v>
               <l n="LanguageTexts" t="ArrayList" />
             </o>
             <o>
@@ -61,8 +71,33 @@
               <l n="LanguageTexts" t="ArrayList" />
             </o>
             <o>
+              <v n="TextID">"637"</v>
+              <v n="TextDefault">"cBase + 1 to move to a non-zero state. cBase is always "safe" state."</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"386"</v>
+              <v n="TextDefault">"cBase: %d"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"52"</v>
+              <v n="TextDefault">"Clear Faults"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
               <v n="TextID">"796"</v>
               <v n="TextDefault">"Free Slots"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"42"</v>
+              <v n="TextDefault">"Governor Fault"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"688"</v>
+              <v n="TextDefault">"Governor Overridden"</v>
               <l n="LanguageTexts" t="ArrayList" />
             </o>
             <o>
@@ -106,6 +141,11 @@
               <l n="LanguageTexts" t="ArrayList" />
             </o>
             <o>
+              <v n="TextID">"520"</v>
+              <v n="TextDefault">"MPS Override Mode"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
               <v n="TextID">"967"</v>
               <v n="TextDefault">"MPS Upper Limit"</v>
               <l n="LanguageTexts" t="ArrayList" />
@@ -118,6 +158,11 @@
             <o>
               <v n="TextID">"950"</v>
               <v n="TextDefault">"nStateRef"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"434"</v>
+              <v n="TextDefault">"Override MPS"</v>
               <l n="LanguageTexts" t="ArrayList" />
             </o>
             <o>
@@ -153,6 +198,11 @@
             <o>
               <v n="TextID">"509"</v>
               <v n="TextDefault">"rTolerance"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"978"</v>
+              <v n="TextDefault">"Select State"</v>
               <l n="LanguageTexts" t="ArrayList" />
             </o>
             <o>
