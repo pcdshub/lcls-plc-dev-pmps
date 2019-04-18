@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.18">
   <POU Name="FB_LinearGovernor" Id="{ef40f951-1e56-0d26-34ec-87da9b08d3b7}" SpecialFunc="None">
     <Declaration><![CDATA[
 (* The governor is meant to check your work and keep you from making mistakes.
@@ -20,6 +20,8 @@ END_VAR
 VAR_OUTPUT
 	q_xTransitionPermitted	:	BOOL; //True when governor has released restrictions
 	q_xFault	:	BOOL; //Set if MC_Power has an error, or override mode is requested
+	// Indicates override mode is active
+	q_xMPSLimitsOverridden: BOOL;
 END_VAR
 VAR_IN_OUT
 	stDevice	:	ST_Device; //The governed
@@ -73,10 +75,14 @@ lrPosition := stDevice.stAxis.NcToPlc.ActPos; //Actuator position
 
 stDevice.stAxis.ReadStatus();
 //Init
+(* The init strategy is:
+If the device is restored and it's residing at the safe position,
+no PMPS faults. *)
 ////////////////////////////////
 	IF xInit THEN
 		xInit := FALSE;
-		stDevice.StateTable.A_Lookup(key := stDevice.nActiveState);
+		//Use nSafeSate for initialization. 
+		stDevice.StateTable.A_Lookup(key := stDevice.nSafeState);
 		IF stDevice.StateTable.bOk THEN
 			stInitDeviceState := stDevice.StateTable.getValue;
 			xInitFault := FALSE;
@@ -176,7 +182,7 @@ srMPSFault(RESET:=i_xResetMPSFault);
 //MPS override
 (* In override mode, the device will be free to move anywhere within it's travel range *)
 //Permit motion after a small delay
-tonMPSOverrideMode(IN:=i_xMPSOverride OR stDevice.xOverrideMPSLimits);
+tonMPSOverrideMode(IN:=i_xMPSOverride OR stDevice.xOverrideMPSLimits, Q=>q_xMPSLimitsOverridden);
 
 //Virtual limit switch evaluation
 xActuatorPositiveEnable	:= stDevice.i_xHiLim AND lrPosition <= stDevice.lrUpperPositionLimit;
@@ -199,7 +205,11 @@ mcPower(
 q_xFault := mcPower.Error OR i_xMPSOverride OR srMPSFault.Q1 OR xInitFault;]]></ST>
     </Implementation>
     <LineIds Name="FB_LinearGovernor">
-      <LineId Id="924" Count="127" />
+      <LineId Id="924" Count="3" />
+      <LineId Id="1118" Count="2" />
+      <LineId Id="928" Count="2" />
+      <LineId Id="1117" Count="0" />
+      <LineId Id="931" Count="120" />
       <LineId Id="86" Count="0" />
     </LineIds>
   </POU>

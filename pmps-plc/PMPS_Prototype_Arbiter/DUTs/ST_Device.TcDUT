@@ -21,6 +21,13 @@ STRUCT
 	//MPS Override
 	xOverrideMPSLimits	: BOOL := FALSE; //Set true to move beyond MPS limits. Note this will trip beam off.
 	
+	//Status and Faults
+	xClearFaults	:	BOOL;	//Rising edge tries to clear faults of all kinds
+	
+	xGovernorFault	:	BOOL;	//Indicates governor is faulted
+	xGovernorOverridden	:	BOOL; //Indicates governor is in override mode
+	xSMFault		:	BOOL;	//Indicates component state machine is faulted
+	
 	//Device States
 	StateTable		:	FB_LinearDeviceStateTable;
 	
