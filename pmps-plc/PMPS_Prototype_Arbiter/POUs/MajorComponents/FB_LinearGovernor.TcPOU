@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.18">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.12">
   <POU Name="FB_LinearGovernor" Id="{ef40f951-1e56-0d26-34ec-87da9b08d3b7}" SpecialFunc="None">
     <Declaration><![CDATA[
 (* The governor is meant to check your work and keep you from making mistakes.
@@ -39,6 +39,7 @@ VAR
 	
 	lrLatchedTargetPosition	:	LREAL;
 	lrLatchedTargetTolerance	:	LREAL;
+	stLatchedTargetState	:	ST_DeviceStateExt;
 	
 	lrMPSUpperLimit: LREAL;
 	lrMPSLowerLimit: LREAL;
@@ -57,16 +58,18 @@ VAR
 	//Beam parameters of currently latched state
 	
 	stLatchedBeamParams: ST_BeamParams;
-	stTargetState: ST_DeviceState;
+	stTargetState: ST_DeviceStateExt;
 	
 	rtLatchNewState	:	R_TRIG;
 	xInit: BOOL := TRUE;
 	
-	stInitDeviceState: ST_DeviceState;
+	stInitDeviceState: ST_DeviceStateExt;
 	// Indicates an error with initialization
 	xInitFault: BOOL;
 	// Indicates the state could not be found in the state table. There may be something wrong in the device state machine implementation or state table instantiation.
 	xStateLookupError: BOOL;
+	// A transition needs to be requested at least once before we start latching any state.
+	xTransitionHasBeenRequested: BOOL := FALSE;
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -84,10 +87,11 @@ no PMPS faults. *)
 		//Use nSafeSate for initialization. 
 		stDevice.StateTable.A_Lookup(key := stDevice.nSafeState);
 		IF stDevice.StateTable.bOk THEN
-			stInitDeviceState := stDevice.StateTable.getValue;
+			stInitDeviceState := F_DeviceState_To_DeviceStateExt(stDevice.StateTable.getValue, TRUE);
 			xInitFault := FALSE;
 		ELSE
 			xInitFault := TRUE;
+			stInitDeviceState.xValid := FALSE;
 		END_IF
 		lrLatchedTargetPosition := stInitDeviceState.rPosition;
 		lrLatchedTargetTolerance := stInitDeviceState.rTolerance;
@@ -98,6 +102,7 @@ no PMPS faults. *)
 // Note the governor does not verify the target state beam params are asserted, perhaps it should <TODO>
 ////////////////////////////////
 	IF i_xTransitionRequested THEN
+		xTransitionHasBeenRequested	:= TRUE;
 		Arbiter.A_VerifyAssertion(
 			i_nStateID := stDevice.stTransitionState.nStateRef
 		);
@@ -106,10 +111,11 @@ no PMPS faults. *)
 		//Set the target state for evaluation in further logic
 		stdevice.StateTable.A_Lookup(key := stDevice.nTargetState);
 		IF stDevice.StateTable.bOk THEN
-			stTargetState := stDevice.StateTable.getValue;
+			stTargetState := F_DeviceState_To_DeviceStateExt(stDevice.StateTable.getValue, TRUE);
 			xStateLookupError := FALSE;
 		ELSE
 			xStateLookupError := TRUE;
+			stTargetState.xValid := FALSE;
 		END_IF
 	ELSE
 		xTransitionOK := FALSE;
@@ -140,12 +146,13 @@ shall evaluate based on the newly latched target state.
 rtLatchNewState(CLK := stDevice.stAxis.Status.StandStill AND
 	lrPosition <= stTargetState.rPosition + stTargetState.rTolerance AND
 	lrPosition >= stTargetState.rPosition - stTargetState.rTolerance AND
-	NOT i_xTransitionRequested);
+	NOT i_xTransitionRequested AND xTransitionHasBeenRequested);
 	
 IF rtLatchNewState.Q THEN
 	lrLatchedTargetPosition := stTargetState.rPosition;
 	lrLatchedTargetTolerance := stTargetState.rTolerance;
 	stLatchedBeamParams := stTargetState.stReqBeamParam;
+	stLatchedTargetState := stTargetState;
 END_IF
 
 //Let other blocks know the governor won't interfer with transitions
@@ -209,7 +216,15 @@ q_xFault := mcPower.Error OR i_xMPSOverride OR srMPSFault.Q1 OR xInitFault;]]></
       <LineId Id="1118" Count="2" />
       <LineId Id="928" Count="2" />
       <LineId Id="1117" Count="0" />
-      <LineId Id="931" Count="120" />
+      <LineId Id="931" Count="6" />
+      <LineId Id="1188" Count="0" />
+      <LineId Id="938" Count="9" />
+      <LineId Id="1260" Count="0" />
+      <LineId Id="948" Count="11" />
+      <LineId Id="1259" Count="0" />
+      <LineId Id="960" Count="35" />
+      <LineId Id="1190" Count="0" />
+      <LineId Id="996" Count="55" />
       <LineId Id="86" Count="0" />
     </LineIds>
   </POU>
