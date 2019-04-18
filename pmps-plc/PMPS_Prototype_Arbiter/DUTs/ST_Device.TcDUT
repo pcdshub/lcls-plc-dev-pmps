@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.18">
   <DUT Name="ST_Device" Id="{bc9ee667-91fb-46f2-af26-3ee8851b76e5}">
     <Declaration><![CDATA[TYPE ST_Device :
 STRUCT
@@ -23,7 +23,6 @@ STRUCT
 	
 	//Device States
 	StateTable		:	FB_LinearDeviceStateTable;
-	//astStates	:	ARRAY[0..PMPS_GVL_BeamParams.cnMaxStateArrayLen] OF	ST_DeviceState;
 	
 	stTransitionState	:	ST_DeviceState; //The transition state might have non-zero beam parameters
 	nSafeState			:	UDINT; //State where the device is considered safe
