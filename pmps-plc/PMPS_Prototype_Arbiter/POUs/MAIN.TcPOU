@@ -13,9 +13,7 @@ VAR
 	rtInit	:	R_TRIG;
 	Initialize	:	BOOL := TRUE;
 	
-	
-	FB_ExampleDeviceSM_All_0: FB_ExampleDeviceSM_All;
-	FB_ExampleDeviceSM_All_1: FB_ExampleDeviceSM_All;
+
 END_VAR
 ]]></Declaration>
     <Implementation>
