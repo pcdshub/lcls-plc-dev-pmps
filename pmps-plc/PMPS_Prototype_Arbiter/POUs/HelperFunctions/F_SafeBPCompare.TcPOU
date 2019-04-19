@@ -5,7 +5,7 @@
 the result will be true *)
 FUNCTION F_SafeBPCompare : BOOL
 VAR_INPUT
-	BeamParam1	:	ST_BeamParams;
+	BeamParam1	:	ST_BeamParams; //Must be more conservative than 2
 	BeamParam2	:	ST_BeamParams;
 END_VAR
 VAR
@@ -17,16 +17,18 @@ VAR
 	xEvOK: BOOL := FALSE;
 	// Internal Beam Rate OK boolean
 	xRateOK: BOOL;
+	// Beam-rate is zero, masks all others considerations.
+	xZeroRate: BOOL;
 END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[xAttOK := BeamParam1.fAtt >= BeamParam2.fAtt;
 xPPmjOK := BeamParam1.fPP_mJ <= BeamParam2.fPP_mJ;
-xEvOK := TRUE;
-
+xEvOK := F_eVWithinSpec(BeamParam2.neVReqRange, BeamParam1.reV);
+xZeroRate	:= BeamParam1.nRate = 0;
 xRateOK	:= BeamParam1.nRate <= BeamParam2.nRate;
 
-F_SafeBPCompare := xAttOK AND xPPmjOK AND xEvOK AND xRateOK;]]></ST>
+F_SafeBPCompare := xZeroRate OR (xAttOK AND xPPmjOK AND xEvOK AND xRateOK);]]></ST>
     </Implementation>
     <LineIds Name="F_SafeBPCompare">
       <LineId Id="8" Count="0" />

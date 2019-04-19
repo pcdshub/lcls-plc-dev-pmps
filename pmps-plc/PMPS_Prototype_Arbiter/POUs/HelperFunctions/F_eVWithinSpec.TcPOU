@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.12">
+  <POU Name="F_eVWithinSpec" Id="{45f3ed56-b8f9-0768-224f-cf2f5086a350}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION F_eVWithinSpec : BOOL
+VAR_INPUT
+	nPermittedRange	:	WORD; //Permitted range
+	reV	:	REAL;	//Photon energy to check if within permitted range
+END_VAR
+VAR
+	nPermittedRangeHolding	:	WORD; 
+	areVBoundaries	:	ARRAY [0..cBoundaries]	OF	REAL	:= [
+	0.2,
+	0.3,
+	0.4,
+	0.5,
+	0.6,
+	0.7,
+	0.8,
+	0.9,
+	1.0,
+	1.1,
+	1.2,
+	1.3,
+	1.4,
+	1.5
+];
+nIndex	:	INT;
+	// Lower boundary for range check
+	rPreviousBoundary: REAL := 0;
+END_VAR
+VAR CONSTANT
+	cBoundaries	:	INT	:= 15;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(* How this works:
+The within range bool is initialized to false.
+Load the word representation of ranges into a holding register.
+If the bit at position zero of the holding register is true, and the input eV is
+below the boundary at the index position of the boundary array, and the previous boundary
+(which initializes at 0), then the within range bool is set.
+Then, we stash the upper boundary as the lower boundary for the next comparison,
+and shift the holding register right, which moves the next bit to the zero position.
+*)
+nPermittedRangeHolding := nPermittedRange;
+
+FOR nIndex := 0 TO cBoundaries DO
+		
+	F_eVWithinSpec S= nPermittedRangeHolding.0 AND( 
+		reV <= areVBoundaries[nIndex] AND
+		reV >= rPreviousBoundary);
+	
+	rPreviousBoundary := areVBoundaries[nIndex];
+	nPermittedRangeHolding := SHR(nPermittedRangeHolding, 1);
+END_FOR]]></ST>
+    </Implementation>
+    <LineIds Name="F_eVWithinSpec">
+      <LineId Id="49" Count="0" />
+      <LineId Id="56" Count="0" />
+      <LineId Id="50" Count="0" />
+      <LineId Id="52" Count="0" />
+      <LineId Id="54" Count="1" />
+      <LineId Id="57" Count="1" />
+      <LineId Id="37" Count="0" />
+      <LineId Id="36" Count="0" />
+      <LineId Id="35" Count="0" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="38" Count="0" />
+      <LineId Id="32" Count="0" />
+      <LineId Id="42" Count="1" />
+      <LineId Id="40" Count="0" />
+      <LineId Id="48" Count="0" />
+      <LineId Id="41" Count="0" />
+      <LineId Id="33" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
