@@ -62,8 +62,7 @@ all asserters.
 stOutputBP := F_SetBeamParams(
 	fAtt := 100,
 	fPP_mJ := 0,
-	fLower_eV := 0,
-	fUpper_eV := 1800,
+	neVReqRange	:= 0000_0000_0000_0000,
 	nRate := 0
 	);
 
@@ -74,8 +73,7 @@ IF fbBPAssertionPool.bOk THEN
 	stOutputBP := F_SetBeamParams(
 		fAtt := getBPStruct.fAtt,
 		fPP_mJ := getBPStruct.fPP_mJ,
-		fLower_eV := getBPStruct.fLower_eV,
-		fUpper_eV := getBPStruct.fUpper_eV,
+		neVReqRange	:= getBPStruct.neVReqRange,
 		nRate := getBPStruct.nRate
 	);
 
@@ -95,7 +93,7 @@ q_stBeamParams := stOutputBP;]]></ST>
       <Implementation>
         <ST><![CDATA[
 //Attenuation
-//Add something here to register the key that won for each param
+//<TODO>Add something here to register the key that won for each param
 stOutputBP.fAtt := MAX(stOutputBP.fAtt, getBPStruct.fAtt);
 
 //Pulse energy
@@ -197,9 +195,9 @@ END_IF]]></ST>
       </Implementation>
     </Action>
     <LineIds Name="FB_Arbiter">
-      <LineId Id="18" Count="17" />
+      <LineId Id="18" Count="16" />
       <LineId Id="77" Count="0" />
-      <LineId Id="36" Count="10" />
+      <LineId Id="36" Count="9" />
       <LineId Id="78" Count="0" />
       <LineId Id="47" Count="9" />
       <LineId Id="9" Count="0" />

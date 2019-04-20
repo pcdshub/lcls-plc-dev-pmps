@@ -86,6 +86,11 @@
               <l n="LanguageTexts" t="ArrayList" />
             </o>
             <o>
+              <v n="TextID">"957"</v>
+              <v n="TextDefault">"eV"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
               <v n="TextID">"796"</v>
               <v n="TextDefault">"Free Slots"</v>
               <l n="LanguageTexts" t="ArrayList" />
@@ -168,6 +173,11 @@
             <o>
               <v n="TextID">"934"</v>
               <v n="TextDefault">"Photon Energy"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"465"</v>
+              <v n="TextDefault">"Photon Energy: %3.2f"</v>
               <l n="LanguageTexts" t="ArrayList" />
             </o>
             <o>

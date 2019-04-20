@@ -2497,6 +2497,7 @@ stDevice.nTransitionState := cBase+100;
 stDevice.StateTable.A_Reset();
 
 //Device State Table Instantiation
+//To be done by the device state table database system
 F_SetStateParams(
 	nStateRef := stDevice.nSafeState,
 	rPosition := 0,
@@ -2511,8 +2512,7 @@ F_SetStateParams(
 	stBeamParams := F_SetBeamParams(
 		fAtt := 20,
 		fPP_mJ := 1,
-		fLower_eV := 0,
-		fUpper_eV := 1500,
+		neVReqRange	:= 2#1111_1011_1111_0000,
 		nRate := 10
 		),
 	Table := stDevice.StateTable
@@ -2524,8 +2524,7 @@ F_SetStateParams(
 	stBeamParams := F_SetBeamParams(
 		fAtt := 30,
 		fPP_mJ := 1,
-		fLower_eV := 0,
-		fUpper_eV := 1500,
+		neVReqRange	:= 2#1111_1011_1111_0000,
 		nRate := 10
 		),
 	Table := stDevice.StateTable
@@ -2537,8 +2536,7 @@ F_SetStateParams(
 	stBeamParams := F_SetBeamParams(
 		fAtt := 20,
 		fPP_mJ := 1,
-		fLower_eV := 0,
-		fUpper_eV := 1500,
+		neVReqRange	:= 2#1111_1011_1111_0000,
 		nRate := 10
 		),
 	Table := stDevice.StateTable
@@ -2551,8 +2549,7 @@ F_SetStateParams(
 	stBeamParams := F_SetBeamParams(
 		fAtt := 0,
 		fPP_mJ := 0,
-		fLower_eV := 0,
-		fUpper_eV := 1500,
+		neVReqRange	:= 2#1111_1011_1111_0000,
 		nRate := 0
 		),
 	Table := stDevice.StateTable
@@ -2648,24 +2645,27 @@ END_IF]]></ST>
       <LineId Id="136" Count="0" />
       <LineId Id="138" Count="0" />
       <LineId Id="1" Count="0" />
-      <LineId Id="52" Count="1" />
+      <LineId Id="52" Count="0" />
+      <LineId Id="143" Count="0" />
+      <LineId Id="53" Count="0" />
       <LineId Id="55" Count="0" />
       <LineId Id="57" Count="1" />
       <LineId Id="64" Count="1" />
       <LineId Id="36" Count="0" />
-      <LineId Id="67" Count="8" />
+      <LineId Id="67" Count="7" />
       <LineId Id="102" Count="0" />
       <LineId Id="76" Count="1" />
       <LineId Id="66" Count="0" />
-      <LineId Id="79" Count="8" />
+      <LineId Id="79" Count="7" />
       <LineId Id="103" Count="0" />
       <LineId Id="88" Count="1" />
       <LineId Id="78" Count="0" />
-      <LineId Id="91" Count="8" />
+      <LineId Id="91" Count="7" />
       <LineId Id="104" Count="0" />
       <LineId Id="100" Count="1" />
       <LineId Id="90" Count="0" />
-      <LineId Id="109" Count="12" />
+      <LineId Id="109" Count="8" />
+      <LineId Id="119" Count="2" />
       <LineId Id="108" Count="0" />
       <LineId Id="141" Count="0" />
       <LineId Id="124" Count="2" />

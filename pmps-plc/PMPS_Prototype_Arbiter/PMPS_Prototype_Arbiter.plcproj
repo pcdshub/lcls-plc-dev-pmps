@@ -71,6 +71,9 @@
     <Compile Include="POUs\HelperFunctions\F_DifferentBeamParams.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\HelperFunctions\F_eVWithinSpec.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="POUs\HelperFunctions\F_SafeBPCompare.TcPOU">
       <SubType>Code</SubType>
     </Compile>
@@ -105,6 +108,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\TestComponents\FB_AttenuatorSimulator.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\TestComponents\FB_BreakTheArbiter.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\TestComponents\FB_MachineSimulator.TcPOU">
