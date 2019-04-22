@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.12">
+  <POU Name="FB_PhotonEnergyWatcher" Id="{dedd735b-7eee-031d-1b56-a60d5aa8ea22}" SpecialFunc="None">
+    <Declaration><![CDATA[(*
+A. Wallace 4-22-2019
+The photon energy watcher ensures the current and target photon energy is within
+the arbirated bounds. Target in this case means, the calculated target photon energy
+from the PVs that control the mechatronics of the undulators/ the electron energy.
+
+If there are control PVs that match the monitor PVs, the control PVs are used to 
+calculate a "target" photon energy. This is supposed to cover when the undulators/
+electron energy is transitioning.
+
+The abritrated bounds come from a simple AND of all the permitted ranges. See
+the arbitrate action of the arbiter FB.
+*)
+FUNCTION_BLOCK FB_PhotonEnergyWatcher
+VAR_INPUT
+	i_stCurrentBeamParams	:	ST_BeamParams; //Link to global beam params
+	i_stMachineTargetBeamParams	:	ST_BeamParams; //Link to global machine target beam params
+	i_stRequestedBeamParams	:	ST_BeamParams; //Link to arbiter output or beam param. requestor
+END_VAR
+VAR_OUTPUT
+	//Fast fault
+END_VAR
+VAR
+	xPhotonEnergyWithinBounds	:	BOOL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[xPhotonEnergyWithinBounds := F_eVWithinSpec(i_stRequestedBeamParams.neVReqRange, i_stCurrentBeamParams.reV);]]></ST>
+    </Implementation>
+    <LineIds Name="FB_PhotonEnergyWatcher">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

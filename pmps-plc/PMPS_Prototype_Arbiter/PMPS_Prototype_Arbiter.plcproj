@@ -89,7 +89,16 @@
     <Compile Include="POUs\MajorComponents\FB_BeamClassOutputs.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\MajorComponents\FB_FastFault.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="POUs\MajorComponents\FB_LinearGovernor.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\MajorComponents\FB_PhotonEnergyWatcher.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\MajorComponents\FB_UsualSuspects.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\PMPS_Arbiter.TcPOU">

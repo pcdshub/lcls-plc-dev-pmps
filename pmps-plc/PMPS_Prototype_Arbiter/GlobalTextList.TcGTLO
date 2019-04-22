@@ -16,6 +16,11 @@
               <l n="LanguageTexts" t="ArrayList" />
             </o>
             <o>
+              <v n="TextID">"476"</v>
+              <v n="TextDefault">"%b"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
               <v n="TextID">"632"</v>
               <v n="TextDefault">"%d"</v>
               <l n="LanguageTexts" t="ArrayList" />
@@ -173,6 +178,21 @@
             <o>
               <v n="TextID">"934"</v>
               <v n="TextDefault">"Photon Energy"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"514"</v>
+              <v n="TextDefault">"Photon Energy Ranges: %16b"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"605"</v>
+              <v n="TextDefault">"Photon Energy Ranges: %b"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"124"</v>
+              <v n="TextDefault">"Photon Energy Ranges: %d"</v>
               <l n="LanguageTexts" t="ArrayList" />
             </o>
             <o>

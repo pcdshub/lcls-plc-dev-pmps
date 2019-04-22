@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.12">
+  <POU Name="FB_UsualSuspects" Id="{b6e8568a-ba54-05c5-19d2-5d73b81187c6}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_UsualSuspects
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Action Name="Register" Id="{d3b0977c-6acb-085d-1bbe-dd0e5d4a5497}">
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Action>
+    <LineIds Name="FB_UsualSuspects">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_UsualSuspects.Register">
+      <LineId Id="1" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

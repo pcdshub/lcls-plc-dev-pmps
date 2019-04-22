@@ -17,7 +17,6 @@ END_VAR
       <ST><![CDATA[BeamParams.fAtt := LIMIT(0,fAtt,100);
 BeamParams.fPP_mJ := LIMIT(0,fPP_mJ,20);
 BeamParams.neVReqRange := neVReqRange;
-BeamParams.fLower_eV := MIN(BeamParams.fLower_eV, BeamParams.fUpper_eV);
 BeamParams.nRate	:= MIN(nRate,1000000);
 
 F_SetBeamParams	:= BeamParams;]]></ST>
@@ -26,7 +25,6 @@ F_SetBeamParams	:= BeamParams;]]></ST>
       <LineId Id="7" Count="0" />
       <LineId Id="13" Count="0" />
       <LineId Id="16" Count="0" />
-      <LineId Id="39" Count="0" />
       <LineId Id="52" Count="0" />
       <LineId Id="12" Count="0" />
       <LineId Id="10" Count="0" />

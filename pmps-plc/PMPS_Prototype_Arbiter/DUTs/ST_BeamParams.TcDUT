@@ -16,8 +16,6 @@ STRUCT
 	nBeamClass	:	BYTE := 16#F;
 	nRate	:	UDINT	:= 10; //Pulse-rate
 	fPP_mJ : REAL := 20; //Per pulse max energy (mJ)
-	fUpper_eV	:	REAL	:= 20000; //Requested max eV
-	fLower_eV	:	REAL	:= 0; //Requested lower eV
 	//1.5-0keV subdivided per bit
 	(*
 	0.0-0.2 - 0

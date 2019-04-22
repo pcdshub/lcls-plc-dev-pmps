@@ -8,28 +8,14 @@ VAR_INPUT
 END_VAR
 VAR
 	nPermittedRangeHolding	:	WORD; 
-	areVBoundaries	:	ARRAY [0..cBoundaries]	OF	REAL	:= [
-	0.2,
-	0.3,
-	0.4,
-	0.5,
-	0.6,
-	0.7,
-	0.8,
-	0.9,
-	1.0,
-	1.1,
-	1.2,
-	1.3,
-	1.4,
-	1.5
-];
+	
 nIndex	:	INT;
 	// Lower boundary for range check
 	rPreviousBoundary: REAL := 0;
+	xWithinSpec: BOOL;
 END_VAR
 VAR CONSTANT
-	cBoundaries	:	INT	:= 15;
+	
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -44,15 +30,18 @@ and shift the holding register right, which moves the next bit to the zero posit
 *)
 nPermittedRangeHolding := nPermittedRange;
 
-FOR nIndex := 0 TO cBoundaries DO
+
+
+FOR nIndex := 0 TO PMPS_GVL_BeamParams.g_cBoundaries DO
 		
 	F_eVWithinSpec S= nPermittedRangeHolding.0 AND( 
-		reV <= areVBoundaries[nIndex] AND
-		reV >= rPreviousBoundary);
+		(reV <= PMPS_GVL_BeamParams.g_areVBoundaries[nIndex]*1000) AND
+		(reV >= rPreviousBoundary*1000) );
 	
-	rPreviousBoundary := areVBoundaries[nIndex];
+	rPreviousBoundary := PMPS_GVL_BeamParams.g_areVBoundaries[nIndex];
 	nPermittedRangeHolding := SHR(nPermittedRangeHolding, 1);
-END_FOR]]></ST>
+END_FOR
+]]></ST>
     </Implementation>
     <LineIds Name="F_eVWithinSpec">
       <LineId Id="49" Count="0" />
@@ -63,14 +52,18 @@ END_FOR]]></ST>
       <LineId Id="57" Count="1" />
       <LineId Id="37" Count="0" />
       <LineId Id="36" Count="0" />
+      <LineId Id="75" Count="0" />
+      <LineId Id="74" Count="0" />
       <LineId Id="35" Count="0" />
       <LineId Id="7" Count="0" />
       <LineId Id="38" Count="0" />
       <LineId Id="32" Count="0" />
-      <LineId Id="42" Count="1" />
-      <LineId Id="40" Count="0" />
+      <LineId Id="92" Count="0" />
+      <LineId Id="91" Count="0" />
+      <LineId Id="90" Count="0" />
       <LineId Id="48" Count="0" />
       <LineId Id="41" Count="0" />
+      <LineId Id="88" Count="0" />
       <LineId Id="33" Count="0" />
     </LineIds>
   </POU>
