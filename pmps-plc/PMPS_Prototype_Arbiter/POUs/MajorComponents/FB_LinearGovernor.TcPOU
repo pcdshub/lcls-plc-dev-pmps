@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.18">
   <POU Name="FB_LinearGovernor" Id="{ef40f951-1e56-0d26-34ec-87da9b08d3b7}" SpecialFunc="None">
     <Declaration><![CDATA[
 (* The governor is meant to check your work and keep you from making mistakes.
@@ -70,6 +70,7 @@ VAR
 	xStateLookupError: BOOL;
 	// A transition needs to be requested at least once before we start latching any state.
 	xTransitionHasBeenRequested: BOOL := FALSE;
+	ffBPOOS: FB_FastFault;
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -172,6 +173,7 @@ END_IF
 //MPS Faults
 //Fault if the beam is unsafe for current state
 xBeamParamsOOS := NOT F_SafeBPCompare(PMPS_GVL_BeamParams.stCurrentBeamParameters, stLatchedBeamParams);
+ffBPOOS(i_xOK:=xBeamParamsOOS);
 
 //Fault if the position is outside of the permitted range
 xActuatorOOB := lrPosition >= lrMPSUpperLimit OR lrPosition <= lrMPSLowerLimit;
@@ -224,7 +226,9 @@ q_xFault := mcPower.Error OR i_xMPSOverride OR srMPSFault.Q1 OR xInitFault;]]></
       <LineId Id="1259" Count="0" />
       <LineId Id="960" Count="35" />
       <LineId Id="1190" Count="0" />
-      <LineId Id="996" Count="55" />
+      <LineId Id="996" Count="18" />
+      <LineId Id="1331" Count="0" />
+      <LineId Id="1015" Count="36" />
       <LineId Id="86" Count="0" />
     </LineIds>
   </POU>
