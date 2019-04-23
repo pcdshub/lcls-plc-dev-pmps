@@ -13,7 +13,6 @@ VAR
 	rtInit	:	R_TRIG;
 	Initialize	:	BOOL := TRUE;
 	
-
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -34,6 +33,7 @@ fbDev1();
 fbDev2();
 
 PMPS_Arbiter();
+
 
 ]]></ST>
     </Implementation>
@@ -333,7 +333,9 @@ PMPS_Arbiter();
       <LineId Id="12" Count="0" />
       <LineId Id="70" Count="0" />
       <LineId Id="15" Count="0" />
-      <LineId Id="32" Count="1" />
+      <LineId Id="32" Count="0" />
+      <LineId Id="86" Count="0" />
+      <LineId Id="88" Count="0" />
       <LineId Id="16" Count="0" />
     </LineIds>
     <LineIds Name="MAIN.Initialize">
