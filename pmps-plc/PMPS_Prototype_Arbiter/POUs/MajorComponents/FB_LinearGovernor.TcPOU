@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.18">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.12">
   <POU Name="FB_LinearGovernor" Id="{ef40f951-1e56-0d26-34ec-87da9b08d3b7}" SpecialFunc="None">
     <Declaration><![CDATA[
 (* The governor is meant to check your work and keep you from making mistakes.
@@ -18,14 +18,17 @@ VAR_INPUT
 	i_xResetMPSFault	:	BOOL; //Set true to clear MPS fault 
 END_VAR
 VAR_OUTPUT
-	q_xTransitionPermitted	:	BOOL; //True when governor has released restrictions
-	q_xFault	:	BOOL; //Set if MC_Power has an error, or override mode is requested
+	 //True when governor has released restrictions
+	q_xTransitionPermitted	:	BOOL;
+	//Set if MC_Power has an error, or override mode is requested
+	q_xFault	:	BOOL; 
 	// Indicates override mode is active
 	q_xMPSLimitsOverridden: BOOL;
 END_VAR
 VAR_IN_OUT
 	stDevice	:	ST_Device; //The governed
 	Arbiter	:	FB_Arbiter;
+	FastFaultOutput	:	FB_HardwareFFOutput;
 END_VAR
 VAR
 	mcPower	:	MC_Power;
@@ -70,7 +73,8 @@ VAR
 	xStateLookupError: BOOL;
 	// A transition needs to be requested at least once before we start latching any state.
 	xTransitionHasBeenRequested: BOOL := FALSE;
-	ffBPOOS: FB_FastFault;
+	ffBeamParamsOK : FB_FastFault;
+	ffActuatorBoundsOK	:	FB_FastFault;
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -170,23 +174,6 @@ ELSE
 	lrMPSLowerLimit := lrLatchedTargetPosition - lrLatchedTargetTolerance;
 END_IF
 
-//MPS Faults
-//Fault if the beam is unsafe for current state
-xBeamParamsOOS := NOT F_SafeBPCompare(PMPS_GVL_BeamParams.stCurrentBeamParameters, stLatchedBeamParams);
-ffBPOOS(i_xOK:=xBeamParamsOOS);
-
-//Fault if the position is outside of the permitted range
-xActuatorOOB := lrPosition >= lrMPSUpperLimit OR lrPosition <= lrMPSLowerLimit;
-
-
-
-//Latch the MPS faults
-srMPSFault.SET1 := xActuatorOOB OR xBeamParamsOOS OR xStateLookupError;
-srMPSFault(RESET:=i_xResetMPSFault); 
-
-(* Note: The state lookup error is recoverable, because a different target state might be valid.
-*)
-
 
 //MPS override
 (* In override mode, the device will be free to move anywhere within it's travel range *)
@@ -210,26 +197,45 @@ mcPower(
 	Enable := stDevice.xEnable //link to device enable <TODO>
 );
 
-//An mcPower error or MPS override, or MPS fault, produces a fault.
-q_xFault := mcPower.Error OR i_xMPSOverride OR srMPSFault.Q1 OR xInitFault;]]></ST>
+
+
+//MPS Faults
+//Fault if the beam is unsafe for current state
+ffBeamParamsOK(i_xOK:=F_SafeBPCompare(PMPS_GVL_BeamParams.stCurrentBeamParameters, stLatchedBeamParams), i_xReset:=i_xResetMPSFault);
+
+//Fault if the position is outside of the permitted range
+ffActuatorBoundsOK(i_xOK := (lrPosition <= lrMPSUpperLimit AND lrPosition >= lrMPSLowerLimit), i_xReset:=i_xResetMPSFault);
+	
+//Collect all other faults
+q_xFault := NOT ffBeamParamsOK.o_xFFLine OR
+	NOT ffActuatorBoundsOK.o_xFFLine OR
+	mcPower.Error	OR
+	i_xMPSOverride	OR
+	xInitFault;
+
+//Any faults trip the fast fault line for this FB	
+FastFaultOutput.CheckIn(NOT q_xFault);
+
+]]></ST>
     </Implementation>
     <LineIds Name="FB_LinearGovernor">
-      <LineId Id="924" Count="3" />
-      <LineId Id="1118" Count="2" />
-      <LineId Id="928" Count="2" />
-      <LineId Id="1117" Count="0" />
-      <LineId Id="931" Count="6" />
-      <LineId Id="1188" Count="0" />
-      <LineId Id="938" Count="9" />
-      <LineId Id="1260" Count="0" />
-      <LineId Id="948" Count="11" />
-      <LineId Id="1259" Count="0" />
-      <LineId Id="960" Count="35" />
-      <LineId Id="1190" Count="0" />
-      <LineId Id="996" Count="18" />
-      <LineId Id="1331" Count="0" />
-      <LineId Id="1015" Count="36" />
-      <LineId Id="86" Count="0" />
+      <LineId Id="1554" Count="94" />
+      <LineId Id="1668" Count="23" />
+      <LineId Id="1693" Count="0" />
+      <LineId Id="1705" Count="0" />
+      <LineId Id="1700" Count="4" />
+      <LineId Id="1694" Count="0" />
+      <LineId Id="1706" Count="0" />
+      <LineId Id="1695" Count="0" />
+      <LineId Id="1713" Count="0" />
+      <LineId Id="1723" Count="0" />
+      <LineId Id="1714" Count="1" />
+      <LineId Id="1712" Count="0" />
+      <LineId Id="1718" Count="0" />
+      <LineId Id="1716" Count="0" />
+      <LineId Id="1696" Count="0" />
+      <LineId Id="1719" Count="0" />
+      <LineId Id="1707" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>

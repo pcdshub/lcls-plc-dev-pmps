@@ -65,6 +65,9 @@
     <Compile Include="POUs\DeviceImplementationEx2\FB_ExampleDeviceSM_All.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\Fast_Faults.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="POUs\HelperFunctions\F_DeviceState_To_DeviceStateExt.TcPOU">
       <SubType>Code</SubType>
     </Compile>
@@ -90,6 +93,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\MajorComponents\FB_FastFault.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\MajorComponents\FB_HardwareFFOutput.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\MajorComponents\FB_LinearGovernor.TcPOU">

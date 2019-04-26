@@ -5,7 +5,7 @@
 VAR
 	
 	
-	fbMachine	:	FB_MachineSimulator;
+	
 	
 	fbPhotonEnergyWatcher	:	FB_PhotonEnergyWatcher;
 	
@@ -15,18 +15,15 @@ END_VAR
     <Implementation>
       <ST><![CDATA[
 //Execute arbiter
-fbArbiter();
+g_fbArbiter();
 
 //fbMPSInterface();
 
 fbPhotonEnergyWatcher(i_stCurrentBeamParams	:= PMPS_GVL_BeamParams.stCurrentBeamParameters,
-					i_stRequestedBeamParams := fbArbiter.q_stBeamParams);
+					i_stRequestedBeamParams := g_fbArbiter.q_stBeamParams,
+					fbFFOut:= GVL.g_FastFaultOutput1);
 
-//Machine simulator
-fbMachine(
-	i_stAssertedParams := fbArbiter.q_stBeamParams,
-	q_stMachineParams => PMPS_GVL_BeamParams.stCurrentBeamParameters
-	);]]></ST>
+]]></ST>
     </Implementation>
     <LineIds Name="PMPS_Arbiter">
       <LineId Id="75" Count="0" />
@@ -36,9 +33,9 @@ fbMachine(
       <LineId Id="95" Count="0" />
       <LineId Id="94" Count="0" />
       <LineId Id="98" Count="0" />
-      <LineId Id="67" Count="1" />
-      <LineId Id="66" Count="0" />
-      <LineId Id="71" Count="2" />
+      <LineId Id="111" Count="0" />
+      <LineId Id="67" Count="0" />
+      <LineId Id="73" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>

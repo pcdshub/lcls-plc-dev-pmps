@@ -25,6 +25,9 @@ VAR_OUTPUT
 	
 	
 END_VAR
+VAR_IN_OUT
+	fbArbiter	:	FB_Arbiter;
+END_VAR
 VAR
 	nTargetAssertionID	:	UDINT := 0;
 	stTargetAssertion	:	ST_BeamParams; //Current target assertion

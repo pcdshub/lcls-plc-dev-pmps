@@ -998,6 +998,20 @@ External Setpoint Generation:
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
+							<Name>MAIN.fbDev2.stDevice.i_xLoLim</Name>
+							<Comment>
+								<![CDATA[Wire normally-closed]]>
+							</Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.fbDev2.stDevice.i_xHiLim</Name>
+							<Comment>
+								<![CDATA[Wire normally-closed]]>
+							</Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
 							<Name>MAIN.fbDev2.stDevice.stAxis.NcToPlc</Name>
 							<Type GUID="{6A65C767-34E5-42BF-AD87-E1A503EAC7BE}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
 							<SubVar>
@@ -1046,20 +1060,6 @@ External Setpoint Generation:
 								</Comment>
 							</SubVar>
 						</Var>
-						<Var>
-							<Name>MAIN.fbDev2.stDevice.i_xLoLim</Name>
-							<Comment>
-								<![CDATA[Wire normally-closed]]>
-							</Comment>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>MAIN.fbDev2.stDevice.i_xHiLim</Name>
-							<Comment>
-								<![CDATA[Wire normally-closed]]>
-							</Comment>
-							<Type>BOOL</Type>
-						</Var>
 					</Vars>
 					<Vars VarGrpType="2">
 						<Name>PlcTask Outputs</Name>
@@ -1074,6 +1074,10 @@ External Setpoint Generation:
 						<Var>
 							<Name>PMPS_Arbiter.fbMPSInterface.q_BC_ASSERTION_LINES</Name>
 							<Type GUID="{0B37E936-53FE-6A1D-9723-D7016BFD8546}">ARRAY [1..16] OF BOOL</Type>
+						</Var>
+						<Var>
+							<Name>GVL.g_FastFaultOutput1.q_xFastFaultOut</Name>
+							<Type>BOOL</Type>
 						</Var>
 					</Vars>
 					<TaskPouOids>

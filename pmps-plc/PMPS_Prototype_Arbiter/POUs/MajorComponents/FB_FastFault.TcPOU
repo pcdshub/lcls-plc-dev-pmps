@@ -1,17 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.18">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.12">
   <POU Name="FB_FastFault" Id="{a7225e03-a5d8-094a-35f2-8e6e41471d21}" SpecialFunc="None">
     <Declaration><![CDATA[{attribute 'reflection'}
 FUNCTION_BLOCK FB_FastFault
 VAR_INPUT
-	i_xOK	:	BOOL; //nominal-high input, causes fault if low
-	i_xReset	:	BOOL; //resets when xOK is true and this is true
+	i_xOK		:	BOOL;
+	i_xReset	:	BOOL; //resets when i_xOK is true and this is true
 END_VAR
 VAR_OUTPUT
 	o_xFFLine	:	BOOL; //Connect to HW output or another FF input if you like
-END_VAR
-VAR_IN_OUT
-	
 END_VAR
 VAR
 	{attribute 'instance-path'}

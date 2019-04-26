@@ -17,24 +17,35 @@ END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[//Sub-system Device PLC
-// This PLC runs 4 
+
+//Fast Faults must run first
+Fast_Faults();
 
 Test := F_SafeBPCompare(BP1,BP2);
 
 IF Initialize THEN
-	fbDev1(cBase := 10);
-	fbDev2(cBase := 1000);
-	fbArbiter.A_Init();
+	fbDev1(cBase := 10,
+		fbFastFaultOutput := g_FastFaultOutput1,
+		fbArbiter := g_fbArbiter);
+	fbDev2(cBase := 1000,
+		fbFastFaultOutput := g_FastFaultOutput1,
+		fbArbiter := g_fbArbiter);
+	g_fbArbiter.A_Init();
 	Initialize := FALSE;
 END_IF
 
 //Example devices
-fbDev1();
-fbDev2();
+fbDev1(fbFastFaultOutput := g_FastFaultOutput1,
+		fbArbiter := g_fbArbiter);
+fbDev2(fbFastFaultOutput := g_FastFaultOutput1,
+		fbArbiter := g_fbArbiter);
+
 
 PMPS_Arbiter();
 
+Fast_Faults_Evaluate();
 
+MachineSimulation();
 ]]></ST>
     </Implementation>
     <Action Name="FB_Vis" Id="{dbfecf7e-be1a-0abd-04cf-64b55d658bf1}">
@@ -319,21 +330,28 @@ PMPS_Arbiter();
     </Action>
     <LineIds Name="MAIN">
       <LineId Id="10" Count="0" />
-      <LineId Id="24" Count="0" />
+      <LineId Id="102" Count="2" />
       <LineId Id="38" Count="0" />
       <LineId Id="36" Count="0" />
       <LineId Id="46" Count="1" />
       <LineId Id="50" Count="0" />
+      <LineId Id="118" Count="0" />
+      <LineId Id="126" Count="0" />
       <LineId Id="71" Count="0" />
+      <LineId Id="119" Count="0" />
+      <LineId Id="125" Count="0" />
       <LineId Id="55" Count="0" />
       <LineId Id="54" Count="0" />
       <LineId Id="51" Count="0" />
       <LineId Id="11" Count="0" />
       <LineId Id="2" Count="0" />
       <LineId Id="12" Count="0" />
+      <LineId Id="127" Count="0" />
       <LineId Id="70" Count="0" />
+      <LineId Id="128" Count="1" />
       <LineId Id="15" Count="0" />
       <LineId Id="32" Count="0" />
+      <LineId Id="130" Count="1" />
       <LineId Id="86" Count="0" />
       <LineId Id="88" Count="0" />
       <LineId Id="16" Count="0" />

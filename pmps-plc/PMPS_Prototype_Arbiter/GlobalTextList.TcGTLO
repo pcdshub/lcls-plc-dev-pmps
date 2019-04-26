@@ -26,6 +26,11 @@
               <l n="LanguageTexts" t="ArrayList" />
             </o>
             <o>
+              <v n="TextID">"697"</v>
+              <v n="TextDefault">"%x"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
               <v n="TextID">"441"</v>
               <v n="TextDefault">"Actuator Position"</v>
               <l n="LanguageTexts" t="ArrayList" />
@@ -86,6 +91,16 @@
               <l n="LanguageTexts" t="ArrayList" />
             </o>
             <o>
+              <v n="TextID">"941"</v>
+              <v n="TextDefault">"Clear"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"20"</v>
+              <v n="TextDefault">"Clear Fault"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
               <v n="TextID">"52"</v>
               <v n="TextDefault">"Clear Faults"</v>
               <l n="LanguageTexts" t="ArrayList" />
@@ -93,6 +108,11 @@
             <o>
               <v n="TextID">"957"</v>
               <v n="TextDefault">"eV"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"660"</v>
+              <v n="TextDefault">"Fast Fault"</v>
               <l n="LanguageTexts" t="ArrayList" />
             </o>
             <o>

@@ -23,15 +23,22 @@ END_VAR
 VAR_OUTPUT
 	//Fast fault
 END_VAR
+VAR_IN_OUT
+	fbFFOut	:	FB_HardwareFFOutput;
+END_VAR
 VAR
 	xPhotonEnergyWithinBounds	:	BOOL;
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[xPhotonEnergyWithinBounds := F_eVWithinSpec(i_stRequestedBeamParams.neVReqRange, i_stCurrentBeamParams.reV);]]></ST>
+      <ST><![CDATA[xPhotonEnergyWithinBounds := F_eVWithinSpec(i_stRequestedBeamParams.neVReqRange, i_stCurrentBeamParams.reV);
+
+fbFFOut.CheckIn(xPhotonEnergyWithinBounds);]]></ST>
     </Implementation>
     <LineIds Name="FB_PhotonEnergyWatcher">
       <LineId Id="9" Count="0" />
+      <LineId Id="39" Count="0" />
+      <LineId Id="38" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>
