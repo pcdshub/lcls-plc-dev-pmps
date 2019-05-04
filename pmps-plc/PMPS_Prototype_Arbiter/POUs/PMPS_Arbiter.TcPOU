@@ -10,6 +10,8 @@ VAR
 	fbPhotonEnergyWatcher	:	FB_PhotonEnergyWatcher;
 	
 	fbMPSInterface	:	FB_BeamClassOutputs;
+	{attribute 'pmps_interface' := 'TIID^Device 2 (EtherCAT)^Term 6 (EK1100)^Term 2 (EL6692)^IO Outputs^'}
+	ExchangeBeamParams	:	FB_BeamParamEx;
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -22,6 +24,24 @@ g_fbArbiter();
 fbPhotonEnergyWatcher(i_stCurrentBeamParams	:= PMPS_GVL_BeamParams.stCurrentBeamParameters,
 					i_stRequestedBeamParams := g_fbArbiter.q_stBeamParams,
 					fbFFOut:= GVL.g_FastFaultOutput1);
+
+ExchangeBeamParams();
+
+{define bar 'This is real'}
+{IF defined (bar)}
+{warning 'bar defined'}
+{warning 'bar'}
+{ELSE}
+{warning 'bar not defined'}
+{END_IF}
+
+
+{IF hasattribute (pou: ExchangeBeamParams, 'pmps_interface')}
+{info pmps_interface}
+{info 'Has attribute'}
+{ELSE}
+{warning 'No attribute!'}
+{END_IF}
 
 ]]></ST>
     </Implementation>
@@ -36,6 +56,19 @@ fbPhotonEnergyWatcher(i_stCurrentBeamParams	:= PMPS_GVL_BeamParams.stCurrentBeam
       <LineId Id="111" Count="0" />
       <LineId Id="67" Count="0" />
       <LineId Id="73" Count="0" />
+      <LineId Id="131" Count="1" />
+      <LineId Id="139" Count="1" />
+      <LineId Id="145" Count="0" />
+      <LineId Id="141" Count="1" />
+      <LineId Id="125" Count="0" />
+      <LineId Id="144" Count="0" />
+      <LineId Id="143" Count="0" />
+      <LineId Id="124" Count="0" />
+      <LineId Id="126" Count="0" />
+      <LineId Id="128" Count="2" />
+      <LineId Id="127" Count="0" />
+      <LineId Id="134" Count="0" />
+      <LineId Id="138" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>

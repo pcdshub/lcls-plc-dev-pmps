@@ -13,10 +13,13 @@ VAR
 	rtInit	:	R_TRIG;
 	Initialize	:	BOOL := TRUE;
 	
+	DemoMode: BOOL;
 END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[//Sub-system Device PLC
+
+IF DemoMode	THEN
 
 //Fast Faults must run first
 Fast_Faults();
@@ -46,7 +49,10 @@ PMPS_Arbiter();
 Fast_Faults_Evaluate();
 
 MachineSimulation();
-]]></ST>
+
+ELSE
+	TestSetups();
+END_IF]]></ST>
     </Implementation>
     <Action Name="FB_Vis" Id="{dbfecf7e-be1a-0abd-04cf-64b55d658bf1}">
       <Implementation>
@@ -330,6 +336,7 @@ MachineSimulation();
     </Action>
     <LineIds Name="MAIN">
       <LineId Id="10" Count="0" />
+      <LineId Id="145" Count="1" />
       <LineId Id="102" Count="2" />
       <LineId Id="38" Count="0" />
       <LineId Id="36" Count="0" />
@@ -354,7 +361,9 @@ MachineSimulation();
       <LineId Id="130" Count="1" />
       <LineId Id="86" Count="0" />
       <LineId Id="88" Count="0" />
+      <LineId Id="148" Count="0" />
       <LineId Id="16" Count="0" />
+      <LineId Id="149" Count="1" />
     </LineIds>
     <LineIds Name="MAIN.Initialize">
       <LineId Id="1" Count="0" />

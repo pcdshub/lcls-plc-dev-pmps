@@ -35,9 +35,12 @@ STRUCT
 	na - 14
 	na - 15
 	*)
+	
+	{attribute 'displaymode':='binary'}
 	neVReqRange	:	WORD	:= 2#1111_1111_1111_1111; //Valid photon energy ranges
 	
 	reV	:	REAL	:=0; //Photon energy (calculated by undulator gap)
+
 END_STRUCT
 END_TYPE
 ]]></Declaration>

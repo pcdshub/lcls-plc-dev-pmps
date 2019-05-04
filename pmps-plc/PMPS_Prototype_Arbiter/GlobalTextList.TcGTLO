@@ -11,6 +11,16 @@
               <l n="LanguageTexts" t="ArrayList" />
             </o>
             <o>
+              <v n="TextID">"333"</v>
+              <v n="TextDefault">"%16b"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"646"</v>
+              <v n="TextDefault">"%2b"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
               <v n="TextID">"108"</v>
               <v n="TextDefault">"%3.2f"</v>
               <l n="LanguageTexts" t="ArrayList" />

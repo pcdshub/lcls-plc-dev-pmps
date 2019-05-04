@@ -5,6 +5,11 @@
 Implements the procedure for safely transitioning between device states by asserting the correct beam parameters for 
 the state *)
 FUNCTION_BLOCK BeamParameterTransitionManager
+VAR_IN_OUT
+	
+	fbArbiter	:	FB_Arbiter;
+	
+END_VAR
 VAR_INPUT
 	i_TransitionAssertionID	:	UDINT := 0;
 	i_stTransitionAssertion : ST_BeamParams := PMPS_GVL_BeamParams.cstSafeBeam; //Assertion required during transition (always safer than anything inbetween)
@@ -17,22 +22,15 @@ VAR_INPUT
 	
 END_VAR
 VAR_OUTPUT
-	
-	q_stFinalAssertion : ST_BeamParams := PMPS_GVL_BeamParams.cstSafeBeam;
-	q_stTransitionAssertion	:  ST_BeamParams := PMPS_GVL_BeamParams.cstSafeBeam;
-	
+
 	q_xTransitionAuthorized	:	BOOL := FALSE; //Rising edge indicating the device is safe to move, use as input to move execute (which requires a rising edge)
-	
-	
+
 END_VAR
-VAR_IN_OUT
-	fbArbiter	:	FB_Arbiter;
-END_VAR
+
 VAR
 	nTargetAssertionID	:	UDINT := 0;
 	stTargetAssertion	:	ST_BeamParams; //Current target assertion
 	nCurrentAssertionID	:	UDINT := 0;
-	thing	:	BOOL;
 	
 	xNewBP	:	BOOL;
 	xTranBP	:	BOOL;
