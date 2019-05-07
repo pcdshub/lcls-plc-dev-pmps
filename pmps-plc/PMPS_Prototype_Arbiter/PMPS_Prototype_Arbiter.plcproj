@@ -134,6 +134,9 @@
     <Compile Include="POUs\TestComponents\FB_AttenuatorSimulator.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\TestComponents\FB_BPTM_Test.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="POUs\TestComponents\FB_BreakTheArbiter.TcPOU">
       <SubType>Code</SubType>
     </Compile>
@@ -141,6 +144,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\TestComponents\FB_SolidAttenuator.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\TestComponents\ST_TestIncrement.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\TestSetups.TcPOU">
@@ -248,6 +254,10 @@
       <DefaultResolution>Tc3_Module, * (Beckhoff Automation GmbH)</DefaultResolution>
       <Namespace>Tc3_Module</Namespace>
     </PlaceholderReference>
+    <PlaceholderReference Include="TcUnit">
+      <DefaultResolution>TcUnit, * (www.tcunit.org)</DefaultResolution>
+      <Namespace>TcUnit</Namespace>
+    </PlaceholderReference>
     <PlaceholderReference Include="UML State Chart Types">
       <DefaultResolution>UML Statechart Types, 4.0.2.1 (3S - Smart Software Solutions GmbH)</DefaultResolution>
       <Namespace>UML_SC</Namespace>
@@ -272,6 +282,9 @@
   <ItemGroup>
     <PlaceholderResolution Include="LCLS General">
       <Resolution>LCLS General, * (SLAC)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="TcUnit">
+      <Resolution>TcUnit, * (www.tcunit.org)</Resolution>
     </PlaceholderResolution>
   </ItemGroup>
   <ItemGroup>

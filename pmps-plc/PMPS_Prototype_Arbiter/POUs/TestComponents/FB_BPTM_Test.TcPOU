@@ -45,10 +45,6 @@ fbBPTM(
 );
 
 TEST('BPTMAssertsTransitionBeforeFinal');
-//First pass should move into NewTarget	
-fbAssert.AssertTrue(
-	fbBPTM.UML_SC_BeamParameterTransitionManager.States[fbBPTM.UML_SC_BeamParameterTransitionManager.Names.NewTarget].Active,
-	'BPTM did not move into NewTarget at start'); 
 	
 //Second pass should move into waiting for transition assertion, arbiter should have transition id
 fbBPTM(fbArbiter:= fbArbiter);
@@ -95,10 +91,7 @@ RunTests := TcUnit.E_TestSuiteRunState.FINISHED;]]></ST>
       <LineId Id="23" Count="5" />
       <LineId Id="22" Count="0" />
       <LineId Id="32" Count="1" />
-      <LineId Id="29" Count="0" />
-      <LineId Id="34" Count="0" />
-      <LineId Id="31" Count="0" />
-      <LineId Id="37" Count="2" />
+      <LineId Id="38" Count="1" />
       <LineId Id="41" Count="0" />
       <LineId Id="43" Count="0" />
       <LineId Id="42" Count="0" />
