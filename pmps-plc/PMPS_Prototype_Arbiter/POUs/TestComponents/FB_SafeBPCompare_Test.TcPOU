@@ -46,7 +46,7 @@ fbAssert.AssertTrue(
       </Implementation>
     </Method>
     <Method Name="BPComparisonCheck" Id="{c8eb9cec-e825-0eaa-0cdf-7eb32c4c8e5c}">
-      <Declaration><![CDATA[//Verify beam off is considered safe.
+      <Declaration><![CDATA[//Verify BP comparison remains logical.
 METHOD PRIVATE BPComparisonCheck
 VAR_INPUT
 END_VAR
@@ -82,16 +82,16 @@ fbAssert.AssertFalse(
 	
 //Rate
 stSafer := F_SetBeamParams(
-	0, //
+	0,
 	10,
 	16#FFFF,
-	1);
+	1); //
 
 stNotSoSafe := F_SetBeamParams(
-	0, //
+	0,
 	10,
 	16#FFFF,
-	10); 
+	10); //
 	
 fbAssert.AssertTrue(
 	F_SafeBPCompare(stSafer, stNotSoSafe),
@@ -99,7 +99,55 @@ fbAssert.AssertTrue(
 
 fbAssert.AssertFalse(
 	F_SafeBPCompare(stNotSoSafe, stSafer),
-	'Rate eval is broken (False)');]]></ST>
+	'Rate eval is broken (False)');
+	
+//Pulse energy
+stSafer := F_SetBeamParams(
+	0, 
+	1, //
+	16#FFFF,
+	1);
+
+stNotSoSafe := F_SetBeamParams(
+	0, 
+	10, //
+	16#FFFF,
+	1); 
+	
+fbAssert.AssertTrue(
+	F_SafeBPCompare(stSafer, stNotSoSafe),
+	'Pulse energy eval is broken (True)'); 
+
+fbAssert.AssertFalse(
+	F_SafeBPCompare(stNotSoSafe, stSafer),
+	'Pulse energy eval is broken (False)');	
+	
+//Photon energy
+//More extensive tests elsewhere
+stSafer := F_SetBeamParams(
+	0, 
+	1, 
+	2#0000_0000_0000_0110, //200-400eV
+	1);
+	
+stSafer.reV := 300; //
+
+stNotSoSafe := F_SetBeamParams(
+	0, 
+	1, 
+	2#0000_0000_0000_0110, //200-400ev
+	1);
+	
+stNotSoSafe.reV := 401;
+	
+fbAssert.AssertTrue(
+	F_SafeBPCompare(stSafer, stNotSoSafe),
+	'Photon energy eval is broken (True)'); 
+
+fbAssert.AssertFalse(
+	F_SafeBPCompare(stNotSoSafe, stSafer),
+	'Photon energy eval is broken (False)');	
+]]></ST>
       </Implementation>
     </Method>
     <Method Name="FB_init" Id="{8aa48c4d-8a08-0f03-1e55-146cd491a13e}">
@@ -152,6 +200,19 @@ RunTests := TcUnit.E_TestSuiteRunState.FINISHED;]]></ST>
       <LineId Id="85" Count="1" />
       <LineId Id="88" Count="18" />
       <LineId Id="87" Count="0" />
+      <LineId Id="107" Count="0" />
+      <LineId Id="110" Count="18" />
+      <LineId Id="108" Count="0" />
+      <LineId Id="129" Count="0" />
+      <LineId Id="131" Count="0" />
+      <LineId Id="152" Count="0" />
+      <LineId Id="132" Count="4" />
+      <LineId Id="150" Count="1" />
+      <LineId Id="137" Count="5" />
+      <LineId Id="153" Count="1" />
+      <LineId Id="143" Count="6" />
+      <LineId Id="130" Count="0" />
+      <LineId Id="109" Count="0" />
     </LineIds>
     <LineIds Name="FB_SafeBPCompare_Test.FB_init">
       <LineId Id="7" Count="0" />

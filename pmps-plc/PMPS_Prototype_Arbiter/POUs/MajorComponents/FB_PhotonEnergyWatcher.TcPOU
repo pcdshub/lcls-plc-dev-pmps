@@ -21,7 +21,6 @@ VAR_INPUT
 	i_stRequestedBeamParams	:	ST_BeamParams; //Link to arbiter output or beam param. requestor
 END_VAR
 VAR_OUTPUT
-	//Fast fault
 END_VAR
 VAR_IN_OUT
 	fbFFOut	:	FB_HardwareFFOutput;
@@ -31,7 +30,7 @@ VAR
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[xPhotonEnergyWithinBounds := F_eVWithinSpec(i_stRequestedBeamParams.neVReqRange, i_stCurrentBeamParams.reV);
+      <ST><![CDATA[xPhotonEnergyWithinBounds := F_eVWithinSpec(i_stCurrentBeamParams.reV, i_stRequestedBeamParams.neVReqRange);
 
 fbFFOut.CheckIn(xPhotonEnergyWithinBounds);]]></ST>
     </Implementation>

@@ -24,17 +24,14 @@ END_VAR
     <Implementation>
       <ST><![CDATA[xAttOK := BeamParam1.fAtt >= BeamParam2.fAtt;
 xPPmjOK := BeamParam1.fPP_mJ <= BeamParam2.fPP_mJ;
-xEvOK := F_eVWithinSpec(BeamParam2.neVReqRange, BeamParam1.reV);
+xEvOK := F_eVWithinSpec(BeamParam1.reV, BeamParam2.neVReqRange);
 xZeroRate	:= BeamParam1.nRate = 0;
 xRateOK	:= BeamParam1.nRate <= BeamParam2.nRate;
 
 F_SafeBPCompare := xZeroRate OR (xAttOK AND xPPmjOK AND xEvOK AND xRateOK);]]></ST>
     </Implementation>
     <LineIds Name="F_SafeBPCompare">
-      <LineId Id="8" Count="0" />
-      <LineId Id="21" Count="1" />
-      <LineId Id="40" Count="0" />
-      <LineId Id="9" Count="1" />
+      <LineId Id="60" Count="5" />
       <LineId Id="7" Count="0" />
     </LineIds>
   </POU>

@@ -6,10 +6,6 @@ VAR
 	fbDev1	:	FB_ExampleDeviceSM_All;
 	fbDev2	:	FB_ExampleDeviceSM_All;
 	
-	BP1	:	ST_BeamParams;
-	BP2	:	ST_BeamParams;
-	Test	:	BOOL;
-	
 	rtInit	:	R_TRIG;
 	Initialize	:	BOOL := TRUE;
 	
@@ -23,8 +19,6 @@ IF DemoMode	THEN
 
 //Fast Faults must run first
 Fast_Faults();
-
-Test := F_SafeBPCompare(BP1,BP2);
 
 IF Initialize THEN
 	fbDev1(cBase := 10,
@@ -338,8 +332,6 @@ END_IF]]></ST>
       <LineId Id="10" Count="0" />
       <LineId Id="145" Count="1" />
       <LineId Id="102" Count="2" />
-      <LineId Id="38" Count="0" />
-      <LineId Id="36" Count="0" />
       <LineId Id="46" Count="1" />
       <LineId Id="50" Count="0" />
       <LineId Id="118" Count="0" />
