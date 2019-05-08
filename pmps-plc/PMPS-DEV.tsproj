@@ -906,7 +906,7 @@ External Setpoint Generation:
 			</ArrayInfo>
 		</DataType>
 	</DataTypes>
-	<Project ProjectGUID="{11D93138-2D8B-49C5-B84D-11A4D2CA3157}" Target64Bit="true" ShowHideConfigurations="#x106">
+	<Project ProjectGUID="{11D93138-2D8B-49C5-B84D-11A4D2CA3157}" TargetNetId="5.52.45.90.1.1" ShowHideConfigurations="#x106">
 		<System>
 			<Settings>
 				<Cpu BaseTime="500"/>
@@ -921,7 +921,7 @@ External Setpoint Generation:
 			<NC File="NC.xti"/>
 		</Motion>
 		<Plc>
-			<Project GUID="{E8A5EE9B-6606-423E-92F4-1FF908FBA45E}" Name="PMPS_Prototype_Arbiter" PrjFilePath="PMPS_Prototype_Arbiter\PMPS_Prototype_Arbiter.plcproj" TmcFilePath="PMPS_Prototype_Arbiter\PMPS_Prototype_Arbiter.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e">
+			<Project GUID="{4C70B925-4232-4E0A-980A-CAE7F0633B6E}" Name="PMPS_Prototype_Arbiter" PrjFilePath="PMPS_Prototype_Arbiter\PMPS_Prototype_Arbiter.plcproj" TmcFilePath="PMPS_Prototype_Arbiter\PMPS_Prototype_Arbiter.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e">
 				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="PMPS_Prototype_Arbiter\PMPS_Prototype_Arbiter.tmc">
 					<Name>PMPS_Prototype_Arbiter Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
@@ -1060,6 +1060,69 @@ External Setpoint Generation:
 							</Comment>
 							<Type>BOOL</Type>
 						</Var>
+						<Var>
+							<Name>MAIN.fbDev3.stDevice.stAxis.NcToPlc</Name>
+							<Type GUID="{6A65C767-34E5-42BF-AD87-E1A503EAC7BE}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
+							<SubVar>
+								<Name>AxisState</Name>
+								<Comment>
+									<![CDATA[Present State Of The Axis Movement (continuous axis):
+0  = INACTIVE:		axis has no job
+1  = RUNNING:		axis is executing a motion job
+2  = OVERRIDE_ZERO:	axis is executing a job but override is zero
+3  = PHASE_VELOCONST:	axis is moving at constant velocity
+4  = PHASE_ACCPOS:	axis is accelerating
+5  = PHASE_ACCNEG:	axis is decelerating
+Slaves only:
+11 = PREPHASE:		slave axis is in a motion pre-phase
+12 = SYNCHRONIZING:	slave axis is synchronizing
+13 = SYNCHRONOUS:	slave axis is moving synchronously
+External Setpoint Generation:
+41 = EXTSETGEN_MODE1:	external setpoint generation active
+42 = EXTSETGEN_MODE2:	internal and external setpoint gen. active
+]]>
+								</Comment>
+							</SubVar>
+							<SubVar>
+								<Name>HomingState</Name>
+								<Comment>
+									<![CDATA[Axis Homing Status:
+0: idle
+1: start homing
+2: searching home switch
+3: stopping on home switch
+4: moving off home switch
+5: searching sync pulse
+6: stopping after homing
+]]>
+								</Comment>
+							</SubVar>
+							<SubVar>
+								<Name>CoupleState</Name>
+								<Comment>
+									<![CDATA[Axis Coupling Status:
+0: axis is a single axis (not coupled)
+1: axis is a master axis
+2: axis is master and slave
+3: axis is a slave axis
+]]>
+								</Comment>
+							</SubVar>
+						</Var>
+						<Var>
+							<Name>MAIN.fbDev3.stDevice.i_xLoLim</Name>
+							<Comment>
+								<![CDATA[Wire normally-closed]]>
+							</Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.fbDev3.stDevice.i_xHiLim</Name>
+							<Comment>
+								<![CDATA[Wire normally-closed]]>
+							</Comment>
+							<Type>BOOL</Type>
+						</Var>
 					</Vars>
 					<Vars VarGrpType="2">
 						<Name>PlcTask Outputs</Name>
@@ -1069,6 +1132,10 @@ External Setpoint Generation:
 						</Var>
 						<Var>
 							<Name>MAIN.fbDev2.stDevice.stAxis.PlcToNc</Name>
+							<Type GUID="{63A84524-72E3-41C8-BEAB-4CCE44690A13}" Namespace="MC">PLCTONC_AXIS_REF</Type>
+						</Var>
+						<Var>
+							<Name>MAIN.fbDev3.stDevice.stAxis.PlcToNc</Name>
 							<Type GUID="{63A84524-72E3-41C8-BEAB-4CCE44690A13}" Namespace="MC">PLCTONC_AXIS_REF</Type>
 						</Var>
 						<Var>
@@ -1097,4 +1164,6 @@ External Setpoint Generation:
 			</OwnerB>
 		</OwnerA>
 	</Mappings>
+</TcSmProject>
+s>
 </TcSmProject>

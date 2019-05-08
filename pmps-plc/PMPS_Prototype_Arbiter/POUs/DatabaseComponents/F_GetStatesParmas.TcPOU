@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.12">
+  <POU Name="F_GetStatesParmas" Id="{1093a35b-2b53-0c90-0d30-9648004c41ab}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION F_GetStatesParmas : BOOL
+VAR_INPUT
+	aStatesParamsTable : ARRAY[1..10] OF ST_DeviceStateTable;
+END_VAR
+VAR_IN_OUT
+	Table	:	FB_LinearDeviceStateTable;
+END_VAR
+VAR
+	stDeviceState	:	ST_DeviceState;
+	iRow : INT:=1;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[Table.A_Reset();
+//Device State Table Instantiation
+F_SetStateParams(
+	nStateRef := 0,
+	rPosition := 0,
+	rTolerance := 10,
+	stBeamParams := PMPS_GVL_BeamParams.cstFullBeam,
+	Table := Table
+);
+
+
+FOR iRow:=1 TO 10 BY 1 DO
+	stDeviceState.nStateRef := DINT_TO_UDINT(aStatesParamsTable[iRow].iStateID);
+	stDeviceState.rPosition := aStatesParamsTable[iRow].rTargetPosition;
+	stDeviceState.rTolerance := aStatesParamsTable[iRow].rTolerance;  
+	stDeviceState.stReqBeamParam.fAtt := aStatesParamsTable[iRow].rTransmission;
+	stDeviceState.stReqBeamParam.reV := aStatesParamsTable[iRow].rPhotonEnergy;
+	stDeviceState.stReqBeamParam.nBeamClass := DINT_TO_BYTE(aStatesParamsTable[iRow].iBeamClass);
+	
+	Table.A_Add(
+		key := stDeviceState.nStateRef,
+		putValue := stDeviceState
+	);
+END_FOR;
+(*F_GetStatesParmas :=F_SetStateParams(
+	nStateRef := 100,
+	rPosition := 0,
+	rTolerance := 10,
+	stBeamParams := PMPS_GVL_BeamParams.cstFullBeam,
+	Table := Table
+);*)
+
+
+F_GetStatesParmas := Table.bOk;]]></ST>
+    </Implementation>
+    <LineIds Name="F_GetStatesParmas">
+      <LineId Id="30" Count="0" />
+      <LineId Id="50" Count="6" />
+      <LineId Id="48" Count="1" />
+      <LineId Id="47" Count="0" />
+      <LineId Id="35" Count="0" />
+      <LineId Id="20" Count="2" />
+      <LineId Id="32" Count="0" />
+      <LineId Id="34" Count="0" />
+      <LineId Id="33" Count="0" />
+      <LineId Id="24" Count="5" />
+      <LineId Id="41" Count="5" />
+      <LineId Id="39" Count="1" />
+      <LineId Id="38" Count="0" />
+      <LineId Id="7" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

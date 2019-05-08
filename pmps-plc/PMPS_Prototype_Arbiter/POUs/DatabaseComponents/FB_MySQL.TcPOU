@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.12">
+  <POU Name="FB_MySQL" Id="{0e3ea289-0867-0bf3-1954-49a337dc1e41}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_MySQL
+VAR_INPUT
+	sDeviceID: STRING:='1';//DWORD;
+	iDBID:UDINT:=1;
+	sDBNetId: STRING := '172.21.42.126.1.1';//'134.79.81.23.1.1';
+	nState: INT:=0;
+END_VAR
+VAR_OUTPUT
+	StateTable : FB_LinearDeviceStateTable;
+	aDeviceStateTable : ARRAY[1..10] OF ST_DeviceStateTable;
+END_VAR
+VAR
+	
+	fbMySQLDB:  FB_SQLDatabase(sNetId := '', tTimeout:=T#5S);
+	fbSQLCmd:  FB_SQLCommand(sNetId := '', tTimeout:=T#5S);
+	fbSQLResult: FB_SQLResult(sNetId := '', tTimeout:=T#5S);
+	sSQLCmd :STRING:='SELECT * FROM device_state  WHERE device_id =';
+	nRecs: UDINT; 
+	ipResultEvent : Tc3_Eventlogger.I_TcResultEvent;
+	
+	
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[CASE nState OF
+	0:
+400:
+	fbMySQLDB.sNetID := sDBNetId;
+	fbSQLCmd.sNetID := sDBNetId;
+	fbSQLResult.sNetID := sDBNetId; 
+	IF fbMySQLDB.Connect(iDBID) THEN
+    IF fbMySQLDB.bError THEN
+        nState := 9000+nState; 
+    ELSE
+        nState := nState+1; 
+    END_IF
+END_IF
+ 
+401:	
+	 IF(fbMySQLDB.bConnected ) THEN
+		fbMySQLDB.CreateCmd(pSQLCommand := ADR(fbSQLCmd));
+		IF fbMySQLDB.bError THEN
+			nState := 9000+nState; 
+		ELSE
+			nState := 1+nState; 
+		END_IF
+	 END_IF
+402:	 
+  (*Read  from the database*)
+	sSQLCmd := 'SELECT * FROM device_states  WHERE device_id =';//, target_position, transmission, beam_class, photon_energy FROM device_states WHERE device_id =1';	
+	sSQLCmd := CONCAT(sSQLCMD, sDeviceID) ;		
+   IF fbSQLCmd.ExecuteDataReturn(pSQLCmd:=ADR(sSQLCmd),cbSQLCmd:=SIZEOF(sSQLCmd),pSQLDBResult:=ADR(fbSQLResult)) THEN
+   	IF( fbSQLCmd.bError) THEN
+	    nState := 9000+nState; 
+    ELSE
+        nState := 1+nState; 
+		MEMSET(ADR(aDeviceStateTable),0,SIZEOF(aDeviceStateTable));
+
+    END_IF
+  END_IF
+ 403: 
+  IF (fbSQLResult.Read(nStartIndex:=0, nRecordCount:=3,pData:=ADR(aDeviceStateTable),cbData:=SIZEOF(aDeviceStateTable),bWithVerifying:=TRUE,bDataRelease:=TRUE) )THEN
+	 ipResultEvent := fbSQLResult.ipTcResultEvent;
+     nRecs := fbSQLResult.nDataCount;
+	IF fbSQLResult.bError THEN
+         nState := 9000+nState; 
+    ELSE
+        nState := 500;// 1+nState; 
+    END_IF
+END_IF	
+
+500:
+	//Device State Table Instantiation
+	IF F_GetStatesParmas( aStatesParamsTable:= aDeviceStateTable,
+		Table := StateTable)THEN
+         nState := 9000+nState; 
+    ELSE
+        nState := -1;// 1+nState; 
+    END_IF
+	
+
+900: //disconnect
+	IF (fbMySQLDB.Disconnect()) THEN
+		nState:=-1;
+		ELSE
+			nState:=255;
+	END_IF
+
+255:
+		;
+END_CASE]]></ST>
+    </Implementation>
+    <LineIds Name="FB_MySQL">
+      <LineId Id="24" Count="1" />
+      <LineId Id="187" Count="0" />
+      <LineId Id="135" Count="0" />
+      <LineId Id="26" Count="0" />
+      <LineId Id="136" Count="0" />
+      <LineId Id="28" Count="6" />
+      <LineId Id="83" Count="0" />
+      <LineId Id="127" Count="0" />
+      <LineId Id="86" Count="9" />
+      <LineId Id="186" Count="0" />
+      <LineId Id="185" Count="0" />
+      <LineId Id="98" Count="18" />
+      <LineId Id="158" Count="0" />
+      <LineId Id="157" Count="0" />
+      <LineId Id="170" Count="0" />
+      <LineId Id="181" Count="1" />
+      <LineId Id="178" Count="2" />
+      <LineId Id="176" Count="0" />
+      <LineId Id="161" Count="0" />
+      <LineId Id="120" Count="0" />
+      <LineId Id="122" Count="4" />
+      <LineId Id="121" Count="0" />
+      <LineId Id="117" Count="2" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

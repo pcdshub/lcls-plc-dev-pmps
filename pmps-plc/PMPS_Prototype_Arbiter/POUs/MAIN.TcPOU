@@ -1,11 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.12">
-  <POU Name="MAIN" Id="{8a7bcfd2-1a2b-4363-aa47-c19391bf1f9c}" SpecialFunc="None">
+  <POU Name="MAIN" Id="{2eae986c-3e1f-4f57-a0b9-148d692780ac}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM MAIN
 VAR
 	fbDev1	:	FB_ExampleDeviceSM_All;
 	fbDev2	:	FB_ExampleDeviceSM_All;
 	
+	fbDev3	:	FB_ExampleDeviceSM_DB;
 	BP1	:	ST_BeamParams;
 	BP2	:	ST_BeamParams;
 	Test	:	BOOL;
@@ -25,6 +26,7 @@ Test := F_SafeBPCompare(BP1,BP2);
 IF Initialize THEN
 	fbDev1(cBase := 10);
 	fbDev2(cBase := 1000);
+	fbDev3(cBase := 0);
 	fbArbiter.A_Init();
 	Initialize := FALSE;
 END_IF
@@ -32,12 +34,12 @@ END_IF
 //Example devices
 fbDev1();
 fbDev2();
-
+fbDev3();
 PMPS_Arbiter();
 
 ]]></ST>
     </Implementation>
-    <Action Name="FB_Vis" Id="{dbfecf7e-be1a-0abd-04cf-64b55d658bf1}">
+    <Action Name="FB_Vis" Id="{7f2b98c0-9a2e-0689-0e31-b1aba5fd14c1}">
       <Implementation>
         <NWL>
           <XmlArchive>
@@ -312,7 +314,7 @@ PMPS_Arbiter();
         </NWL>
       </Implementation>
     </Action>
-    <Action Name="Initialize" Id="{b0ee480a-3d4b-001d-04c4-43cdc47895c8}">
+    <Action Name="Initialize" Id="{143b1fb4-197f-0c29-0e3a-96d33ce00af8}">
       <Implementation>
         <ST><![CDATA[]]></ST>
       </Implementation>
@@ -325,6 +327,7 @@ PMPS_Arbiter();
       <LineId Id="46" Count="1" />
       <LineId Id="50" Count="0" />
       <LineId Id="71" Count="0" />
+      <LineId Id="87" Count="0" />
       <LineId Id="55" Count="0" />
       <LineId Id="54" Count="0" />
       <LineId Id="51" Count="0" />
