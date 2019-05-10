@@ -5,6 +5,9 @@
 FUNCTION_BLOCK FB_ExampleDeviceSM_DB
 VAR_INPUT
 	cBase: UDINT;
+	iDBID:UDINT;
+	sDBNetId: STRING;
+	sDeviceID: STRING;
 END_VAR
 VAR_OUTPUT
 END_VAR
@@ -22,9 +25,9 @@ VAR
 	
 	stCheckState: ST_DeviceState;
 	stTargetState	:	ST_DeviceState; //Target device state
-	fbMySQL:FB_MySQL;
+	fbDBClient:FB_MySQL_Client;
 	bInitReady: BOOL :=FALSE;
-	aStateTable : ARRAY[1..10] OF ST_DeviceStateTable;
+	//aStateTable : ARRAY[1..MAX_DEVICE_STATES] OF ST_DeviceStateTable;
 
 END_VAR
 VAR PERSISTENT
@@ -625,7 +628,7 @@ VerifyingNewTargetState:INT:=10;"</v>
                       <v n="Priority">0</v>
                     </o>
                   </l>
-                  <v n="StateChartGuid">{9f11e1df-66ca-4e6e-ba68-13916bf8d386}</v>
+                  <v n="StateChartGuid">{07374d26-c3b6-4670-80e4-4bbab18c2f48}</v>
                   <v n="EntryLocalVariableName">""</v>
                   <v n="EntryActionName">"Init"</v>
                   <v n="EntryParametersString">""</v>
@@ -2481,10 +2484,10 @@ fbGovernor.q_xTransitionPermitted"</v>
                           <v n="Extensible">false</v>
                         </o>
                         <o n="RValue" t="BoxTreeBox">
-                          <v n="BoxType">"FB_MySQL"</v>
+                          <v n="BoxType">"FB_MySQL_Client"</v>
                           <o n="Instance" t="Operand">
-                            <v n="Operand">"fbMySQL"</v>
-                            <v n="Type">"FB_MySQL"</v>
+                            <v n="Operand">"fbDBClient"</v>
+                            <v n="Type">"FB_MySQL_Client"</v>
                             <v n="Comment">""</v>
                             <v n="SymbolComment">""</v>
                             <v n="Address">""</v>
@@ -2496,27 +2499,11 @@ fbGovernor.q_xTransitionPermitted"</v>
                             <v n="LValue">false</v>
                             <v n="Boolean">false</v>
                             <v n="IsInstance">true</v>
-                            <v n="Id">155L</v>
+                            <v n="Id">170L</v>
                           </o>
                           <o n="OutputItems" t="OutputItemList">
-                            <l2 n="OutputItems" cet="Operand">
+                            <l2 n="OutputItems">
                               <n />
-                              <o>
-                                <v n="Operand">"aStateTable"</v>
-                                <v n="Type">"ARRAY [1..10] OF ST_DeviceStateTable"</v>
-                                <v n="Comment">""</v>
-                                <v n="SymbolComment">""</v>
-                                <v n="Address">""</v>
-                                <o n="Flags" t="Flags">
-                                  <v n="Flags">0</v>
-                                  <v n="Fixed">false</v>
-                                  <v n="Extensible">false</v>
-                                </o>
-                                <v n="LValue">true</v>
-                                <v n="Boolean">false</v>
-                                <v n="IsInstance">false</v>
-                                <v n="Id">157L</v>
-                              </o>
                             </l2>
                           </o>
                           <o n="Flags" t="Flags">
@@ -2528,8 +2515,8 @@ fbGovernor.q_xTransitionPermitted"</v>
                           <l2 n="InputItems" cet="BoxTreeOperand">
                             <o>
                               <o n="Operand" t="Operand">
-                                <v n="Operand">""</v>
-                                <n n="Type" />
+                                <v n="Operand">"sDeviceID"</v>
+                                <v n="Type">"STRING"</v>
                                 <v n="Comment">""</v>
                                 <v n="SymbolComment">""</v>
                                 <v n="Address">""</v>
@@ -2547,8 +2534,8 @@ fbGovernor.q_xTransitionPermitted"</v>
                             </o>
                             <o>
                               <o n="Operand" t="Operand">
-                                <v n="Operand">""</v>
-                                <n n="Type" />
+                                <v n="Operand">"iDBID"</v>
+                                <v n="Type">"UDINT"</v>
                                 <v n="Comment">""</v>
                                 <v n="SymbolComment">""</v>
                                 <v n="Address">""</v>
@@ -2566,8 +2553,8 @@ fbGovernor.q_xTransitionPermitted"</v>
                             </o>
                             <o>
                               <o n="Operand" t="Operand">
-                                <v n="Operand">""</v>
-                                <n n="Type" />
+                                <v n="Operand">"sDBNetId"</v>
+                                <v n="Type">"STRING"</v>
                                 <v n="Comment">""</v>
                                 <v n="SymbolComment">""</v>
                                 <v n="Address">""</v>
@@ -2608,23 +2595,21 @@ fbGovernor.q_xTransitionPermitted"</v>
                               <v>sDeviceID</v>
                               <v>iDBID</v>
                               <v>sDBNetId</v>
-                              <v>nState</v>
+                              <v>bGetData</v>
                             </l2>
                             <l2 n="Types" cet="String">
                               <v>STRING</v>
                               <v>UDINT</v>
                               <v>STRING</v>
-                              <v>INT</v>
+                              <v>BOOL</v>
                             </l2>
                           </o>
                           <o n="OutputParam" t="ParamList">
                             <l2 n="Names" cet="String">
                               <v>StateTable</v>
-                              <v>aDeviceStateTable</v>
                             </l2>
                             <l2 n="Types" cet="String">
                               <v>FB_LinearDeviceStateTable</v>
-                              <v>ARRAY [1..10] OF ST_DeviceStateTable</v>
                             </l2>
                           </o>
                           <v n="CallType" t="Operator">FunctionBlock</v>
@@ -2633,7 +2618,7 @@ fbGovernor.q_xTransitionPermitted"</v>
                           <n n="STSnippet" />
                           <v n="ContainsExtensibleInputs">false</v>
                           <v n="ProvidesSTSnippet">false</v>
-                          <v n="Id">156L</v>
+                          <v n="Id">171L</v>
                         </o>
                         <v n="Id">154L</v>
                       </o>
@@ -2693,7 +2678,7 @@ F_SetStateParams(
 	Table := stDevice.StateTable
 );
 //Connect to DB and get state table data
-fbMySQL.nState:=400; //(nState:=400,aDeviceStateTable=>aStateTable);
+fbDBClient.bGetData:= TRUE;//fbMySQL.nState:=400; 
 
 stDevice.StateTable.A_Lookup(
 		key := stDevice.nTransitionState,

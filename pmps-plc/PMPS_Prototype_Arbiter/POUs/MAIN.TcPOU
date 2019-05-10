@@ -26,7 +26,7 @@ Test := F_SafeBPCompare(BP1,BP2);
 IF Initialize THEN
 	fbDev1(cBase := 10);
 	fbDev2(cBase := 1000);
-	fbDev3(cBase := 0);
+	fbDev3(cBase := 0,iDBID:=1,sDBNetId:='172.21.42.126.1.1',sDeviceID:='1');
 	fbArbiter.A_Init();
 	Initialize := FALSE;
 END_IF

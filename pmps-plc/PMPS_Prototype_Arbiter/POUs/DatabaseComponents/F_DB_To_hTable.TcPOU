@@ -1,31 +1,32 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.12">
-  <POU Name="F_GetStatesParmas" Id="{1093a35b-2b53-0c90-0d30-9648004c41ab}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION F_GetStatesParmas : BOOL
+  <POU Name="F_DB_To_hTable" Id="{1093a35b-2b53-0c90-0d30-9648004c41ab}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION F_DB_To_hTable : BOOL
 VAR_INPUT
-	aStatesParamsTable : ARRAY[1..10] OF ST_DeviceStateTable;
+	aStatesParamsTable : ARRAY[1..MAX_DEVICE_STATES] OF ST_DeviceStateTable;
+	nRecordCount: UDINT;
 END_VAR
 VAR_IN_OUT
 	Table	:	FB_LinearDeviceStateTable;
 END_VAR
 VAR
 	stDeviceState	:	ST_DeviceState;
-	iRow : INT:=1;
+	iRow : UDINT:=1;
 END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[Table.A_Reset();
 //Device State Table Instantiation
-F_SetStateParams(
+(*F_SetStateParams(
 	nStateRef := 0,
 	rPosition := 0,
-	rTolerance := 10,
+	rTolerance := 0,
 	stBeamParams := PMPS_GVL_BeamParams.cstFullBeam,
 	Table := Table
 );
-
-
-FOR iRow:=1 TO 10 BY 1 DO
+*)
+IF (nRecordCount>0) THEN
+	FOR iRow:=1 TO nRecordCount BY 1 DO
 	stDeviceState.nStateRef := DINT_TO_UDINT(aStatesParamsTable[iRow].iStateID);
 	stDeviceState.rPosition := aStatesParamsTable[iRow].rTargetPosition;
 	stDeviceState.rTolerance := aStatesParamsTable[iRow].rTolerance;  
@@ -38,30 +39,19 @@ FOR iRow:=1 TO 10 BY 1 DO
 		putValue := stDeviceState
 	);
 END_FOR;
-(*F_GetStatesParmas :=F_SetStateParams(
-	nStateRef := 100,
-	rPosition := 0,
-	rTolerance := 10,
-	stBeamParams := PMPS_GVL_BeamParams.cstFullBeam,
-	Table := Table
-);*)
+END_IF
 
 
-F_GetStatesParmas := Table.bOk;]]></ST>
+F_DB_To_hTable := Table.bOk;]]></ST>
     </Implementation>
-    <LineIds Name="F_GetStatesParmas">
+    <LineIds Name="F_DB_To_hTable">
       <LineId Id="30" Count="0" />
       <LineId Id="50" Count="6" />
       <LineId Id="48" Count="1" />
       <LineId Id="47" Count="0" />
-      <LineId Id="35" Count="0" />
-      <LineId Id="20" Count="2" />
-      <LineId Id="32" Count="0" />
-      <LineId Id="34" Count="0" />
-      <LineId Id="33" Count="0" />
-      <LineId Id="24" Count="5" />
-      <LineId Id="41" Count="5" />
-      <LineId Id="39" Count="1" />
+      <LineId Id="71" Count="11" />
+      <LineId Id="69" Count="1" />
+      <LineId Id="29" Count="0" />
       <LineId Id="38" Count="0" />
       <LineId Id="7" Count="0" />
     </LineIds>
