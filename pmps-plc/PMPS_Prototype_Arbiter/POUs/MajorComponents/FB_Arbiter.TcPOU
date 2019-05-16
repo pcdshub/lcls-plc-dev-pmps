@@ -194,6 +194,155 @@ ELSE
 END_IF]]></ST>
       </Implementation>
     </Action>
+    <Method Name="AddRequest" Id="{1e467c4a-5c4c-0f06-2179-99208c80fe24}">
+      <Declaration><![CDATA[METHOD AddRequest : BOOL
+VAR_INPUT
+	nStateID	:	DWORD; //StateID of state requesting beam parameter set
+	stReqBP		:	ST_BeamParams;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF nStateID <> EXCLUDED_ASSERTION_ID THEN
+	THIS^.fbBPAssertionPool.A_Add(
+		key := nStateID,
+		putValue := stReqBP
+	);
+END_IF
+	
+IF NOT THIS^.fbBPAssertionPool.bOk THEN
+	; //Overflow <TODO>
+END_IF
+
+AddRequest := THIS^.fbBPAssertionPool.bOk;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="ArbitrateBP" Id="{492794c7-4e84-09b8-3bed-5a488badb9f1}">
+      <Declaration><![CDATA[METHOD ArbitrateBP : ST_BeamParams
+VAR_INPUT
+	stBP1	:	ST_BeamParams;
+	stBP2	:	ST_BeamParams;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[//<TODO>Add something here to register the key that won for each param
+
+//Attenuation
+ArbitrateBP.fAtt := MAX(stBP1.fAtt, stBP2.fAtt);
+
+//Pulse energy
+ArbitrateBP.fPP_mJ := MIN(stBP1.fPP_mJ, stBP2.fPP_mJ);
+
+//Photon energy ranges
+ArbitrateBP.neVReqRange := stBP1.neVReqRange AND stBP2.neVReqRange;
+
+//Rate
+ArbitrateBP.nRate := MIN(stBP1.nRate, stBP2.nRate);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="CheckRequest" Id="{4eeb385e-4a95-0260-0556-e5cedcc277ec}">
+      <Declaration><![CDATA[(* Searches state assertion pool for a state-id, and sets q_xStateIDFound true if found.
+
+Use like so:
+
+fbArbiter.A_VerifyAssertion(
+i_nStateId := nStateIDAssertionToCheck
+);
+
+IF fbArbiter.q_xStateIDFound THEN:
+	Do something
+ELSE:
+	Don't do something
+
+*)
+METHOD CheckRequest : BOOL
+VAR_INPUT
+	nReqID	:	DWORD;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.fbBPAssertionPool.A_Lookup(key := nReqID);
+
+CheckRequest := THIS^.fbBPAssertionPool.bOk;
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="GetArbitratedBP" Id="{42c0af72-5a4d-02e2-043b-0505463fd885}">
+      <Declaration><![CDATA[METHOD GetArbitratedBP : ST_BeamParams
+VAR_INPUT
+END_VAR
+VAR
+	getPosPtr	: POINTER TO T_HashTableEntry := 0;
+	getBPStruct	:	ST_BeamParams;
+	
+	stOutputBP	:	ST_BeamParams; //Holding struct for arbitration process
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[//Arbitrate
+(*
+This step cycles through every hash table entry, comparing
+the beam parameters from each assertion to what we're planning
+to assert.
+
+The safer of the two parameters is kept so at the end we may
+have a mix of beam parameters, the composition being safe for
+all asserters.
+
+*)
+
+THIS^.fbBPAssertionPool.A_GetFirst( putPosPtr := 0, getPosPtr=>getPosPtr, getValue=>getBPStruct );
+IF THIS^.fbBPAssertionPool.bOk THEN //If the table is empty (not OK), we are left with the default stOutputBP set above.
+	
+	//The first entry in the hash table is taken as the setting to arbitrate against
+	stOutputBP := F_SetBeamParams(
+		fAtt := getBPStruct.fAtt,
+		fPP_mJ := getBPStruct.fPP_mJ,
+		neVReqRange	:= getBPStruct.neVReqRange,
+		nRate := getBPStruct.nRate
+	);
+
+	REPEAT
+		THIS^.fbBPAssertionPool.A_GetNext( putPosPtr := 0, getPosPtr=>getPosPtr, getValue=>getBPStruct );
+		IF THIS^.fbBPAssertionPool.bOk THEN
+			stOutputBP := ArbitrateBP(stOutputBP, getBPStruct);
+		END_IF
+	UNTIL NOT fbBPAssertionPool.bOk
+	END_REPEAT
+ELSE
+	//Safest parameters to start
+	stOutputBP := PMPS_GVL_BeamParams.cstSafeBeam;
+END_IF
+
+GetArbitratedBP := stOutputBP;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="RemoveRequest" Id="{91259d93-276a-0acc-0f44-27a89e3b464d}">
+      <Declaration><![CDATA[(* Searches for a state-id, and removes it from the assertion pool.
+
+Use like so:
+fbArbiter.A_RemoveAssertion(
+i_nStateId := nStateIDAssertionToRemove
+);
+
+*)
+METHOD RemoveRequest : BOOL
+VAR_INPUT
+	nReqId	:	DWORD;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF nReqId <> EXCLUDED_ASSERTION_ID THEN
+	THIS^.fbBPAssertionPool.A_Remove(key := nReqId);
+	
+	IF THIS^.fbBPAssertionPool.bOk THEN
+		;
+	ELSE
+		;
+	END_IF
+END_IF
+
+RemoveRequest := THIS^.fbBPAssertionPool.bOk;]]></ST>
+      </Implementation>
+    </Method>
     <LineIds Name="FB_Arbiter">
       <LineId Id="18" Count="16" />
       <LineId Id="77" Count="0" />
@@ -273,6 +422,36 @@ END_IF]]></ST>
       <LineId Id="11" Count="0" />
       <LineId Id="6" Count="0" />
       <LineId Id="12" Count="1" />
+    </LineIds>
+    <LineIds Name="FB_Arbiter.AddRequest">
+      <LineId Id="27" Count="10" />
+      <LineId Id="20" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Arbiter.ArbitrateBP">
+      <LineId Id="19" Count="1" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="10" Count="8" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Arbiter.CheckRequest">
+      <LineId Id="12" Count="2" />
+      <LineId Id="32" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Arbiter.GetArbitratedBP">
+      <LineId Id="6" Count="10" />
+      <LineId Id="25" Count="18" />
+      <LineId Id="52" Count="0" />
+      <LineId Id="44" Count="0" />
+      <LineId Id="53" Count="0" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="51" Count="0" />
+      <LineId Id="50" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_Arbiter.RemoveRequest">
+      <LineId Id="10" Count="7" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="27" Count="0" />
+      <LineId Id="26" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>

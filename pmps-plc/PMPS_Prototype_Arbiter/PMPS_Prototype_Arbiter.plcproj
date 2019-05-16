@@ -24,6 +24,14 @@
     <Compile Include="DUTs\ST_BeamParams.TcDUT">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DUTs\ST_BeamParamsReadback.TcDUT">
+      <SubType>Code</SubType>
+      <ExcludeFromBuild>true</ExcludeFromBuild>
+    </Compile>
+    <Compile Include="DUTs\ST_ReqBeamParams.TcDUT">
+      <SubType>Code</SubType>
+      <ExcludeFromBuild>true</ExcludeFromBuild>
+    </Compile>
     <Compile Include="DUTs\ST_BinarySolidAttenuator.TcDUT">
       <SubType>Code</SubType>
     </Compile>
@@ -137,16 +145,25 @@
     <Compile Include="POUs\TestComponents\FB_BPTM_Test.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\TestComponents\FB_BreakTheArbiter.TcPOU">
+    <Compile Include="POUs\TestComponents\FB_Arbiter_Test.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\TestComponents\FB_PhotonEnergyWatcher_Test.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\TestComponents\FB_eVWithinSpec_Test.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\TestComponents\FB_FastFault_Test.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\TestComponents\FB_SafeBPCompare_Test.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\TestComponents\FB_MachineSimulator.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\TestComponents\FB_SolidAttenuator.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\TestComponents\ST_TestIncrement.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\TestSetups.TcPOU">

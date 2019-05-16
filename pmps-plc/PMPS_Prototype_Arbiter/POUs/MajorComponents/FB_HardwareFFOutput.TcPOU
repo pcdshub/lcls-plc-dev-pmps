@@ -13,8 +13,17 @@ END_VAR
 VAR
 	xOK	:	BOOL;
 	rtReset	:	R_TRIG;
+	
+	//Fault registration list
+	//Fast faults add their name here to indicate they
+	//"check in" to indicate their status with this fast
+	//fault output. ie. They may be a culprit of beam off.
+	asList	:	ARRAY[0..cMaxList] OF T_MaxString;
+	nIndex	:	INT;
 END_VAR
-]]></Declaration>
+VAR CONSTANT
+	cMaxList	:	INT := 99;
+END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[rtReset(CLK:=i_xReset);
 xOK S= rtReset.Q;]]></ST>
@@ -37,6 +46,24 @@ END_IF
         <ST><![CDATA[q_xFastFaultOut := xOK OR i_xVeto;]]></ST>
       </Implementation>
     </Action>
+    <Method Name="Register" Id="{cb4480cd-cebd-021d-3625-c2443a033226}">
+      <Declaration><![CDATA[METHOD Register : BOOL
+VAR_INPUT
+	i_sFFName	:	STRING; //Fast fault FB variable name to register
+END_VAR
+
+VAR
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF THIS^.nIndex <= THIS^.cMaxList THEN
+	THIS^.asList[MIN(THIS^.nIndex,THIS^.cMaxList)]:=i_sFFName;
+	THIS^.nIndex := THIS^.nIndex + 1;
+	Register := TRUE; //Add successful
+ELSE
+	Register := FALSE; //failed to add name to list
+END_IF]]></ST>
+      </Implementation>
+    </Method>
     <LineIds Name="FB_HardwareFFOutput">
       <LineId Id="28" Count="0" />
       <LineId Id="44" Count="0" />
@@ -48,6 +75,10 @@ END_IF
     </LineIds>
     <LineIds Name="FB_HardwareFFOutput.EvaluateOutput">
       <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_HardwareFFOutput.Register">
+      <LineId Id="35" Count="5" />
+      <LineId Id="12" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>

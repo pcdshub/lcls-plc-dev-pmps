@@ -111,7 +111,7 @@ no PMPS faults. *)
 		Arbiter.A_VerifyAssertion(
 			i_nStateID := stDevice.stTransitionState.nStateRef
 		);
-		xTransitionOK := Arbiter.q_xStateIDFound AND F_SafeBPCompare(PMPS_GVL_BeamParams.stCurrentBeamParameters, stDevice.stTransitionState.stReqBeamParam);
+		xTransitionOK := Arbiter.q_xStateIDFound AND F_SafeBPCompare(i_stCurrentBeamParams, stDevice.stTransitionState.stReqBeamParam);
 		
 		//Set the target state for evaluation in further logic
 		stdevice.StateTable.A_Lookup(key := stDevice.nTargetState);
@@ -201,10 +201,16 @@ mcPower(
 
 //MPS Faults
 //Fault if the beam is unsafe for current state
-ffBeamParamsOK(i_xOK:=F_SafeBPCompare(PMPS_GVL_BeamParams.stCurrentBeamParameters, stLatchedBeamParams), i_xReset:=i_xResetMPSFault);
+ffBeamParamsOK(i_xOK:=F_SafeBPCompare(i_stCurrentBeamParams, stLatchedBeamParams), 
+				i_xReset:=i_xResetMPSFault,
+				io_fbFFHWO := FastFaultOutput);
 
 //Fault if the position is outside of the permitted range
-ffActuatorBoundsOK(i_xOK := (lrPosition <= lrMPSUpperLimit AND lrPosition >= lrMPSLowerLimit), i_xReset:=i_xResetMPSFault);
+ffActuatorBoundsOK(i_xOK := (lrPosition <= lrMPSUpperLimit AND lrPosition >= lrMPSLowerLimit), 
+					i_xReset:=i_xResetMPSFault,
+				io_fbFFHWO := FastFaultOutput);
+
+
 	
 //Collect all other faults
 q_xFault := NOT ffBeamParamsOK.o_xFFLine OR
@@ -223,8 +229,13 @@ FastFaultOutput.CheckIn(NOT q_xFault);
       <LineId Id="1668" Count="23" />
       <LineId Id="1693" Count="0" />
       <LineId Id="1705" Count="0" />
-      <LineId Id="1700" Count="4" />
+      <LineId Id="1700" Count="2" />
+      <LineId Id="1801" Count="1" />
+      <LineId Id="1703" Count="1" />
       <LineId Id="1694" Count="0" />
+      <LineId Id="1803" Count="1" />
+      <LineId Id="1800" Count="0" />
+      <LineId Id="1799" Count="0" />
       <LineId Id="1706" Count="0" />
       <LineId Id="1695" Count="0" />
       <LineId Id="1713" Count="0" />
