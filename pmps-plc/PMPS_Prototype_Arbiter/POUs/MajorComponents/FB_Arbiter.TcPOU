@@ -301,7 +301,7 @@ IF THIS^.fbBPAssertionPool.bOk THEN //If the table is empty (not OK), we are lef
 	);
 
 	REPEAT
-		THIS^.fbBPAssertionPool.A_GetNext( putPosPtr := 0, getPosPtr=>getPosPtr, getValue=>getBPStruct );
+		THIS^.fbBPAssertionPool.A_GetNext( putPosPtr := THIS^.fbBPAssertionPool.getPosPtr, getPosPtr=>getPosPtr, getValue=>getBPStruct );
 		IF THIS^.fbBPAssertionPool.bOk THEN
 			stOutputBP := ArbitrateBP(stOutputBP, getBPStruct);
 		END_IF

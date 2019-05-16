@@ -32,10 +32,12 @@ VAR
 	
 	
 	stArbitratedBP	:	ST_BeamParams;
-	stExpectedBP	:	ST_BeamParams;
+	stExpectedBP	:	ST_BeamParams := PMPS_GVL_BeamParams.cstFullBeam;
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[//Initialize arbiter
+        <ST><![CDATA[TEST('Arbitration');
+
+//Initialize arbiter
 fbArbiter.A_Init();
 
 stAttReqBP.fAtt := 50;
@@ -59,11 +61,11 @@ stExpectedBP.fPP_mJ	:=  stPPEReqBP.fPP_mJ;
 stExpectedBP.neVReqRange := stEVReqBP.neVReqRange;
 
 
-TEST('Arbitration');
+
 
 stArbitratedBP := fbArbiter.GetArbitratedBP();
 
-fbAssert.AssertEquals(stExpectedBP, stArbitratedBP,
+fbAssert.AssertFalse(F_DifferentBeamParams(stExpectedBP, stArbitratedBP),
 				'Arbitrated BP does not match expected.');
 ]]></ST>
       </Implementation>
@@ -123,7 +125,10 @@ RunTests := TcUnit.E_TestSuiteRunState.FINISHED;]]></ST>
       <LineId Id="9" Count="0" />
     </LineIds>
     <LineIds Name="FB_Arbiter_Test.Arbitration">
-      <LineId Id="47" Count="19" />
+      <LineId Id="47" Count="0" />
+      <LineId Id="90" Count="0" />
+      <LineId Id="89" Count="0" />
+      <LineId Id="48" Count="18" />
       <LineId Id="86" Count="0" />
       <LineId Id="88" Count="0" />
       <LineId Id="87" Count="0" />
