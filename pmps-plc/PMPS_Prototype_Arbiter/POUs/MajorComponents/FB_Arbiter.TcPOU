@@ -173,6 +173,8 @@ ELSE
 	stOutputBP := PMPS_GVL_BeamParams.cstSafeBeam;
 END_IF
 
+THIS^.q_stBeamParams := stOutputBP;
+
 GetArbitratedBP := stOutputBP;]]></ST>
       </Implementation>
     </Method>
@@ -232,6 +234,7 @@ RemoveRequest := THIS^.fbBPAssertionPool.bOk;]]></ST>
       <LineId Id="44" Count="0" />
       <LineId Id="53" Count="0" />
       <LineId Id="5" Count="0" />
+      <LineId Id="62" Count="1" />
       <LineId Id="51" Count="0" />
       <LineId Id="50" Count="0" />
     </LineIds>
