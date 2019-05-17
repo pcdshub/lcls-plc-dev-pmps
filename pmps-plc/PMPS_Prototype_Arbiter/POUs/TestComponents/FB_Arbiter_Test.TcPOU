@@ -30,6 +30,8 @@ VAR
 	nEVReqID	:	UDINT	:= 3;
 	stEVReqBP	:	ST_BeamParams := PMPS_GVL_BeamParams.cstFullBeam;
 	
+	nRateReqID	:	UDINT	:= 4;
+	stRateReqBP	:	ST_BeamParams := PMPS_GVL_BeamParams.cstFullBeam;
 	
 	stArbitratedBP	:	ST_BeamParams;
 	stExpectedBP	:	ST_BeamParams := PMPS_GVL_BeamParams.cstFullBeam;
@@ -43,6 +45,7 @@ fbArbiter.A_Init();
 stAttReqBP.fAtt := 50;
 stPPEReqBP.fPP_mJ := 1;
 stEVReqBP.neVReqRange := 2#1111_1100_1111_1111;
+stRateReqBP.nRate := 120;
 
 //Load arbiter with beam parameter sets
 fbAssert.AssertTrue(fbArbiter.AddRequest(nAttReqID, stAttReqBP),
@@ -55,13 +58,15 @@ fbAssert.AssertTrue(fbArbiter.AddRequest(nPPEReqID, stPPEReqBP),
 //Load arbiter with beam parameter sets
 fbAssert.AssertTrue(fbArbiter.AddRequest(nEVReqID, stEVReqBP),
 					'Safest stEVReqBP request failed to load');
+					
+//Load arbiter with beam parameter sets
+fbAssert.AssertTrue(fbArbiter.AddRequest(nRateReqID, stRateReqBP),
+					'Safest stEVReqBP request failed to load');
 
 stExpectedBP.fAtt 	:= 	stAttReqBP.fAtt;
 stExpectedBP.fPP_mJ	:=  stPPEReqBP.fPP_mJ;
 stExpectedBP.neVReqRange := stEVReqBP.neVReqRange;
-
-
-
+stExpectedBP.nRate := stRateReqBP.nRate;
 
 stArbitratedBP := fbArbiter.GetArbitratedBP();
 
@@ -100,9 +105,17 @@ TEST('RequestBP');
 fbAssert.AssertTrue(fbArbiter.AddRequest(nId, stReq),
 	'Request failed');
 	
+TEST('DuplicateID');
+fbAssert.AssertFalse(fbArbiter.AddRequest(nId, stReq),
+	'Duplicate request accepted, not good.');
+	
 TEST('CheckBP');
 fbAssert.AssertTrue(fbArbiter.CheckRequest(nId),
 	'Check failed');
+	
+TEST('IDDoesNotExist');
+fbAssert.AssertFalse(fbArbiter.CheckRequest(nId+1),
+	'Check returned true when ID does not exist');
 	
 TEST('RemoveBP');
 fbAssert.AssertTrue(fbArbiter.RemoveRequest(nId),
@@ -128,11 +141,17 @@ RunTests := TcUnit.E_TestSuiteRunState.FINISHED;]]></ST>
       <LineId Id="47" Count="0" />
       <LineId Id="90" Count="0" />
       <LineId Id="89" Count="0" />
-      <LineId Id="48" Count="18" />
+      <LineId Id="48" Count="4" />
+      <LineId Id="115" Count="0" />
+      <LineId Id="53" Count="11" />
+      <LineId Id="111" Count="0" />
+      <LineId Id="113" Count="1" />
+      <LineId Id="112" Count="0" />
+      <LineId Id="65" Count="1" />
       <LineId Id="86" Count="0" />
       <LineId Id="88" Count="0" />
       <LineId Id="87" Count="0" />
-      <LineId Id="67" Count="2" />
+      <LineId Id="69" Count="0" />
       <LineId Id="33" Count="0" />
       <LineId Id="84" Count="0" />
       <LineId Id="83" Count="0" />
@@ -148,7 +167,14 @@ RunTests := TcUnit.E_TestSuiteRunState.FINISHED;]]></ST>
       <LineId Id="185" Count="1" />
       <LineId Id="157" Count="0" />
       <LineId Id="30" Count="0" />
-      <LineId Id="166" Count="4" />
+      <LineId Id="166" Count="0" />
+      <LineId Id="195" Count="1" />
+      <LineId Id="198" Count="0" />
+      <LineId Id="197" Count="0" />
+      <LineId Id="167" Count="3" />
+      <LineId Id="199" Count="1" />
+      <LineId Id="202" Count="0" />
+      <LineId Id="201" Count="0" />
       <LineId Id="179" Count="5" />
     </LineIds>
     <LineIds Name="FB_Arbiter_Test.RunTests">

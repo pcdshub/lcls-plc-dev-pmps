@@ -108,10 +108,8 @@ no PMPS faults. *)
 ////////////////////////////////
 	IF i_xTransitionRequested THEN
 		xTransitionHasBeenRequested	:= TRUE;
-		Arbiter.A_VerifyAssertion(
-			i_nStateID := stDevice.stTransitionState.nStateRef
-		);
-		xTransitionOK := Arbiter.q_xStateIDFound AND F_SafeBPCompare(i_stCurrentBeamParams, stDevice.stTransitionState.stReqBeamParam);
+		
+		xTransitionOK := Arbiter.CheckRequest( stDevice.stTransitionState.nStateRef) AND F_SafeBPCompare(i_stCurrentBeamParams, stDevice.stTransitionState.stReqBeamParam);
 		
 		//Set the target state for evaluation in further logic
 		stdevice.StateTable.A_Lookup(key := stDevice.nTargetState);
@@ -225,7 +223,8 @@ FastFaultOutput.CheckIn(NOT q_xFault);
 ]]></ST>
     </Implementation>
     <LineIds Name="FB_LinearGovernor">
-      <LineId Id="1554" Count="94" />
+      <LineId Id="1554" Count="29" />
+      <LineId Id="1586" Count="62" />
       <LineId Id="1668" Count="23" />
       <LineId Id="1693" Count="0" />
       <LineId Id="1705" Count="0" />

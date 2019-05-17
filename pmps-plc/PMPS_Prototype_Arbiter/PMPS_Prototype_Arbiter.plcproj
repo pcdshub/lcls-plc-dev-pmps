@@ -305,6 +305,18 @@
     </PlaceholderResolution>
   </ItemGroup>
   <ItemGroup>
+    <SubObject Include="FB_Arbiter.A_Arbitrate">
+      <ExcludeFromBuild>true</ExcludeFromBuild>
+    </SubObject>
+    <SubObject Include="FB_Arbiter.A_AssertBP">
+      <ExcludeFromBuild>true</ExcludeFromBuild>
+    </SubObject>
+    <SubObject Include="FB_Arbiter.A_RemoveAssertion">
+      <ExcludeFromBuild>true</ExcludeFromBuild>
+    </SubObject>
+    <SubObject Include="FB_Arbiter.A_VerifyAssertion">
+      <ExcludeFromBuild>true</ExcludeFromBuild>
+    </SubObject>
     <SubObject Include="MAIN.FB_Vis">
       <ExcludeFromBuild>true</ExcludeFromBuild>
     </SubObject>

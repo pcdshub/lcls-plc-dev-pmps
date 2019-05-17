@@ -14,8 +14,8 @@ END_VAR
     <Implementation>
       <ST><![CDATA[]]></ST>
     </Implementation>
-    <Method Name="BPTMAssertsTransitionBeforeFinal" Id="{98536ebe-b9e5-0115-158c-f5a26516eddb}">
-      <Declaration><![CDATA[METHOD PRIVATE BPTMAssertsTransitionBeforeFinal
+    <Method Name="BPTMBasicFunction" Id="{98536ebe-b9e5-0115-158c-f5a26516eddb}">
+      <Declaration><![CDATA[METHOD PRIVATE BPTMBasicFunction
 VAR_INPUT
 END_VAR
 VAR
@@ -28,7 +28,8 @@ VAR
 	
  	nReqID	:	UDINT	:= 2;
 	stReqAssertion	:	ST_BeamParams := PMPS_GVL_BeamParams.cstSafeBeam;
-	Assert: INT;
+	
+	fbMachine	:	FB_MachineSimulator;
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[//Initialize arbiter
@@ -53,8 +54,50 @@ fbAssert.AssertTrue(
 	fbBPTM.UML_SC_BeamParameterTransitionManager.States[fbBPTM.UML_SC_BeamParameterTransitionManager.Names.WaitingForTransitionAssertion].Active,
 	'BPTM did not move into Waiting for transition assertion'); 
 	
-fbArbiter.A_VerifyAssertion(i_nStateID := nTransitionID);
-fbAssert.AssertTrue(fbArbiter.q_xStateIDFound, 'Arbiter did not accept BPTM transition assertion');]]></ST>
+
+fbAssert.AssertTrue(fbArbiter.CheckRequest(nTransitionID), 'Arbiter did not accept BPTM transition assertion');
+
+
+TEST('BPTM: Arbiter Only Has Transition');
+fbAssert.AssertTrue(fbArbiter.CheckRequest(nTransitionID),
+	'Arbiter does not have transition assertion.');
+	
+TEST('BPTM waits for transition BP');	
+fbAssert.AssertFalse(fbArbiter.CheckRequest(nReqID),
+	'Arbiter already has final ID before transition conditions are met');
+	
+fbAssert.AssertFalse(fbBPTM.q_xTransitionAuthorized,
+	'Transition should not be authorized until the arbiter has final assertion');
+
+TEST('BPTM Requests Final');
+fbBPTM(fbArbiter := fbArbiter,
+	stCurrentBeamParameters := stTransitionAssertion);
+	
+fbAssert.AssertTrue(fbArbiter.CheckRequest(nReqID),
+	'Final assertion should be in arbiter');
+	
+TEST('BPTM Authorizes Transition');
+fbAssert.AssertTrue(fbBPTM.q_xTransitionAuthorized,
+	'Transition should be authorized at this point');
+	
+TEST('BPTM Current assertion id is set');
+fbAssert.AssertEquals(nReqID, fbBPTM.nCurrentAssertionID,
+	'nCurrentAssertionID not set.');
+	
+TEST('BPTM Transition Deauthorized');
+fbBPTM(fbArbiter := fbArbiter,
+		i_xDoneMoving := TRUE);
+fbAssert.AssertFalse(fbBPTM.q_xTransitionAuthorized,
+	'Transition authorization should go away when done moving');
+	
+TEST('BPTM Transition BP request removed');
+fbAssert.AssertFalse(fbArbiter.CheckRequest(nTransitionID),
+	'Transition ID still in arbiter');
+	
+//Basic testing is complete, interruption functionality testing next
+//Continuing to use the same BPTM because internal variable nCurrentAssertionID is now non-zero
+
+]]></ST>
       </Implementation>
     </Method>
     <Method Name="FB_init" Id="{d1fd0861-4ec7-0a65-3141-97e8eaf2a151}">
@@ -74,7 +117,7 @@ END_VAR
       <Declaration><![CDATA[METHOD RunTests : TCUNIT.E_TestSuiteRunState
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[BPTMAssertsTransitionBeforeFinal();
+        <ST><![CDATA[BPTMBasicFunction();
 
 RunTests := TcUnit.E_TestSuiteRunState.FINISHED;]]></ST>
       </Implementation>
@@ -82,7 +125,7 @@ RunTests := TcUnit.E_TestSuiteRunState.FINISHED;]]></ST>
     <LineIds Name="FB_BPTM_Test">
       <LineId Id="9" Count="0" />
     </LineIds>
-    <LineIds Name="FB_BPTM_Test.BPTMAssertsTransitionBeforeFinal">
+    <LineIds Name="FB_BPTM_Test.BPTMBasicFunction">
       <LineId Id="11" Count="0" />
       <LineId Id="5" Count="0" />
       <LineId Id="10" Count="0" />
@@ -97,6 +140,25 @@ RunTests := TcUnit.E_TestSuiteRunState.FINISHED;]]></ST>
       <LineId Id="42" Count="0" />
       <LineId Id="44" Count="3" />
       <LineId Id="30" Count="0" />
+      <LineId Id="77" Count="1" />
+      <LineId Id="76" Count="0" />
+      <LineId Id="79" Count="1" />
+      <LineId Id="90" Count="0" />
+      <LineId Id="81" Count="2" />
+      <LineId Id="97" Count="2" />
+      <LineId Id="85" Count="0" />
+      <LineId Id="84" Count="0" />
+      <LineId Id="91" Count="2" />
+      <LineId Id="89" Count="0" />
+      <LineId Id="94" Count="2" />
+      <LineId Id="100" Count="1" />
+      <LineId Id="115" Count="3" />
+      <LineId Id="102" Count="2" />
+      <LineId Id="107" Count="0" />
+      <LineId Id="105" Count="1" />
+      <LineId Id="108" Count="6" />
+      <LineId Id="87" Count="0" />
+      <LineId Id="86" Count="0" />
     </LineIds>
     <LineIds Name="FB_BPTM_Test.FB_init">
       <LineId Id="7" Count="0" />

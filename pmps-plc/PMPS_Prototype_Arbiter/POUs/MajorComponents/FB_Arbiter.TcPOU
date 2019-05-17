@@ -46,95 +46,8 @@ VAR
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[//Arbitrate
-(*
-This step cycles through every hash table entry, comparing
-the beam parameters from each assertion to what we're planning
-to assert.
-
-The safer of the two parameters is kept so at the end we may
-have a mix of beam parameters, the composition being safe for
-all asserters.
-
-*)
-
-//Safest parameters to start
-stOutputBP := F_SetBeamParams(
-	fAtt := 100,
-	fPP_mJ := 0,
-	neVReqRange	:= 0000_0000_0000_0000,
-	nRate := 0
-	);
-
-fbBPAssertionPool.A_GetFirst( putPosPtr := 0, getPosPtr=>getPosPtr, getValue=>getBPStruct );
-IF fbBPAssertionPool.bOk THEN
-	
-	//The first entry in the hash table is taken as the setting to arbitrate against
-	stOutputBP := F_SetBeamParams(
-		fAtt := getBPStruct.fAtt,
-		fPP_mJ := getBPStruct.fPP_mJ,
-		neVReqRange	:= getBPStruct.neVReqRange,
-		nRate := getBPStruct.nRate
-	);
-
-	REPEAT
-		fbBPAssertionPool.A_GetNext( putPosPtr := fbBPAssertionPool.getPosPtr , getPosPtr=>getPosPtr, getValue=>getBPStruct );
-		IF fbBPAssertionPool.bOk THEN
-			A_Arbitrate();
-		END_IF
-	UNTIL NOT fbBPAssertionPool.bOk
-	END_REPEAT
-
-END_IF
-
-q_stBeamParams := stOutputBP;]]></ST>
+      <ST><![CDATA[]]></ST>
     </Implementation>
-    <Action Name="A_Arbitrate" Id="{cd232571-a3df-0041-3bcc-1fe44a9b9a88}">
-      <Implementation>
-        <ST><![CDATA[
-//Attenuation
-//<TODO>Add something here to register the key that won for each param
-stOutputBP.fAtt := MAX(stOutputBP.fAtt, getBPStruct.fAtt);
-
-//Pulse energy
-stOutputBP.fPP_mJ := MIN(stOutputBP.fPP_mJ, getBPStruct.fPP_mJ);
-
-//Photon energy ranges
-stOutputBP.neVReqRange := stOutputBP.neVReqRange AND getBPStruct.neVReqRange;
-
-//Rate
-stOutputBP.nRate := MIN(stOutputBP.nRate, getBPStruct.nRate);]]></ST>
-      </Implementation>
-    </Action>
-    <Action Name="A_AssertBP" Id="{f6e89361-055c-0560-0933-bcdd7d87f7bb}">
-      <Implementation>
-        <ST><![CDATA[//fbTable.A_Add( key := 12345, putValue := putValue, getPosPtr=>getPosPtr, getValue=>getValue );
-
-(* This action adds a state-id and beam parameter set to the beam parameter assertion pool (arbiter
-hash table). Use like so:
-
-fbArbiter.A_AssertBP(
-i_nStateID := nStateID,
-i_stAssertBeamParams := stDesiredBeamParams
-);
-
-*)
-
-IF i_nStateID <> EXCLUDED_ASSERTION_ID THEN
-
-	fbBPAssertionPool.A_Add(
-		key := i_nStateID,
-		putValue := i_stAssertBeamParams,
-		getPosPtr=>getPosPtr,
-		getValue => getBPStruct
-	);
-END_IF
-	
-IF NOT fbBPAssertionPool.bOk THEN
-	; //Overflow <TODO>
-END_IF]]></ST>
-      </Implementation>
-    </Action>
     <Action Name="A_Init" Id="{31a8de0d-caf8-01fc-1b86-c0ff1708d44b}">
       <Implementation>
         <ST><![CDATA[// Clears the entire beam parameter assertion pool (hashtable).
@@ -142,63 +55,11 @@ END_IF]]></ST>
 fbBPAssertionPool.A_Reset();]]></ST>
       </Implementation>
     </Action>
-    <Action Name="A_RemoveAssertion" Id="{024321c3-bc6f-0692-0562-0a65dc09776d}">
-      <Implementation>
-        <ST><![CDATA[
-(* Searches for a state-id, and removes it from the assertion pool.
-
-Use like so:
-fbArbiter.A_RemoveAssertion(
-i_nStateId := nStateIDAssertionToRemove
-);
-
-*)
-
-IF i_nStateId <> EXCLUDED_ASSERTION_ID THEN
-	fbBPAssertionPool.A_Remove(key := i_nStateId, getPosPtr=>getPosPtr, getValue=>getBPStruct);
-	
-	IF fbBPAssertionPool.bOk THEN
-		;
-	ELSE
-		;
-	END_IF
-END_IF]]></ST>
-      </Implementation>
-    </Action>
-    <Action Name="A_VerifyAssertion" Id="{905e28be-7804-0837-3111-bddd3e35d311}">
-      <Implementation>
-        <ST><![CDATA[
-(* Searches state assertion pool for a state-id, and sets q_xStateIDFound true if found.
-
-Use like so:
-
-fbArbiter.A_VerifyAssertion(
-i_nStateId := nStateIDAssertionToCheck
-);
-
-IF fbArbiter.q_xStateIDFound THEN:
-	Do something
-ELSE:
-	Don't do something
-
-*)
-
-IF i_nStateID <> EXCLUDED_ASSERTION_ID THEN
-	
-	fbBPAssertionPool.A_Lookup( key := i_nStateID, getPosPtr=>getPosPtr, getValue=>getBPStruct );
-
-	q_xStateIDFound	:= fbBPAssertionPool.bOk;
-
-ELSE
-	q_xStateIDFound := FALSE;
-END_IF]]></ST>
-      </Implementation>
-    </Action>
     <Method Name="AddRequest" Id="{1e467c4a-5c4c-0f06-2179-99208c80fe24}">
       <Declaration><![CDATA[METHOD AddRequest : BOOL
 VAR_INPUT
 	nStateID	:	DWORD; //StateID of state requesting beam parameter set
-	stReqBP		:	ST_BeamParams;
+	stReqBP		:	ST_BeamParams; //Requested beam params
 END_VAR
 ]]></Declaration>
       <Implementation>
@@ -344,84 +205,11 @@ RemoveRequest := THIS^.fbBPAssertionPool.bOk;]]></ST>
       </Implementation>
     </Method>
     <LineIds Name="FB_Arbiter">
-      <LineId Id="18" Count="16" />
-      <LineId Id="77" Count="0" />
-      <LineId Id="36" Count="9" />
-      <LineId Id="78" Count="0" />
-      <LineId Id="47" Count="9" />
-      <LineId Id="9" Count="0" />
-      <LineId Id="59" Count="0" />
       <LineId Id="58" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Arbiter.A_Arbitrate">
-      <LineId Id="2" Count="0" />
-      <LineId Id="1" Count="0" />
-      <LineId Id="6" Count="0" />
-      <LineId Id="3" Count="0" />
-      <LineId Id="5" Count="0" />
-      <LineId Id="4" Count="0" />
-      <LineId Id="7" Count="0" />
-      <LineId Id="13" Count="0" />
-      <LineId Id="9" Count="0" />
-      <LineId Id="15" Count="0" />
-      <LineId Id="12" Count="0" />
-      <LineId Id="11" Count="0" />
-      <LineId Id="14" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Arbiter.A_AssertBP">
-      <LineId Id="2" Count="0" />
-      <LineId Id="17" Count="2" />
-      <LineId Id="25" Count="0" />
-      <LineId Id="23" Count="0" />
-      <LineId Id="26" Count="2" />
-      <LineId Id="24" Count="0" />
-      <LineId Id="22" Count="0" />
-      <LineId Id="13" Count="1" />
-      <LineId Id="12" Count="0" />
-      <LineId Id="1" Count="0" />
-      <LineId Id="3" Count="4" />
-      <LineId Id="15" Count="1" />
-      <LineId Id="8" Count="0" />
-      <LineId Id="10" Count="1" />
     </LineIds>
     <LineIds Name="FB_Arbiter.A_Init">
       <LineId Id="2" Count="1" />
       <LineId Id="1" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Arbiter.A_RemoveAssertion">
-      <LineId Id="11" Count="1" />
-      <LineId Id="14" Count="0" />
-      <LineId Id="13" Count="0" />
-      <LineId Id="15" Count="2" />
-      <LineId Id="19" Count="0" />
-      <LineId Id="18" Count="0" />
-      <LineId Id="9" Count="0" />
-      <LineId Id="2" Count="0" />
-      <LineId Id="1" Count="0" />
-      <LineId Id="4" Count="0" />
-      <LineId Id="3" Count="0" />
-      <LineId Id="5" Count="0" />
-      <LineId Id="7" Count="1" />
-      <LineId Id="6" Count="0" />
-      <LineId Id="10" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Arbiter.A_VerifyAssertion">
-      <LineId Id="15" Count="3" />
-      <LineId Id="28" Count="0" />
-      <LineId Id="19" Count="2" />
-      <LineId Id="24" Count="0" />
-      <LineId Id="23" Count="0" />
-      <LineId Id="25" Count="2" />
-      <LineId Id="22" Count="0" />
-      <LineId Id="9" Count="1" />
-      <LineId Id="2" Count="0" />
-      <LineId Id="14" Count="0" />
-      <LineId Id="1" Count="0" />
-      <LineId Id="3" Count="0" />
-      <LineId Id="5" Count="0" />
-      <LineId Id="11" Count="0" />
-      <LineId Id="6" Count="0" />
-      <LineId Id="12" Count="1" />
     </LineIds>
     <LineIds Name="FB_Arbiter.AddRequest">
       <LineId Id="27" Count="10" />
