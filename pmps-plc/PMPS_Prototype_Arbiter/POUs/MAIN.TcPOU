@@ -9,7 +9,7 @@ VAR
 	rtInit	:	R_TRIG;
 	Initialize	:	BOOL := TRUE;
 	
-	DemoMode: BOOL;
+	DemoMode: BOOL :=TRUE;
 	fbDev3	:	FB_ExampleDeviceSM_DB;
 
 END_VAR
@@ -31,7 +31,7 @@ IF Initialize THEN
 		fbArbiter := g_fbArbiter);
 	g_fbArbiter.A_Init();
 
-	fbDev3(cBase := 0,iDBID:=1,sDBNetId:='172.21.42.126.1.1',sDeviceID:='1',
+	fbDev3(cBase := 0,iDBID:=1,sDBNetId:='172.21.42.53.1.1',sDeviceID:='1',
 		fbArbiter := g_fbArbiter,
 		fbFastFaultOutput := g_FastFaultOutput1);
 	Initialize := FALSE;
