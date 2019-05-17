@@ -10,6 +10,8 @@ VAR
 	Initialize	:	BOOL := TRUE;
 	
 	DemoMode: BOOL;
+	fbDev3	:	FB_ExampleDeviceSM_DB;
+
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -28,6 +30,8 @@ IF Initialize THEN
 		fbFastFaultOutput := g_FastFaultOutput1,
 		fbArbiter := g_fbArbiter);
 	g_fbArbiter.A_Init();
+
+	fbDev3(cBase := 0,iDBID:=1,sDBNetId:='172.21.42.126.1.1',sDeviceID:='1');
 	Initialize := FALSE;
 END_IF
 
@@ -38,6 +42,7 @@ fbDev2(fbFastFaultOutput := g_FastFaultOutput1,
 		fbArbiter := g_fbArbiter);
 
 
+fbDev3();
 PMPS_Arbiter();
 
 Fast_Faults_Evaluate();
@@ -339,6 +344,7 @@ END_IF]]></ST>
       <LineId Id="71" Count="0" />
       <LineId Id="119" Count="0" />
       <LineId Id="125" Count="0" />
+      <LineId Id="87" Count="0" />
       <LineId Id="55" Count="0" />
       <LineId Id="54" Count="0" />
       <LineId Id="51" Count="0" />

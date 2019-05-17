@@ -44,6 +44,9 @@
     <Compile Include="DUTs\ST_DeviceStateExt.TcDUT">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DUTs\ST_DeviceStateTable.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="DUTs\ST_SolidAttenuatorBlade.TcDUT">
       <SubType>Code</SubType>
     </Compile>
@@ -62,6 +65,15 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="PlcTask.TcTTO">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\DatabaseComponents\FB_ExampleDeviceSM_DB.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\DatabaseComponents\FB_MySQL_Client.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\DatabaseComponents\F_DB_To_hTable.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\DeviceImplementationEx1\FB_ExampleDevice.TcPOU">
@@ -204,6 +216,7 @@
     <Folder Include="POUs\HelperFunctions" />
     <Folder Include="POUs\MajorComponents" />
     <Folder Include="POUs\FlatMirrorEx" />
+    <Folder Include="POUs\DatabaseComponents" />
     <Folder Include="POUs\TestComponents" />
     <Folder Include="VISUs" />
     <Folder Include="POUs" />
@@ -271,6 +284,14 @@
       <DefaultResolution>Tc2_Utilities, * (Beckhoff Automation GmbH)</DefaultResolution>
       <Namespace>Tc2_Utilities</Namespace>
     </PlaceholderReference>
+    <PlaceholderReference Include="Tc3_Database">
+      <DefaultResolution>Tc3_Database, * (Beckhoff Automation GmbH)</DefaultResolution>
+      <Namespace>Tc3_Database</Namespace>
+    </PlaceholderReference>
+    <PlaceholderReference Include="Tc3_EventLogger">
+      <DefaultResolution>Tc3_EventLogger, * (Beckhoff Automation GmbH)</DefaultResolution>
+      <Namespace>Tc3_EventLogger</Namespace>
+    </PlaceholderReference>
     <PlaceholderReference Include="Tc3_Module">
       <DefaultResolution>Tc3_Module, * (Beckhoff Automation GmbH)</DefaultResolution>
       <Namespace>Tc3_Module</Namespace>
@@ -306,6 +327,11 @@
     </PlaceholderResolution>
     <PlaceholderResolution Include="TcUnit">
       <Resolution>TcUnit, * (www.tcunit.org)</Resolution>
+    <PlaceholderResolution Include="Tc3_Database">
+      <Resolution>Tc3_Database, * (Beckhoff Automation GmbH)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="Tc3_EventLogger">
+      <Resolution>Tc3_EventLogger, * (Beckhoff Automation GmbH)</Resolution>
     </PlaceholderResolution>
   </ItemGroup>
   <ItemGroup>
