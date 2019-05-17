@@ -79,6 +79,9 @@
     <Compile Include="POUs\Fast_Faults_Evaluate.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\FlatMirrorEx\FB_FlatMirrorPMPS.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="POUs\HelperFunctions\F_DeviceState_To_DeviceStateExt.TcPOU">
       <SubType>Code</SubType>
     </Compile>
@@ -200,6 +203,7 @@
     <Folder Include="POUs\DeviceImplementationEx2" />
     <Folder Include="POUs\HelperFunctions" />
     <Folder Include="POUs\MajorComponents" />
+    <Folder Include="POUs\FlatMirrorEx" />
     <Folder Include="POUs\TestComponents" />
     <Folder Include="VISUs" />
     <Folder Include="POUs" />
@@ -305,18 +309,6 @@
     </PlaceholderResolution>
   </ItemGroup>
   <ItemGroup>
-    <SubObject Include="FB_Arbiter.A_Arbitrate">
-      <ExcludeFromBuild>true</ExcludeFromBuild>
-    </SubObject>
-    <SubObject Include="FB_Arbiter.A_AssertBP">
-      <ExcludeFromBuild>true</ExcludeFromBuild>
-    </SubObject>
-    <SubObject Include="FB_Arbiter.A_RemoveAssertion">
-      <ExcludeFromBuild>true</ExcludeFromBuild>
-    </SubObject>
-    <SubObject Include="FB_Arbiter.A_VerifyAssertion">
-      <ExcludeFromBuild>true</ExcludeFromBuild>
-    </SubObject>
     <SubObject Include="MAIN.FB_Vis">
       <ExcludeFromBuild>true</ExcludeFromBuild>
     </SubObject>
