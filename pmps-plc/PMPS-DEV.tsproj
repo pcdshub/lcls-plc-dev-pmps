@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <TcSmProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4022.22">
-	<Project ProjectGUID="{11D93138-2D8B-49C5-B84D-11A4D2CA3157}" TargetNetId="5.52.45.90.1.1" ShowHideConfigurations="#x106">
+	<Project ProjectGUID="{11D93138-2D8B-49C5-B84D-11A4D2CA3157}" TargetNetId="5.57.239.252.1.1" ShowHideConfigurations="#x106">
 		<System>
 			<Settings>
 				<Cpu BaseTime="500"/>
@@ -17,9 +17,11 @@
 		<Plc>
 			<Project File="PMPS_Prototype_Arbiter.xti"/>
 		</Plc>
-		<Io/>
+		<Io>
+			<Device File="Device 1 (EtherCAT).xti" Id="1"/>
+		</Io>
 	</Project>
-	<Mappings>
-		<MappingInfo Identifier="{05000010-2001-0850-3000-040300205008}" Id="#x02030010" Watchdog="04000000080000000400000004000000"/>
+</TcSmProject>
+" Id="#x02030010" Watchdog="04000000080000000400000004000000"/>
 	</Mappings>
 </TcSmProject>
