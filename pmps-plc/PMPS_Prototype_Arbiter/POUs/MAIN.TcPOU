@@ -13,6 +13,7 @@ VAR
 	rtInit	:	R_TRIG;
 	Initialize	:	BOOL := TRUE;
 	
+	fbDev3	:	FB_ExampleDeviceSM_DB;
 
 END_VAR
 ]]></Declaration>
@@ -25,6 +26,7 @@ Test := F_SafeBPCompare(BP1,BP2);
 IF Initialize THEN
 	fbDev1(cBase := 10);
 	fbDev2(cBase := 1000);
+	fbDev3(cBase := 0,iDBID:=1,sDBNetId:='172.21.42.126.1.1',sDeviceID:='1');
 	fbArbiter.A_Init();
 	Initialize := FALSE;
 END_IF
@@ -32,7 +34,7 @@ END_IF
 //Example devices
 fbDev1();
 fbDev2();
-
+fbDev3();
 PMPS_Arbiter();
 
 ]]></ST>
@@ -325,6 +327,7 @@ PMPS_Arbiter();
       <LineId Id="46" Count="1" />
       <LineId Id="50" Count="0" />
       <LineId Id="71" Count="0" />
+      <LineId Id="87" Count="0" />
       <LineId Id="55" Count="0" />
       <LineId Id="54" Count="0" />
       <LineId Id="51" Count="0" />

@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.12">
+  <POU Name="F_DB_To_hTable" Id="{b446f4e5-0f67-00a4-07ce-4356f8d4de9b}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION F_DB_To_hTable : BOOL
+VAR_INPUT
+	aStatesParamsTable : ARRAY[1..MAX_DEVICE_STATES] OF ST_DeviceStateTable;
+	nRecordCount: UDINT;
+END_VAR
+VAR_IN_OUT
+	Table	:	FB_LinearDeviceStateTable;
+END_VAR
+VAR
+	stDeviceState	:	ST_DeviceState;
+	iRow : UDINT:=1;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[Table.A_Reset();
+//Device State Table Instantiation
+(*F_SetStateParams(
+	nStateRef := 0,
+	rPosition := 0,
+	rTolerance := 0,
+	stBeamParams := PMPS_GVL_BeamParams.cstFullBeam,
+	Table := Table
+);
+*)
+IF (nRecordCount>0) THEN
+	FOR iRow:=1 TO nRecordCount BY 1 DO
+	stDeviceState.nStateRef := DINT_TO_UDINT(aStatesParamsTable[iRow].iStateID);
+	stDeviceState.rPosition := aStatesParamsTable[iRow].rTargetPosition;
+	stDeviceState.rTolerance := aStatesParamsTable[iRow].rTolerance;  
+	stDeviceState.stReqBeamParam.fAtt := aStatesParamsTable[iRow].rTransmission;
+	stDeviceState.stReqBeamParam.reV := aStatesParamsTable[iRow].rPhotonEnergy;
+	stDeviceState.stReqBeamParam.nBeamClass := DINT_TO_BYTE(aStatesParamsTable[iRow].iBeamClass);
+	
+	Table.A_Add(
+		key := stDeviceState.nStateRef,
+		putValue := stDeviceState
+	);
+END_FOR;
+END_IF
+
+Table.A_Count();
+F_DB_To_hTable := Table.bOk;]]></ST>
+    </Implementation>
+    <LineIds Name="F_DB_To_hTable">
+      <LineId Id="30" Count="0" />
+      <LineId Id="50" Count="6" />
+      <LineId Id="48" Count="1" />
+      <LineId Id="47" Count="0" />
+      <LineId Id="71" Count="11" />
+      <LineId Id="69" Count="1" />
+      <LineId Id="29" Count="0" />
+      <LineId Id="38" Count="0" />
+      <LineId Id="7" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

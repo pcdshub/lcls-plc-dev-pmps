@@ -1,0 +1,2831 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.12">
+  <POU Name="FB_ExampleDeviceSM_DB" Id="{ef92a3bd-a5b0-044e-1210-5443b9778b16}" SpecialFunc="None">
+    <Declaration><![CDATA[(* This version of the block is self contained. Minimizes wiring.*)
+FUNCTION_BLOCK FB_ExampleDeviceSM_DB
+VAR_INPUT
+	cBase: UDINT;
+	iDBID:UDINT;
+	sDBNetId: STRING;
+	sDeviceID: STRING;
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR_IN_OUT
+	
+END_VAR
+VAR
+	stDevice	:	ST_Device;
+	fbGovernor	:	FB_LinearGovernor;
+	mcPower	:	MC_Power;
+	mcStop: MC_Stop;
+	mcAbsolute	:	MC_MoveAbsolute;
+	fbBPTM	:	BeamParameterTransitionManager;
+	xStartMove: BOOL;
+	
+	stCheckState: ST_DeviceState;
+	stTargetState	:	ST_DeviceState; //Target device state
+	fbDBClient:FB_MySQL_Client;
+	bInitReady: BOOL :=FALSE;
+	//aStateTable : ARRAY[1..MAX_DEVICE_STATES] OF ST_DeviceStateTable;
+
+END_VAR
+VAR PERSISTENT
+	nLastActiveState	:	UDINT;
+END_VAR]]></Declaration>
+    <Implementation>
+      <StateChart>
+        <XmlArchive>
+          <Data>
+            <o xml:space="preserve" t="UMLStateChart">
+              <v n="Abortable">true</v>
+              <v n="UseVarInstForMethods">false</v>
+              <v n="StatesCount">10</v>
+              <v n="HistoryCount">0</v>
+              <v n="TransitionsCount">12</v>
+              <v n="RegionsCount">0</v>
+              <v n="TracesCount">0</v>
+              <v n="StatesInitString">":=[(ID := 1, Name := 'GeneratedStartStateForAbort1', StateType := _UML_SC_StateTypes.InitialState, StartOfTransitionIndex := 1, OutGoingTransitionsCount := 1, RegionCount := 0, RegionStartIndex := 0, RegionEndIndex := 0, CompletionTransitionID := 0, MaxDoCycles := 32766, HasEntryAction := False, HasDoAction := False, HasExitAction := False) , 
+(ID := 2, Name := 'AwaitingBeamParameters', StateType := _UML_SC_StateTypes.SlowState, StartOfTransitionIndex := 2, OutGoingTransitionsCount := 2, RegionCount := 0, RegionStartIndex := 0, RegionEndIndex := 0, CompletionTransitionID := 0, MaxDoCycles := 32766, HasEntryAction := True, HasDoAction := False, HasExitAction := False) , 
+(ID := 3, Name := 'GeneratedFinalStateForAbort1', StateType := _UML_SC_StateTypes.FinalState, StartOfTransitionIndex := 0, OutGoingTransitionsCount := 0, RegionCount := 0, RegionStartIndex := 0, RegionEndIndex := 0, CompletionTransitionID := 0, MaxDoCycles := 32766, HasEntryAction := False, HasDoAction := False, HasExitAction := False) , 
+(ID := 4, Name := 'MoveComplete', StateType := _UML_SC_StateTypes.SlowState, StartOfTransitionIndex := 4, OutGoingTransitionsCount := 1, RegionCount := 0, RegionStartIndex := 0, RegionEndIndex := 0, CompletionTransitionID := 0, MaxDoCycles := 32766, HasEntryAction := True, HasDoAction := False, HasExitAction := False) , 
+(ID := 5, Name := 'Moving', StateType := _UML_SC_StateTypes.SlowState, StartOfTransitionIndex := 5, OutGoingTransitionsCount := 2, RegionCount := 0, RegionStartIndex := 0, RegionEndIndex := 0, CompletionTransitionID := 0, MaxDoCycles := 32766, HasEntryAction := True, HasDoAction := False, HasExitAction := True) , 
+(ID := 6, Name := 'StartState1', StateType := _UML_SC_StateTypes.FastState, StartOfTransitionIndex := 7, OutGoingTransitionsCount := 1, RegionCount := 0, RegionStartIndex := 0, RegionEndIndex := 0, CompletionTransitionID := 0, MaxDoCycles := 32766, HasEntryAction := False, HasDoAction := False, HasExitAction := False) , 
+(ID := 7, Name := 'StartState2', StateType := _UML_SC_StateTypes.FastState, StartOfTransitionIndex := 8, OutGoingTransitionsCount := 1, RegionCount := 0, RegionStartIndex := 0, RegionEndIndex := 0, CompletionTransitionID := 0, MaxDoCycles := 32766, HasEntryAction := False, HasDoAction := False, HasExitAction := False) , 
+(ID := 8, Name := 'StartState3', StateType := _UML_SC_StateTypes.FastState, StartOfTransitionIndex := 9, OutGoingTransitionsCount := 1, RegionCount := 0, RegionStartIndex := 0, RegionEndIndex := 0, CompletionTransitionID := 0, MaxDoCycles := 32766, HasEntryAction := False, HasDoAction := False, HasExitAction := False) , 
+(ID := 9, Name := 'Stopping', StateType := _UML_SC_StateTypes.SlowState, StartOfTransitionIndex := 10, OutGoingTransitionsCount := 2, RegionCount := 0, RegionStartIndex := 0, RegionEndIndex := 0, CompletionTransitionID := 0, MaxDoCycles := 32766, HasEntryAction := True, HasDoAction := False, HasExitAction := True) , 
+(ID := 10, Name := 'VerifyingNewTargetState', StateType := _UML_SC_StateTypes.SlowState, StartOfTransitionIndex := 12, OutGoingTransitionsCount := 1, RegionCount := 0, RegionStartIndex := 0, RegionEndIndex := 0, CompletionTransitionID := 0, MaxDoCycles := 32766, HasEntryAction := False, HasDoAction := True, HasExitAction := False) ];
+"</v>
+              <v n="TransitionsInitString">":=[(ID := 1, StartStateID := 1, EndStateID := 8, Priority := 1, HasAction := False, IsCompletion := True,IsPseudoException := False,IsException := False), 
+(ID := 2, StartStateID := 2, EndStateID := 10, Priority := 1, HasAction := False, IsCompletion := False,IsPseudoException := True,IsException := True), 
+(ID := 3, StartStateID := 2, EndStateID := 5, Priority := 2, HasAction := False, IsCompletion := False,IsPseudoException := False,IsException := False), 
+(ID := 4, StartStateID := 4, EndStateID := 10, Priority := 1, HasAction := False, IsCompletion := False,IsPseudoException := True,IsException := True), 
+(ID := 5, StartStateID := 5, EndStateID := 10, Priority := 1, HasAction := False, IsCompletion := False,IsPseudoException := True,IsException := True), 
+(ID := 6, StartStateID := 5, EndStateID := 4, Priority := 2, HasAction := False, IsCompletion := False,IsPseudoException := False,IsException := False), 
+(ID := 7, StartStateID := 6, EndStateID := 10, Priority := 1, HasAction := False, IsCompletion := True,IsPseudoException := False,IsException := False), 
+(ID := 8, StartStateID := 7, EndStateID := 9, Priority := 1, HasAction := False, IsCompletion := True,IsPseudoException := False,IsException := False), 
+(ID := 9, StartStateID := 8, EndStateID := 6, Priority := 1, HasAction := False, IsCompletion := True,IsPseudoException := False,IsException := False), 
+(ID := 10, StartStateID := 9, EndStateID := 10, Priority := 1, HasAction := False, IsCompletion := False,IsPseudoException := True,IsException := True), 
+(ID := 11, StartStateID := 9, EndStateID := 2, Priority := 2, HasAction := False, IsCompletion := False,IsPseudoException := False,IsException := False), 
+(ID := 12, StartStateID := 10, EndStateID := 7, Priority := 1, HasAction := False, IsCompletion := False,IsPseudoException := False,IsException := False)];
+"</v>
+              <v n="RegionsInitString">""</v>
+              <v n="StateNamesString">"AwaitingBeamParameters:INT:=2;
+GeneratedFinalStateForAbort1:INT:=3;
+GeneratedStartStateForAbort1:INT:=1;
+MoveComplete:INT:=4;
+Moving:INT:=5;
+StartState1:INT:=6;
+StartState2:INT:=7;
+StartState3:INT:=8;
+Stopping:INT:=9;
+VerifyingNewTargetState:INT:=10;"</v>
+              <n n="StateNamesInitString" />
+              <v n="ForceActionRemove">false</v>
+              <d n="RegionsWithStartStatesTable" t="Hashtable" ckt="Guid" cvt="Int32">
+                <v>df3163c5-332a-4ce7-a2a1-5a5542945183</v>
+                <v>1</v>
+                <v>c75f13d8-f50c-4c66-8535-3c1947e01e33</v>
+                <v>1</v>
+                <v>00000000-0000-0000-0000-000000000000</v>
+                <v>1</v>
+              </d>
+              <d n="RegionsWithHistoryStatesTable" t="Hashtable" ckt="Guid" cvt="Int32">
+                <v>00000000-0000-0000-0000-000000000000</v>
+                <v>1</v>
+              </d>
+              <d n="RegionsWithEndStatesTable" t="Hashtable" />
+              <n n="BreakPointGuids" />
+              <v n="UmlEditorRestrictions" t="EditorRestrictions">None</v>
+              <v n="DUTObjectGuid">{a691aafe-c1d7-4730-876a-13d4ba5c8af4}</v>
+              <v n="DUTNamesObjectGuid">{8039e13a-87dc-4f7b-b078-3e30016b5026}</v>
+              <v n="TraceObject">{00000000-0000-0000-0000-000000000000}</v>
+              <v n="IsCompiling">false</v>
+              <v n="HideLanguageModel">false</v>
+              <v n="DefaultStateSizeX">62</v>
+              <v n="DefaultStateSizeY">32</v>
+              <v n="SuppressAutomaticLibraryLoading">false</v>
+              <v n="DiagramName">"FB_ExampleDeviceSM_DB"</v>
+              <v n="DiagramGuid">{07374d26-c3b6-4670-80e4-4bbab18c2f48}</v>
+              <v n="IsActionRemoving">false</v>
+              <v n="ForceRepaintDiagram">false</v>
+              <v n="Documentationdiagram">false</v>
+              <v n="ApplicationGuidForDiagram">{00000000-0000-0000-0000-000000000000}</v>
+              <v n="AutomaticLayOutHeightSpace">0</v>
+              <v n="AutomaticLayOutWidthSpace">0</v>
+              <d n="ElementObjects" t="Hashtable" ckt="Guid">
+                <v>2ba29472-6687-48ed-b404-90b84d730001</v>
+                <o t="UMLStateChartPseudoElement">
+                  <o n="ElementVisualisation" t="UMLStateChartDiagramElementVisualisationDot">
+                    <v n="ShowAttributes">true</v>
+                    <v n="ShowMethods">true</v>
+                    <v n="RepresentedElement">3</v>
+                    <v n="IsElementVisible">true</v>
+                    <v n="TopPosition">30</v>
+                    <v n="LeftPosition">280</v>
+                    <v n="WidthValue">20</v>
+                    <v n="MinWidthValue">0</v>
+                    <v n="Height">20</v>
+                    <v n="MinHeight">0</v>
+                    <v n="AutomaticLayout">false</v>
+                    <d n="DockingPoints" t="Hashtable" />
+                  </o>
+                  <v n="Condition">""</v>
+                  <v n="HistoryType" t="HistoryTypes">None</v>
+                  <v n="StateChartGuid">{9f11e1df-66ca-4e6e-ba68-13916bf8d386}</v>
+                  <v n="EntryLocalVariableName">""</v>
+                  <v n="EntryActionName">""</v>
+                  <v n="EntryParametersString">""</v>
+                  <v n="EntryActionText">""</v>
+                  <v n="InjectedDoImplementationCode">""</v>
+                  <v n="DoActionText">""</v>
+                  <v n="ExitActionText">""</v>
+                  <v n="DoLocalVariableName">""</v>
+                  <v n="DoActionName">""</v>
+                  <v n="DoParametersString">""</v>
+                  <v n="ExitLocalVariableName">""</v>
+                  <v n="ExitActionName">""</v>
+                  <v n="ExitParametersString">""</v>
+                  <v n="HasEntryAction">false</v>
+                  <v n="HasDoAction">false</v>
+                  <v n="HasExitAction">false</v>
+                  <v n="PropertyID">0</v>
+                  <v n="wasFork">false</v>
+                  <d n="ActionList" t="Hashtable" />
+                  <d n="PropertyList" t="Hashtable" />
+                  <v n="ElementName">"StartState3"</v>
+                  <v n="MethodID">0</v>
+                  <d n="MethodStereotypContainer" t="Hashtable" />
+                  <l2 n="VariableList" />
+                  <n n="StereotypeContainer" />
+                  <v n="HasGraphicalRepresentation">true</v>
+                  <v n="bIsVisualisationChanged">false</v>
+                  <v n="IsType" t="UMLType">UMLStateChartStartState</v>
+                  <v n="_MaxDoCycleCalls" t="Int16">32767</v>
+                  <v n="DefaultCellSizeX">20</v>
+                  <v n="DefaultCellSizeY">20</v>
+                  <v n="IsDocumentation">false</v>
+                  <v n="Area">{00000000-0000-0000-0000-000000000000}</v>
+                  <v n="ParsedMethods">false</v>
+                  <v n="ParsedProperties">false</v>
+                  <v n="GeneratorId">0</v>
+                  <v n="UserDefined">true</v>
+                  <v n="ElementID">3</v>
+                  <v n="ElementObjectGuid">{2ba29472-6687-48ed-b404-90b84d730001}</v>
+                  <v n="ParentGuid">{9f11e1df-66ca-4e6e-ba68-13916bf8d386}</v>
+                  <v n="ContainerGuid">{00000000-0000-0000-0000-000000000000}</v>
+                  <v n="ShowedStereotype">{00000000-0000-0000-0000-000000000000}</v>
+                  <v n="ReplacewithImage">false</v>
+                  <v n="AutomaticLayout">false</v>
+                  <v n="PositionCounter">1L</v>
+                  <v n="UMLPosition">-1L</v>
+                  <v n="IsModified">false</v>
+                  <v n="ARGBElementColor">0</v>
+                  <v n="ZOrder">237U</v>
+                </o>
+                <v>32a5e5ca-331e-4957-8d1d-8df7e14119bf</v>
+                <o t="UMLStateChartElement">
+                  <v n="StateChartGuid">{a76ffc70-9e7e-4db5-9276-8dfd2e905a3c}</v>
+                  <v n="ImplicitStartStateType" t="ImplicitStartStateTypes">None</v>
+                  <v n="EntryLocalVariableName">""</v>
+                  <v n="EntryActionName">"AwaitingBeamParameters_ENTRY"</v>
+                  <v n="EntryParametersString">""</v>
+                  <v n="EntryActionText">"AwaitingBeamParameters_ENTRY"</v>
+                  <v n="InjectedDoImplementationCode">""</v>
+                  <v n="DoActionText">""</v>
+                  <v n="ExitActionText">""</v>
+                  <v n="DoLocalVariableName">""</v>
+                  <v n="DoActionName">""</v>
+                  <v n="DoParametersString">""</v>
+                  <v n="ExitLocalVariableName">""</v>
+                  <v n="ExitActionName">""</v>
+                  <v n="ExitParametersString">""</v>
+                  <v n="HasEntryAction">true</v>
+                  <v n="HasDoAction">false</v>
+                  <v n="HasExitAction">false</v>
+                  <v n="PropertyID">0</v>
+                  <v n="wasFork">false</v>
+                  <d n="ActionList" t="Hashtable" />
+                  <d n="PropertyList" t="Hashtable" />
+                  <v n="ElementName">"AwaitingBeamParameters"</v>
+                  <v n="MethodID">0</v>
+                  <d n="MethodStereotypContainer" t="Hashtable" />
+                  <o n="ElementVisualisation" t="UMLStateChartElementVisualisation">
+                    <v n="ShowAttributes">true</v>
+                    <v n="ShowMethods">true</v>
+                    <v n="RepresentedElement">1</v>
+                    <v n="IsElementVisible">true</v>
+                    <v n="TopPosition">350</v>
+                    <v n="LeftPosition">420</v>
+                    <v n="WidthValue">352</v>
+                    <v n="MinWidthValue">0</v>
+                    <v n="Height">63</v>
+                    <v n="MinHeight">0</v>
+                    <v n="AutomaticLayout">false</v>
+                    <d n="DockingPoints" t="Hashtable" />
+                  </o>
+                  <l2 n="VariableList" />
+                  <n n="StereotypeContainer" />
+                  <v n="HasGraphicalRepresentation">true</v>
+                  <v n="bIsVisualisationChanged">false</v>
+                  <v n="IsType" t="UMLType">UMLStateChartElement</v>
+                  <v n="_MaxDoCycleCalls" t="Int16">32767</v>
+                  <v n="DefaultCellSizeX">62</v>
+                  <v n="DefaultCellSizeY">32</v>
+                  <v n="IsDocumentation">false</v>
+                  <v n="Area">{c75f13d8-f50c-4c66-8535-3c1947e01e33}</v>
+                  <v n="ParsedMethods">false</v>
+                  <v n="ParsedProperties">false</v>
+                  <v n="GeneratorId">0</v>
+                  <v n="UserDefined">true</v>
+                  <v n="ElementID">1</v>
+                  <v n="ElementObjectGuid">{32a5e5ca-331e-4957-8d1d-8df7e14119bf}</v>
+                  <v n="ParentGuid">{a76ffc70-9e7e-4db5-9276-8dfd2e905a3c}</v>
+                  <v n="ContainerGuid">{6b6ed550-70d3-4aa7-8ab1-ebec1f28e744}</v>
+                  <v n="ShowedStereotype">{00000000-0000-0000-0000-000000000000}</v>
+                  <v n="ReplacewithImage">false</v>
+                  <v n="AutomaticLayout">false</v>
+                  <v n="PositionCounter">1L</v>
+                  <v n="UMLPosition">-1L</v>
+                  <v n="IsModified">false</v>
+                  <v n="ARGBElementColor">-13447886</v>
+                  <v n="ZOrder">230U</v>
+                </o>
+                <v>b20d2d46-1ab6-4690-be40-987a9e00b918</v>
+                <o t="UMLStateChartComposite">
+                  <v n="AllowCompositeActions">true</v>
+                  <v n="ExecuteDoActionsWhenNestedCompositesAreActive">true</v>
+                  <o n="ElementVisualisation" t="UMLCompositeVisualisation">
+                    <v n="ShowAttributes">true</v>
+                    <v n="ShowMethods">true</v>
+                    <v n="RepresentedElement">1</v>
+                    <v n="IsElementVisible">true</v>
+                    <v n="TopPosition">80</v>
+                    <v n="LeftPosition">10</v>
+                    <v n="WidthValue">794</v>
+                    <v n="MinWidthValue">0</v>
+                    <v n="Height">608</v>
+                    <v n="MinHeight">0</v>
+                    <v n="AutomaticLayout">false</v>
+                    <d n="DockingPoints" t="Hashtable" />
+                  </o>
+                  <l n="Areas" t="ArrayList" cet="UMLArea">
+                    <o>
+                      <v n="Elementguid">{df3163c5-332a-4ce7-a2a1-5a5542945183}</v>
+                      <v n="Name">"Region0"</v>
+                      <v n="Position">0</v>
+                      <v n="Priority">0</v>
+                    </o>
+                  </l>
+                  <v n="StateChartGuid">{07374d26-c3b6-4670-80e4-4bbab18c2f48}</v>
+                  <v n="EntryLocalVariableName">""</v>
+                  <v n="EntryActionName">"Init"</v>
+                  <v n="EntryParametersString">""</v>
+                  <v n="EntryActionText">"Init"</v>
+                  <v n="InjectedDoImplementationCode">""</v>
+                  <v n="DoActionText">"Always_DO"</v>
+                  <v n="ExitActionText">""</v>
+                  <v n="DoLocalVariableName">""</v>
+                  <v n="DoActionName">"Always_DO"</v>
+                  <v n="DoParametersString">""</v>
+                  <v n="ExitLocalVariableName">""</v>
+                  <v n="ExitActionName">""</v>
+                  <v n="ExitParametersString">""</v>
+                  <v n="HasEntryAction">true</v>
+                  <v n="HasDoAction">true</v>
+                  <v n="HasExitAction">false</v>
+                  <v n="PropertyID">0</v>
+                  <v n="wasFork">false</v>
+                  <d n="ActionList" t="Hashtable" />
+                  <d n="PropertyList" t="Hashtable" />
+                  <v n="ElementName">"EntireSM"</v>
+                  <v n="MethodID">0</v>
+                  <d n="MethodStereotypContainer" t="Hashtable" />
+                  <l2 n="VariableList" />
+                  <n n="StereotypeContainer" />
+                  <v n="HasGraphicalRepresentation">true</v>
+                  <v n="bIsVisualisationChanged">false</v>
+                  <v n="IsType" t="UMLType">UMLStateChartComposite</v>
+                  <v n="_MaxDoCycleCalls" t="Int16">32767</v>
+                  <v n="DefaultCellSizeX">150</v>
+                  <v n="DefaultCellSizeY">100</v>
+                  <v n="IsDocumentation">false</v>
+                  <v n="Area">{00000000-0000-0000-0000-000000000000}</v>
+                  <v n="ParsedMethods">false</v>
+                  <v n="ParsedProperties">false</v>
+                  <v n="GeneratorId">0</v>
+                  <v n="UserDefined">true</v>
+                  <v n="ElementID">1</v>
+                  <v n="ElementObjectGuid">{b20d2d46-1ab6-4690-be40-987a9e00b918}</v>
+                  <v n="ParentGuid">{9f11e1df-66ca-4e6e-ba68-13916bf8d386}</v>
+                  <v n="ContainerGuid">{00000000-0000-0000-0000-000000000000}</v>
+                  <v n="ShowedStereotype">{00000000-0000-0000-0000-000000000000}</v>
+                  <v n="ReplacewithImage">false</v>
+                  <v n="AutomaticLayout">false</v>
+                  <v n="PositionCounter">1L</v>
+                  <v n="UMLPosition">-1L</v>
+                  <v n="IsModified">false</v>
+                  <v n="ARGBElementColor">-989556</v>
+                  <v n="ZOrder">226U</v>
+                </o>
+                <v>691cab0f-d396-4228-8e02-3536907dc616</v>
+                <o t="UMLStateChartPseudoElement">
+                  <o n="ElementVisualisation" t="UMLStateChartDiagramElementVisualisationDot">
+                    <v n="ShowAttributes">true</v>
+                    <v n="ShowMethods">true</v>
+                    <v n="RepresentedElement">2</v>
+                    <v n="IsElementVisible">true</v>
+                    <v n="TopPosition">150</v>
+                    <v n="LeftPosition">470</v>
+                    <v n="WidthValue">20</v>
+                    <v n="MinWidthValue">0</v>
+                    <v n="Height">20</v>
+                    <v n="MinHeight">0</v>
+                    <v n="AutomaticLayout">false</v>
+                    <d n="DockingPoints" t="Hashtable" />
+                  </o>
+                  <v n="Condition">""</v>
+                  <v n="HistoryType" t="HistoryTypes">None</v>
+                  <v n="StateChartGuid">{a76ffc70-9e7e-4db5-9276-8dfd2e905a3c}</v>
+                  <v n="EntryLocalVariableName">""</v>
+                  <v n="EntryActionName">""</v>
+                  <v n="EntryParametersString">""</v>
+                  <v n="EntryActionText">""</v>
+                  <v n="InjectedDoImplementationCode">""</v>
+                  <v n="DoActionText">""</v>
+                  <v n="ExitActionText">""</v>
+                  <v n="DoLocalVariableName">""</v>
+                  <v n="DoActionName">""</v>
+                  <v n="DoParametersString">""</v>
+                  <v n="ExitLocalVariableName">""</v>
+                  <v n="ExitActionName">""</v>
+                  <v n="ExitParametersString">""</v>
+                  <v n="HasEntryAction">false</v>
+                  <v n="HasDoAction">false</v>
+                  <v n="HasExitAction">false</v>
+                  <v n="PropertyID">0</v>
+                  <v n="wasFork">false</v>
+                  <d n="ActionList" t="Hashtable" />
+                  <d n="PropertyList" t="Hashtable" />
+                  <v n="ElementName">"StartState2"</v>
+                  <v n="MethodID">0</v>
+                  <d n="MethodStereotypContainer" t="Hashtable" />
+                  <l2 n="VariableList" />
+                  <n n="StereotypeContainer" />
+                  <v n="HasGraphicalRepresentation">true</v>
+                  <v n="bIsVisualisationChanged">false</v>
+                  <v n="IsType" t="UMLType">UMLStateChartStartState</v>
+                  <v n="_MaxDoCycleCalls" t="Int16">32767</v>
+                  <v n="DefaultCellSizeX">20</v>
+                  <v n="DefaultCellSizeY">20</v>
+                  <v n="IsDocumentation">false</v>
+                  <v n="Area">{c75f13d8-f50c-4c66-8535-3c1947e01e33}</v>
+                  <v n="ParsedMethods">false</v>
+                  <v n="ParsedProperties">false</v>
+                  <v n="GeneratorId">0</v>
+                  <v n="UserDefined">true</v>
+                  <v n="ElementID">2</v>
+                  <v n="ElementObjectGuid">{691cab0f-d396-4228-8e02-3536907dc616}</v>
+                  <v n="ParentGuid">{a76ffc70-9e7e-4db5-9276-8dfd2e905a3c}</v>
+                  <v n="ContainerGuid">{6b6ed550-70d3-4aa7-8ab1-ebec1f28e744}</v>
+                  <v n="ShowedStereotype">{00000000-0000-0000-0000-000000000000}</v>
+                  <v n="ReplacewithImage">false</v>
+                  <v n="AutomaticLayout">false</v>
+                  <v n="PositionCounter">1L</v>
+                  <v n="UMLPosition">-1L</v>
+                  <v n="IsModified">false</v>
+                  <v n="ARGBElementColor">0</v>
+                  <v n="ZOrder">231U</v>
+                </o>
+                <v>6b6ed550-70d3-4aa7-8ab1-ebec1f28e744</v>
+                <o t="UMLStateChartComposite">
+                  <v n="AllowCompositeActions">true</v>
+                  <v n="ExecuteDoActionsWhenNestedCompositesAreActive">true</v>
+                  <o n="ElementVisualisation" t="UMLCompositeVisualisation">
+                    <v n="ShowAttributes">true</v>
+                    <v n="ShowMethods">true</v>
+                    <v n="RepresentedElement">1</v>
+                    <v n="IsElementVisible">true</v>
+                    <v n="TopPosition">100</v>
+                    <v n="LeftPosition">400</v>
+                    <v n="WidthValue">388</v>
+                    <v n="MinWidthValue">0</v>
+                    <v n="Height">580</v>
+                    <v n="MinHeight">0</v>
+                    <v n="AutomaticLayout">false</v>
+                    <d n="DockingPoints" t="Hashtable" />
+                  </o>
+                  <l n="Areas" t="ArrayList" cet="UMLArea">
+                    <o>
+                      <v n="Elementguid">{c75f13d8-f50c-4c66-8535-3c1947e01e33}</v>
+                      <v n="Name">"Region0"</v>
+                      <v n="Position">0</v>
+                      <v n="Priority">0</v>
+                    </o>
+                  </l>
+                  <v n="StateChartGuid">{a76ffc70-9e7e-4db5-9276-8dfd2e905a3c}</v>
+                  <v n="EntryLocalVariableName">""</v>
+                  <v n="EntryActionName">""</v>
+                  <v n="EntryParametersString">""</v>
+                  <v n="EntryActionText">""</v>
+                  <v n="InjectedDoImplementationCode">""</v>
+                  <v n="DoActionText">""</v>
+                  <v n="ExitActionText">""</v>
+                  <v n="DoLocalVariableName">""</v>
+                  <v n="DoActionName">""</v>
+                  <v n="DoParametersString">""</v>
+                  <v n="ExitLocalVariableName">""</v>
+                  <v n="ExitActionName">""</v>
+                  <v n="ExitParametersString">""</v>
+                  <v n="HasEntryAction">false</v>
+                  <v n="HasDoAction">false</v>
+                  <v n="HasExitAction">false</v>
+                  <v n="PropertyID">0</v>
+                  <v n="wasFork">false</v>
+                  <d n="ActionList" t="Hashtable" />
+                  <d n="PropertyList" t="Hashtable" />
+                  <v n="ElementName">"ExecutingMove"</v>
+                  <v n="MethodID">0</v>
+                  <d n="MethodStereotypContainer" t="Hashtable" />
+                  <l2 n="VariableList" />
+                  <n n="StereotypeContainer" />
+                  <v n="HasGraphicalRepresentation">true</v>
+                  <v n="bIsVisualisationChanged">false</v>
+                  <v n="IsType" t="UMLType">UMLStateChartComposite</v>
+                  <v n="_MaxDoCycleCalls" t="Int16">32767</v>
+                  <v n="DefaultCellSizeX">150</v>
+                  <v n="DefaultCellSizeY">100</v>
+                  <v n="IsDocumentation">false</v>
+                  <v n="Area">{df3163c5-332a-4ce7-a2a1-5a5542945183}</v>
+                  <v n="ParsedMethods">false</v>
+                  <v n="ParsedProperties">false</v>
+                  <v n="GeneratorId">0</v>
+                  <v n="UserDefined">true</v>
+                  <v n="ElementID">1</v>
+                  <v n="ElementObjectGuid">{6b6ed550-70d3-4aa7-8ab1-ebec1f28e744}</v>
+                  <v n="ParentGuid">{a76ffc70-9e7e-4db5-9276-8dfd2e905a3c}</v>
+                  <v n="ContainerGuid">{b20d2d46-1ab6-4690-be40-987a9e00b918}</v>
+                  <v n="ShowedStereotype">{00000000-0000-0000-0000-000000000000}</v>
+                  <v n="ReplacewithImage">false</v>
+                  <v n="AutomaticLayout">false</v>
+                  <v n="PositionCounter">1L</v>
+                  <v n="UMLPosition">-1L</v>
+                  <v n="IsModified">false</v>
+                  <v n="ARGBElementColor">-989556</v>
+                  <v n="ZOrder">229U</v>
+                </o>
+                <v>f4757ebc-cda9-4320-8405-ac4f72a3b20e</v>
+                <o t="UMLStateChartElement">
+                  <v n="StateChartGuid">{a76ffc70-9e7e-4db5-9276-8dfd2e905a3c}</v>
+                  <v n="ImplicitStartStateType" t="ImplicitStartStateTypes">None</v>
+                  <v n="EntryLocalVariableName">""</v>
+                  <v n="EntryActionName">"Moving_ENTRY"</v>
+                  <v n="EntryParametersString">""</v>
+                  <v n="EntryActionText">"Moving_ENTRY"</v>
+                  <v n="InjectedDoImplementationCode">""</v>
+                  <v n="DoActionText">""</v>
+                  <v n="ExitActionText">"Moving_EXIT"</v>
+                  <v n="DoLocalVariableName">""</v>
+                  <v n="DoActionName">""</v>
+                  <v n="DoParametersString">""</v>
+                  <v n="ExitLocalVariableName">""</v>
+                  <v n="ExitActionName">"Moving_EXIT"</v>
+                  <v n="ExitParametersString">""</v>
+                  <v n="HasEntryAction">true</v>
+                  <v n="HasDoAction">false</v>
+                  <v n="HasExitAction">true</v>
+                  <v n="PropertyID">0</v>
+                  <v n="wasFork">false</v>
+                  <d n="ActionList" t="Hashtable" />
+                  <d n="PropertyList" t="Hashtable" />
+                  <v n="ElementName">"Moving"</v>
+                  <v n="MethodID">0</v>
+                  <d n="MethodStereotypContainer" t="Hashtable" />
+                  <o n="ElementVisualisation" t="UMLStateChartElementVisualisation">
+                    <v n="ShowAttributes">true</v>
+                    <v n="ShowMethods">true</v>
+                    <v n="RepresentedElement">1</v>
+                    <v n="IsElementVisible">true</v>
+                    <v n="TopPosition">480</v>
+                    <v n="LeftPosition">420</v>
+                    <v n="WidthValue">216</v>
+                    <v n="MinWidthValue">0</v>
+                    <v n="Height">87</v>
+                    <v n="MinHeight">0</v>
+                    <v n="AutomaticLayout">false</v>
+                    <d n="DockingPoints" t="Hashtable" />
+                  </o>
+                  <l2 n="VariableList" />
+                  <n n="StereotypeContainer" />
+                  <v n="HasGraphicalRepresentation">true</v>
+                  <v n="bIsVisualisationChanged">false</v>
+                  <v n="IsType" t="UMLType">UMLStateChartElement</v>
+                  <v n="_MaxDoCycleCalls" t="Int16">32767</v>
+                  <v n="DefaultCellSizeX">62</v>
+                  <v n="DefaultCellSizeY">32</v>
+                  <v n="IsDocumentation">false</v>
+                  <v n="Area">{c75f13d8-f50c-4c66-8535-3c1947e01e33}</v>
+                  <v n="ParsedMethods">false</v>
+                  <v n="ParsedProperties">false</v>
+                  <v n="GeneratorId">0</v>
+                  <v n="UserDefined">true</v>
+                  <v n="ElementID">1</v>
+                  <v n="ElementObjectGuid">{f4757ebc-cda9-4320-8405-ac4f72a3b20e}</v>
+                  <v n="ParentGuid">{a76ffc70-9e7e-4db5-9276-8dfd2e905a3c}</v>
+                  <v n="ContainerGuid">{6b6ed550-70d3-4aa7-8ab1-ebec1f28e744}</v>
+                  <v n="ShowedStereotype">{00000000-0000-0000-0000-000000000000}</v>
+                  <v n="ReplacewithImage">false</v>
+                  <v n="AutomaticLayout">false</v>
+                  <v n="PositionCounter">1L</v>
+                  <v n="UMLPosition">-1L</v>
+                  <v n="IsModified">false</v>
+                  <v n="ARGBElementColor">-13447886</v>
+                  <v n="ZOrder">232U</v>
+                </o>
+                <v>840e61b0-9e66-49de-825e-3603561f62b1</v>
+                <o t="UMLStateChartElement">
+                  <v n="StateChartGuid">{a76ffc70-9e7e-4db5-9276-8dfd2e905a3c}</v>
+                  <v n="ImplicitStartStateType" t="ImplicitStartStateTypes">None</v>
+                  <v n="EntryLocalVariableName">""</v>
+                  <v n="EntryActionName">"MoveComplete_ENTRY"</v>
+                  <v n="EntryParametersString">""</v>
+                  <v n="EntryActionText">"MoveComplete_ENTRY"</v>
+                  <v n="InjectedDoImplementationCode">""</v>
+                  <v n="DoActionText">""</v>
+                  <v n="ExitActionText">""</v>
+                  <v n="DoLocalVariableName">""</v>
+                  <v n="DoActionName">""</v>
+                  <v n="DoParametersString">""</v>
+                  <v n="ExitLocalVariableName">""</v>
+                  <v n="ExitActionName">""</v>
+                  <v n="ExitParametersString">""</v>
+                  <v n="HasEntryAction">true</v>
+                  <v n="HasDoAction">false</v>
+                  <v n="HasExitAction">false</v>
+                  <v n="PropertyID">0</v>
+                  <v n="wasFork">false</v>
+                  <d n="ActionList" t="Hashtable" />
+                  <d n="PropertyList" t="Hashtable" />
+                  <v n="ElementName">"MoveComplete"</v>
+                  <v n="MethodID">0</v>
+                  <d n="MethodStereotypContainer" t="Hashtable" />
+                  <o n="ElementVisualisation" t="UMLStateChartElementVisualisation">
+                    <v n="ShowAttributes">true</v>
+                    <v n="ShowMethods">true</v>
+                    <v n="RepresentedElement">1</v>
+                    <v n="IsElementVisible">true</v>
+                    <v n="TopPosition">610</v>
+                    <v n="LeftPosition">430</v>
+                    <v n="WidthValue">273</v>
+                    <v n="MinWidthValue">0</v>
+                    <v n="Height">63</v>
+                    <v n="MinHeight">0</v>
+                    <v n="AutomaticLayout">false</v>
+                    <d n="DockingPoints" t="Hashtable" />
+                  </o>
+                  <l2 n="VariableList" />
+                  <n n="StereotypeContainer" />
+                  <v n="HasGraphicalRepresentation">true</v>
+                  <v n="bIsVisualisationChanged">false</v>
+                  <v n="IsType" t="UMLType">UMLStateChartElement</v>
+                  <v n="_MaxDoCycleCalls" t="Int16">32767</v>
+                  <v n="DefaultCellSizeX">62</v>
+                  <v n="DefaultCellSizeY">32</v>
+                  <v n="IsDocumentation">false</v>
+                  <v n="Area">{c75f13d8-f50c-4c66-8535-3c1947e01e33}</v>
+                  <v n="ParsedMethods">false</v>
+                  <v n="ParsedProperties">false</v>
+                  <v n="GeneratorId">0</v>
+                  <v n="UserDefined">true</v>
+                  <v n="ElementID">1</v>
+                  <v n="ElementObjectGuid">{840e61b0-9e66-49de-825e-3603561f62b1}</v>
+                  <v n="ParentGuid">{a76ffc70-9e7e-4db5-9276-8dfd2e905a3c}</v>
+                  <v n="ContainerGuid">{6b6ed550-70d3-4aa7-8ab1-ebec1f28e744}</v>
+                  <v n="ShowedStereotype">{00000000-0000-0000-0000-000000000000}</v>
+                  <v n="ReplacewithImage">false</v>
+                  <v n="AutomaticLayout">false</v>
+                  <v n="PositionCounter">1L</v>
+                  <v n="UMLPosition">-1L</v>
+                  <v n="IsModified">false</v>
+                  <v n="ARGBElementColor">-13447886</v>
+                  <v n="ZOrder">233U</v>
+                </o>
+                <v>76c96307-6ce0-470e-af90-e0ccbc636998</v>
+                <o t="UMLStateChartElement">
+                  <v n="StateChartGuid">{a76ffc70-9e7e-4db5-9276-8dfd2e905a3c}</v>
+                  <v n="ImplicitStartStateType" t="ImplicitStartStateTypes">None</v>
+                  <v n="EntryLocalVariableName">""</v>
+                  <v n="EntryActionName">""</v>
+                  <v n="EntryParametersString">""</v>
+                  <v n="EntryActionText">""</v>
+                  <v n="InjectedDoImplementationCode">""</v>
+                  <v n="DoActionText">"VerifyingNewTargetState_DO"</v>
+                  <v n="ExitActionText">""</v>
+                  <v n="DoLocalVariableName">""</v>
+                  <v n="DoActionName">"VerifyingNewTargetState_DO"</v>
+                  <v n="DoParametersString">""</v>
+                  <v n="ExitLocalVariableName">""</v>
+                  <v n="ExitActionName">""</v>
+                  <v n="ExitParametersString">""</v>
+                  <v n="HasEntryAction">false</v>
+                  <v n="HasDoAction">true</v>
+                  <v n="HasExitAction">false</v>
+                  <v n="PropertyID">0</v>
+                  <v n="wasFork">false</v>
+                  <d n="ActionList" t="Hashtable" />
+                  <d n="PropertyList" t="Hashtable" />
+                  <v n="ElementName">"VerifyingNewTargetState"</v>
+                  <v n="MethodID">0</v>
+                  <d n="MethodStereotypContainer" t="Hashtable" />
+                  <o n="ElementVisualisation" t="UMLStateChartElementVisualisation">
+                    <v n="ShowAttributes">true</v>
+                    <v n="ShowMethods">true</v>
+                    <v n="RepresentedElement">1</v>
+                    <v n="IsElementVisible">true</v>
+                    <v n="TopPosition">250</v>
+                    <v n="LeftPosition">20</v>
+                    <v n="WidthValue">282</v>
+                    <v n="MinWidthValue">0</v>
+                    <v n="Height">63</v>
+                    <v n="MinHeight">0</v>
+                    <v n="AutomaticLayout">false</v>
+                    <d n="DockingPoints" t="Hashtable" />
+                  </o>
+                  <l2 n="VariableList" />
+                  <n n="StereotypeContainer" />
+                  <v n="HasGraphicalRepresentation">true</v>
+                  <v n="bIsVisualisationChanged">false</v>
+                  <v n="IsType" t="UMLType">UMLStateChartElement</v>
+                  <v n="_MaxDoCycleCalls" t="Int16">32767</v>
+                  <v n="DefaultCellSizeX">62</v>
+                  <v n="DefaultCellSizeY">32</v>
+                  <v n="IsDocumentation">false</v>
+                  <v n="Area">{df3163c5-332a-4ce7-a2a1-5a5542945183}</v>
+                  <v n="ParsedMethods">false</v>
+                  <v n="ParsedProperties">false</v>
+                  <v n="GeneratorId">0</v>
+                  <v n="UserDefined">true</v>
+                  <v n="ElementID">1</v>
+                  <v n="ElementObjectGuid">{76c96307-6ce0-470e-af90-e0ccbc636998}</v>
+                  <v n="ParentGuid">{a76ffc70-9e7e-4db5-9276-8dfd2e905a3c}</v>
+                  <v n="ContainerGuid">{b20d2d46-1ab6-4690-be40-987a9e00b918}</v>
+                  <v n="ShowedStereotype">{00000000-0000-0000-0000-000000000000}</v>
+                  <v n="ReplacewithImage">false</v>
+                  <v n="AutomaticLayout">false</v>
+                  <v n="PositionCounter">1L</v>
+                  <v n="UMLPosition">-1L</v>
+                  <v n="IsModified">false</v>
+                  <v n="ARGBElementColor">-13447886</v>
+                  <v n="ZOrder">227U</v>
+                </o>
+                <v>985128e7-4000-430b-a441-6683df7f9809</v>
+                <o t="UMLStateChartPseudoElement">
+                  <o n="ElementVisualisation" t="UMLStateChartDiagramElementVisualisationDot">
+                    <v n="ShowAttributes">true</v>
+                    <v n="ShowMethods">true</v>
+                    <v n="RepresentedElement">1</v>
+                    <v n="IsElementVisible">true</v>
+                    <v n="TopPosition">200</v>
+                    <v n="LeftPosition">80</v>
+                    <v n="WidthValue">20</v>
+                    <v n="MinWidthValue">0</v>
+                    <v n="Height">20</v>
+                    <v n="MinHeight">0</v>
+                    <v n="AutomaticLayout">false</v>
+                    <d n="DockingPoints" t="Hashtable" />
+                  </o>
+                  <v n="Condition">""</v>
+                  <v n="HistoryType" t="HistoryTypes">None</v>
+                  <v n="StateChartGuid">{0bd0e55a-9cb3-42b8-83b7-fffcea3ac6a4}</v>
+                  <v n="EntryLocalVariableName">""</v>
+                  <v n="EntryActionName">""</v>
+                  <v n="EntryParametersString">""</v>
+                  <v n="EntryActionText">""</v>
+                  <v n="InjectedDoImplementationCode">""</v>
+                  <v n="DoActionText">""</v>
+                  <v n="ExitActionText">""</v>
+                  <v n="DoLocalVariableName">""</v>
+                  <v n="DoActionName">""</v>
+                  <v n="DoParametersString">""</v>
+                  <v n="ExitLocalVariableName">""</v>
+                  <v n="ExitActionName">""</v>
+                  <v n="ExitParametersString">""</v>
+                  <v n="HasEntryAction">false</v>
+                  <v n="HasDoAction">false</v>
+                  <v n="HasExitAction">false</v>
+                  <v n="PropertyID">0</v>
+                  <v n="wasFork">false</v>
+                  <d n="ActionList" t="Hashtable" />
+                  <d n="PropertyList" t="Hashtable" />
+                  <v n="ElementName">"StartState1"</v>
+                  <v n="MethodID">0</v>
+                  <d n="MethodStereotypContainer" t="Hashtable" />
+                  <l2 n="VariableList" />
+                  <n n="StereotypeContainer" />
+                  <v n="HasGraphicalRepresentation">true</v>
+                  <v n="bIsVisualisationChanged">false</v>
+                  <v n="IsType" t="UMLType">UMLStateChartStartState</v>
+                  <v n="_MaxDoCycleCalls" t="Int16">32767</v>
+                  <v n="DefaultCellSizeX">20</v>
+                  <v n="DefaultCellSizeY">20</v>
+                  <v n="IsDocumentation">false</v>
+                  <v n="Area">{df3163c5-332a-4ce7-a2a1-5a5542945183}</v>
+                  <v n="ParsedMethods">false</v>
+                  <v n="ParsedProperties">false</v>
+                  <v n="GeneratorId">0</v>
+                  <v n="UserDefined">true</v>
+                  <v n="ElementID">1</v>
+                  <v n="ElementObjectGuid">{985128e7-4000-430b-a441-6683df7f9809}</v>
+                  <v n="ParentGuid">{0bd0e55a-9cb3-42b8-83b7-fffcea3ac6a4}</v>
+                  <v n="ContainerGuid">{b20d2d46-1ab6-4690-be40-987a9e00b918}</v>
+                  <v n="ShowedStereotype">{00000000-0000-0000-0000-000000000000}</v>
+                  <v n="ReplacewithImage">false</v>
+                  <v n="AutomaticLayout">false</v>
+                  <v n="PositionCounter">1L</v>
+                  <v n="UMLPosition">-1L</v>
+                  <v n="IsModified">false</v>
+                  <v n="ARGBElementColor">0</v>
+                  <v n="ZOrder">228U</v>
+                </o>
+                <v>ae0557e5-e6ca-4774-aad7-b56c6a2245af</v>
+                <o t="UMLStateChartElement">
+                  <v n="StateChartGuid">{a76ffc70-9e7e-4db5-9276-8dfd2e905a3c}</v>
+                  <v n="ImplicitStartStateType" t="ImplicitStartStateTypes">None</v>
+                  <v n="EntryLocalVariableName">""</v>
+                  <v n="EntryActionName">"Stopping_ENTRY"</v>
+                  <v n="EntryParametersString">""</v>
+                  <v n="EntryActionText">"Stopping_ENTRY"</v>
+                  <v n="InjectedDoImplementationCode">""</v>
+                  <v n="DoActionText">""</v>
+                  <v n="ExitActionText">"Stopping_EXIT"</v>
+                  <v n="DoLocalVariableName">""</v>
+                  <v n="DoActionName">""</v>
+                  <v n="DoParametersString">""</v>
+                  <v n="ExitLocalVariableName">""</v>
+                  <v n="ExitActionName">"Stopping_EXIT"</v>
+                  <v n="ExitParametersString">""</v>
+                  <v n="HasEntryAction">true</v>
+                  <v n="HasDoAction">false</v>
+                  <v n="HasExitAction">true</v>
+                  <v n="PropertyID">0</v>
+                  <v n="wasFork">false</v>
+                  <d n="ActionList" t="Hashtable" />
+                  <d n="PropertyList" t="Hashtable" />
+                  <v n="ElementName">"Stopping"</v>
+                  <v n="MethodID">0</v>
+                  <d n="MethodStereotypContainer" t="Hashtable" />
+                  <o n="ElementVisualisation" t="UMLStateChartElementVisualisation">
+                    <v n="ShowAttributes">true</v>
+                    <v n="ShowMethods">true</v>
+                    <v n="RepresentedElement">1</v>
+                    <v n="IsElementVisible">true</v>
+                    <v n="TopPosition">210</v>
+                    <v n="LeftPosition">430</v>
+                    <v n="WidthValue">228</v>
+                    <v n="MinWidthValue">0</v>
+                    <v n="Height">87</v>
+                    <v n="MinHeight">0</v>
+                    <v n="AutomaticLayout">false</v>
+                    <d n="DockingPoints" t="Hashtable" />
+                  </o>
+                  <l2 n="VariableList" />
+                  <n n="StereotypeContainer" />
+                  <v n="HasGraphicalRepresentation">true</v>
+                  <v n="bIsVisualisationChanged">false</v>
+                  <v n="IsType" t="UMLType">UMLStateChartElement</v>
+                  <v n="_MaxDoCycleCalls" t="Int16">32767</v>
+                  <v n="DefaultCellSizeX">62</v>
+                  <v n="DefaultCellSizeY">32</v>
+                  <v n="IsDocumentation">false</v>
+                  <v n="Area">{c75f13d8-f50c-4c66-8535-3c1947e01e33}</v>
+                  <v n="ParsedMethods">false</v>
+                  <v n="ParsedProperties">false</v>
+                  <v n="GeneratorId">0</v>
+                  <v n="UserDefined">true</v>
+                  <v n="ElementID">1</v>
+                  <v n="ElementObjectGuid">{ae0557e5-e6ca-4774-aad7-b56c6a2245af}</v>
+                  <v n="ParentGuid">{a76ffc70-9e7e-4db5-9276-8dfd2e905a3c}</v>
+                  <v n="ContainerGuid">{6b6ed550-70d3-4aa7-8ab1-ebec1f28e744}</v>
+                  <v n="ShowedStereotype">{00000000-0000-0000-0000-000000000000}</v>
+                  <v n="ReplacewithImage">false</v>
+                  <v n="AutomaticLayout">false</v>
+                  <v n="PositionCounter">1L</v>
+                  <v n="UMLPosition">-1L</v>
+                  <v n="IsModified">false</v>
+                  <v n="ARGBElementColor">-13447886</v>
+                  <v n="ZOrder">234U</v>
+                </o>
+              </d>
+              <v n="FirstPaint">true</v>
+              <v n="NextElementID">0</v>
+              <d n="UMLRelationObjects" t="Hashtable" ckt="Guid" cvt="UMLRelation">
+                <v>51035e75-bd9b-4019-8ab7-a8a4a6b4ea39</v>
+                <o>
+                  <v n="HasGraphicalRepresentation">true</v>
+                  <v n="StartUMLElement">{6b6ed550-70d3-4aa7-8ab1-ebec1f28e744}</v>
+                  <v n="HighlightedLine">true</v>
+                  <v n="ZOrder">226U</v>
+                  <v n="SpecialHandling">true</v>
+                  <v n="ActionLocalVariableName">""</v>
+                  <v n="ActionParametersString">""</v>
+                  <n n="ActionName" />
+                  <v n="ActionText">""</v>
+                  <v n="InjectedActionCode">""</v>
+                  <v n="ActionTextLength">100</v>
+                  <v n="ConditionText">"stDevice.nTargetState &lt;&gt; stDevice.nRequestedState"</v>
+                  <v n="LengthConditionText">100</v>
+                  <v n="RelationID">32</v>
+                  <v n="TriggerlessStatechartTransition">false</v>
+                  <v n="EndUMLElement">{76c96307-6ce0-470e-af90-e0ccbc636998}</v>
+                  <o n="UMLRelationVisualisation" t="UMLRelationVisualisation">
+                    <v n="RelationID">{51035e75-bd9b-4019-8ab7-a8a4a6b4ea39}</v>
+                    <v n="FlagPosition" t="Double">0.5</v>
+                    <d n="flagsX" t="Hashtable" ckt="String" cvt="Int32">
+                      <v>ConditionPosition</v>
+                      <v>0</v>
+                    </d>
+                    <d n="flagsY" t="Hashtable" ckt="String" cvt="Int32">
+                      <v>ConditionPosition</v>
+                      <v>30</v>
+                    </d>
+                    <o n="StartAnchor" t="UMLAnchorPoint">
+                      <v n="AnchorID">0</v>
+                      <v n="AnchorLeftPosition">395</v>
+                      <v n="AnchorTopPosition">465</v>
+                      <v n="AnchorRelationID">{51035e75-bd9b-4019-8ab7-a8a4a6b4ea39}</v>
+                      <v n="StartAnchor">true</v>
+                      <v n="EndAnchor">false</v>
+                      <v n="AnchorDockedState" t="Docked">NotDocked</v>
+                    </o>
+                    <o n="EndAnchor" t="UMLAnchorPoint">
+                      <v n="AnchorID">2</v>
+                      <v n="AnchorLeftPosition">87</v>
+                      <v n="AnchorTopPosition">308</v>
+                      <v n="AnchorRelationID">{51035e75-bd9b-4019-8ab7-a8a4a6b4ea39}</v>
+                      <v n="StartAnchor">false</v>
+                      <v n="EndAnchor">true</v>
+                      <v n="AnchorDockedState" t="Docked">NotDocked</v>
+                    </o>
+                    <v n="NextAnchorID">2</v>
+                    <d n="AnchorPoints" t="Hashtable" ckt="Int32" cvt="UMLAnchorPoint">
+                      <v>1</v>
+                      <o>
+                        <v n="AnchorID">1</v>
+                        <v n="AnchorLeftPosition">87</v>
+                        <v n="AnchorTopPosition">465</v>
+                        <v n="AnchorRelationID">{51035e75-bd9b-4019-8ab7-a8a4a6b4ea39}</v>
+                        <v n="StartAnchor">false</v>
+                        <v n="EndAnchor">false</v>
+                        <v n="AnchorDockedState" t="Docked">NotDocked</v>
+                      </o>
+                    </d>
+                    <v n="RelationIsLinear">false</v>
+                    <v n="RelationIsFreeHand">false</v>
+                  </o>
+                  <v n="ReferenceGuid">{51035e75-bd9b-4019-8ab7-a8a4a6b4ea39}</v>
+                  <v n="RelationGuid">{51035e75-bd9b-4019-8ab7-a8a4a6b4ea39}</v>
+                  <v n="RelationName">""</v>
+                  <n n="RelationStereotypes" />
+                  <v n="RelationType" t="RelationTypes">ExceptionTransition</v>
+                  <v n="StartElementArrowFlag" t="ArrowTypes">Slim</v>
+                  <v n="Priority">1</v>
+                  <v n="GeneratesCode">false</v>
+                  <v n="StartElementShowArrow">false</v>
+                  <v n="StartElementCardnality">""</v>
+                  <v n="EndElementCardnality">""</v>
+                  <v n="EndElementArrowFlag" t="ArrowTypes">Slim</v>
+                  <v n="EndElementShowArrow">true</v>
+                  <v n="StartElementRoleName">""</v>
+                  <v n="EndElementRoleName">""</v>
+                  <v n="UserCreated">true</v>
+                  <v n="GeneratedByCode">false</v>
+                  <v n="AllowRoutingOptimisation">false</v>
+                  <d n="flagTexts" t="Hashtable" ckt="String" cvt="String">
+                    <v>Priority</v>
+                    <v>1</v>
+                  </d>
+                  <v n="Position">-1L</v>
+                  <v n="PositionCounter">1L</v>
+                  <v n="IsModified">false</v>
+                  <v n="ARGBElementColor">0</v>
+                </o>
+                <v>b042fa22-3a02-43e1-9aa9-0b440e365d32</v>
+                <o>
+                  <v n="HasGraphicalRepresentation">true</v>
+                  <v n="StartUMLElement">{691cab0f-d396-4228-8e02-3536907dc616}</v>
+                  <v n="HighlightedLine">true</v>
+                  <v n="ZOrder">229U</v>
+                  <v n="SpecialHandling">false</v>
+                  <v n="ActionLocalVariableName">""</v>
+                  <v n="ActionParametersString">""</v>
+                  <n n="ActionName" />
+                  <v n="ActionText">""</v>
+                  <v n="InjectedActionCode">""</v>
+                  <v n="ActionTextLength">100</v>
+                  <v n="ConditionText">""</v>
+                  <v n="LengthConditionText">100</v>
+                  <v n="RelationID">31</v>
+                  <v n="TriggerlessStatechartTransition">true</v>
+                  <v n="EndUMLElement">{ae0557e5-e6ca-4774-aad7-b56c6a2245af}</v>
+                  <o n="UMLRelationVisualisation" t="UMLRelationVisualisation">
+                    <v n="RelationID">{b042fa22-3a02-43e1-9aa9-0b440e365d32}</v>
+                    <v n="FlagPosition" t="Double">0.5</v>
+                    <d n="flagsX" t="Hashtable" />
+                    <d n="flagsY" t="Hashtable" />
+                    <o n="StartAnchor" t="UMLAnchorPoint">
+                      <v n="AnchorID">0</v>
+                      <v n="AnchorLeftPosition">475</v>
+                      <v n="AnchorTopPosition">165</v>
+                      <v n="AnchorRelationID">{b042fa22-3a02-43e1-9aa9-0b440e365d32}</v>
+                      <v n="StartAnchor">true</v>
+                      <v n="EndAnchor">false</v>
+                      <v n="AnchorDockedState" t="Docked">NotDocked</v>
+                    </o>
+                    <o n="EndAnchor" t="UMLAnchorPoint">
+                      <v n="AnchorID">1</v>
+                      <v n="AnchorLeftPosition">475</v>
+                      <v n="AnchorTopPosition">205</v>
+                      <v n="AnchorRelationID">{b042fa22-3a02-43e1-9aa9-0b440e365d32}</v>
+                      <v n="StartAnchor">false</v>
+                      <v n="EndAnchor">true</v>
+                      <v n="AnchorDockedState" t="Docked">NotDocked</v>
+                    </o>
+                    <v n="NextAnchorID">1</v>
+                    <d n="AnchorPoints" t="Hashtable" />
+                    <v n="RelationIsLinear">false</v>
+                    <v n="RelationIsFreeHand">false</v>
+                  </o>
+                  <v n="ReferenceGuid">{b042fa22-3a02-43e1-9aa9-0b440e365d32}</v>
+                  <v n="RelationGuid">{b042fa22-3a02-43e1-9aa9-0b440e365d32}</v>
+                  <v n="RelationName">""</v>
+                  <n n="RelationStereotypes" />
+                  <v n="RelationType" t="RelationTypes">CompletionTransition</v>
+                  <v n="StartElementArrowFlag" t="ArrowTypes">Slim</v>
+                  <v n="Priority">1</v>
+                  <v n="GeneratesCode">false</v>
+                  <v n="StartElementShowArrow">false</v>
+                  <v n="StartElementCardnality">""</v>
+                  <v n="EndElementCardnality">""</v>
+                  <v n="EndElementArrowFlag" t="ArrowTypes">Slim</v>
+                  <v n="EndElementShowArrow">true</v>
+                  <v n="StartElementRoleName">""</v>
+                  <v n="EndElementRoleName">""</v>
+                  <v n="UserCreated">true</v>
+                  <v n="GeneratedByCode">false</v>
+                  <v n="AllowRoutingOptimisation">false</v>
+                  <d n="flagTexts" t="Hashtable" ckt="String" cvt="String">
+                    <v>Priority</v>
+                    <v>1</v>
+                  </d>
+                  <v n="Position">-1L</v>
+                  <v n="PositionCounter">1L</v>
+                  <v n="IsModified">false</v>
+                  <v n="ARGBElementColor">0</v>
+                </o>
+                <v>91d0acbb-182c-4908-970b-aa87bd380da4</v>
+                <o>
+                  <v n="HasGraphicalRepresentation">true</v>
+                  <v n="StartUMLElement">{32a5e5ca-331e-4957-8d1d-8df7e14119bf}</v>
+                  <v n="HighlightedLine">false</v>
+                  <v n="ZOrder">229U</v>
+                  <v n="SpecialHandling">false</v>
+                  <v n="ActionLocalVariableName">""</v>
+                  <v n="ActionParametersString">""</v>
+                  <n n="ActionName" />
+                  <v n="ActionText">""</v>
+                  <v n="InjectedActionCode">""</v>
+                  <v n="ActionTextLength">100</v>
+                  <v n="ConditionText">"fbBPTM.q_xTransitionAuthorized AND 
+fbGovernor.q_xTransitionPermitted"</v>
+                  <v n="LengthConditionText">100</v>
+                  <v n="RelationID">28</v>
+                  <v n="TriggerlessStatechartTransition">false</v>
+                  <v n="EndUMLElement">{f4757ebc-cda9-4320-8405-ac4f72a3b20e}</v>
+                  <o n="UMLRelationVisualisation" t="UMLRelationVisualisation">
+                    <v n="RelationID">{91d0acbb-182c-4908-970b-aa87bd380da4}</v>
+                    <v n="FlagPosition" t="Double">0.5</v>
+                    <d n="flagsX" t="Hashtable" ckt="String" cvt="Int32">
+                      <v>ConditionPosition</v>
+                      <v>20</v>
+                    </d>
+                    <d n="flagsY" t="Hashtable" ckt="String" cvt="Int32">
+                      <v>ConditionPosition</v>
+                      <v>10</v>
+                    </d>
+                    <o n="StartAnchor" t="UMLAnchorPoint">
+                      <v n="AnchorID">0</v>
+                      <v n="AnchorLeftPosition">425</v>
+                      <v n="AnchorTopPosition">408</v>
+                      <v n="AnchorRelationID">{91d0acbb-182c-4908-970b-aa87bd380da4}</v>
+                      <v n="StartAnchor">true</v>
+                      <v n="EndAnchor">false</v>
+                      <v n="AnchorDockedState" t="Docked">NotDocked</v>
+                    </o>
+                    <o n="EndAnchor" t="UMLAnchorPoint">
+                      <v n="AnchorID">1</v>
+                      <v n="AnchorLeftPosition">425</v>
+                      <v n="AnchorTopPosition">475</v>
+                      <v n="AnchorRelationID">{91d0acbb-182c-4908-970b-aa87bd380da4}</v>
+                      <v n="StartAnchor">false</v>
+                      <v n="EndAnchor">true</v>
+                      <v n="AnchorDockedState" t="Docked">NotDocked</v>
+                    </o>
+                    <v n="NextAnchorID">1</v>
+                    <d n="AnchorPoints" t="Hashtable" />
+                    <v n="RelationIsLinear">false</v>
+                    <v n="RelationIsFreeHand">false</v>
+                  </o>
+                  <v n="ReferenceGuid">{91d0acbb-182c-4908-970b-aa87bd380da4}</v>
+                  <v n="RelationGuid">{91d0acbb-182c-4908-970b-aa87bd380da4}</v>
+                  <v n="RelationName">""</v>
+                  <n n="RelationStereotypes" />
+                  <v n="RelationType" t="RelationTypes">Transition</v>
+                  <v n="StartElementArrowFlag" t="ArrowTypes">Slim</v>
+                  <v n="Priority">1</v>
+                  <v n="GeneratesCode">false</v>
+                  <v n="StartElementShowArrow">false</v>
+                  <v n="StartElementCardnality">""</v>
+                  <v n="EndElementCardnality">""</v>
+                  <v n="EndElementArrowFlag" t="ArrowTypes">Slim</v>
+                  <v n="EndElementShowArrow">true</v>
+                  <v n="StartElementRoleName">""</v>
+                  <v n="EndElementRoleName">""</v>
+                  <v n="UserCreated">true</v>
+                  <v n="GeneratedByCode">false</v>
+                  <v n="AllowRoutingOptimisation">false</v>
+                  <d n="flagTexts" t="Hashtable" ckt="String" cvt="String">
+                    <v>Priority</v>
+                    <v>1</v>
+                  </d>
+                  <v n="Position">-1L</v>
+                  <v n="PositionCounter">1L</v>
+                  <v n="IsModified">false</v>
+                  <v n="ARGBElementColor">0</v>
+                </o>
+                <v>b92d7ff3-1ec3-4b94-8133-9320f9c84066</v>
+                <o>
+                  <v n="HasGraphicalRepresentation">true</v>
+                  <v n="StartUMLElement">{f4757ebc-cda9-4320-8405-ac4f72a3b20e}</v>
+                  <v n="HighlightedLine">false</v>
+                  <v n="ZOrder">229U</v>
+                  <v n="SpecialHandling">false</v>
+                  <v n="ActionLocalVariableName">""</v>
+                  <v n="ActionParametersString">""</v>
+                  <n n="ActionName" />
+                  <v n="ActionText">""</v>
+                  <v n="InjectedActionCode">""</v>
+                  <v n="ActionTextLength">100</v>
+                  <v n="ConditionText">"mcAbsolute.Done"</v>
+                  <v n="LengthConditionText">100</v>
+                  <v n="RelationID">19</v>
+                  <v n="TriggerlessStatechartTransition">false</v>
+                  <v n="EndUMLElement">{840e61b0-9e66-49de-825e-3603561f62b1}</v>
+                  <o n="UMLRelationVisualisation" t="UMLRelationVisualisation">
+                    <v n="RelationID">{b92d7ff3-1ec3-4b94-8133-9320f9c84066}</v>
+                    <v n="FlagPosition" t="Double">0.5</v>
+                    <d n="flagsX" t="Hashtable" ckt="String" cvt="Int32">
+                      <v>ConditionPosition</v>
+                      <v>0</v>
+                    </d>
+                    <d n="flagsY" t="Hashtable" ckt="String" cvt="Int32">
+                      <v>ConditionPosition</v>
+                      <v>20</v>
+                    </d>
+                    <o n="StartAnchor" t="UMLAnchorPoint">
+                      <v n="AnchorID">0</v>
+                      <v n="AnchorLeftPosition">521</v>
+                      <v n="AnchorTopPosition">562</v>
+                      <v n="AnchorRelationID">{b92d7ff3-1ec3-4b94-8133-9320f9c84066}</v>
+                      <v n="StartAnchor">true</v>
+                      <v n="EndAnchor">false</v>
+                      <v n="AnchorDockedState" t="Docked">NotDocked</v>
+                    </o>
+                    <o n="EndAnchor" t="UMLAnchorPoint">
+                      <v n="AnchorID">1</v>
+                      <v n="AnchorLeftPosition">521</v>
+                      <v n="AnchorTopPosition">605</v>
+                      <v n="AnchorRelationID">{b92d7ff3-1ec3-4b94-8133-9320f9c84066}</v>
+                      <v n="StartAnchor">false</v>
+                      <v n="EndAnchor">true</v>
+                      <v n="AnchorDockedState" t="Docked">NotDocked</v>
+                    </o>
+                    <v n="NextAnchorID">1</v>
+                    <d n="AnchorPoints" t="Hashtable" />
+                    <v n="RelationIsLinear">true</v>
+                    <v n="RelationIsFreeHand">false</v>
+                  </o>
+                  <v n="ReferenceGuid">{b92d7ff3-1ec3-4b94-8133-9320f9c84066}</v>
+                  <v n="RelationGuid">{b92d7ff3-1ec3-4b94-8133-9320f9c84066}</v>
+                  <v n="RelationName">""</v>
+                  <n n="RelationStereotypes" />
+                  <v n="RelationType" t="RelationTypes">Transition</v>
+                  <v n="StartElementArrowFlag" t="ArrowTypes">Slim</v>
+                  <v n="Priority">1</v>
+                  <v n="GeneratesCode">false</v>
+                  <v n="StartElementShowArrow">false</v>
+                  <v n="StartElementCardnality">""</v>
+                  <v n="EndElementCardnality">""</v>
+                  <v n="EndElementArrowFlag" t="ArrowTypes">Slim</v>
+                  <v n="EndElementShowArrow">true</v>
+                  <v n="StartElementRoleName">""</v>
+                  <v n="EndElementRoleName">""</v>
+                  <v n="UserCreated">true</v>
+                  <v n="GeneratedByCode">false</v>
+                  <v n="AllowRoutingOptimisation">false</v>
+                  <d n="flagTexts" t="Hashtable" ckt="String" cvt="String">
+                    <v>Priority</v>
+                    <v>1</v>
+                  </d>
+                  <v n="Position">-1L</v>
+                  <v n="PositionCounter">1L</v>
+                  <v n="IsModified">false</v>
+                  <v n="ARGBElementColor">0</v>
+                </o>
+                <v>863449e8-31c1-4e45-92be-c41b6d57cc39</v>
+                <o>
+                  <v n="HasGraphicalRepresentation">true</v>
+                  <v n="StartUMLElement">{ae0557e5-e6ca-4774-aad7-b56c6a2245af}</v>
+                  <v n="HighlightedLine">false</v>
+                  <v n="ZOrder">229U</v>
+                  <v n="SpecialHandling">false</v>
+                  <v n="ActionLocalVariableName">""</v>
+                  <v n="ActionParametersString">""</v>
+                  <v n="ActionName">""</v>
+                  <v n="ActionText">""</v>
+                  <v n="InjectedActionCode">""</v>
+                  <v n="ActionTextLength">100</v>
+                  <v n="ConditionText">"mcStop.Done"</v>
+                  <v n="LengthConditionText">100</v>
+                  <v n="RelationID">27</v>
+                  <v n="TriggerlessStatechartTransition">false</v>
+                  <v n="EndUMLElement">{32a5e5ca-331e-4957-8d1d-8df7e14119bf}</v>
+                  <o n="UMLRelationVisualisation" t="UMLRelationVisualisation">
+                    <v n="RelationID">{863449e8-31c1-4e45-92be-c41b6d57cc39}</v>
+                    <v n="FlagPosition" t="Double">0.5</v>
+                    <d n="flagsX" t="Hashtable" ckt="String" cvt="Int32">
+                      <v>ConditionPosition</v>
+                      <v>10</v>
+                    </d>
+                    <d n="flagsY" t="Hashtable" ckt="String" cvt="Int32">
+                      <v>ConditionPosition</v>
+                      <v>10</v>
+                    </d>
+                    <o n="StartAnchor" t="UMLAnchorPoint">
+                      <v n="AnchorID">0</v>
+                      <v n="AnchorLeftPosition">457</v>
+                      <v n="AnchorTopPosition">292</v>
+                      <v n="AnchorRelationID">{863449e8-31c1-4e45-92be-c41b6d57cc39}</v>
+                      <v n="StartAnchor">true</v>
+                      <v n="EndAnchor">false</v>
+                      <v n="AnchorDockedState" t="Docked">NotDocked</v>
+                    </o>
+                    <o n="EndAnchor" t="UMLAnchorPoint">
+                      <v n="AnchorID">1</v>
+                      <v n="AnchorLeftPosition">457</v>
+                      <v n="AnchorTopPosition">345</v>
+                      <v n="AnchorRelationID">{863449e8-31c1-4e45-92be-c41b6d57cc39}</v>
+                      <v n="StartAnchor">false</v>
+                      <v n="EndAnchor">true</v>
+                      <v n="AnchorDockedState" t="Docked">NotDocked</v>
+                    </o>
+                    <v n="NextAnchorID">1</v>
+                    <d n="AnchorPoints" t="Hashtable" />
+                    <v n="RelationIsLinear">true</v>
+                    <v n="RelationIsFreeHand">false</v>
+                  </o>
+                  <v n="ReferenceGuid">{863449e8-31c1-4e45-92be-c41b6d57cc39}</v>
+                  <v n="RelationGuid">{863449e8-31c1-4e45-92be-c41b6d57cc39}</v>
+                  <v n="RelationName">""</v>
+                  <n n="RelationStereotypes" />
+                  <v n="RelationType" t="RelationTypes">Transition</v>
+                  <v n="StartElementArrowFlag" t="ArrowTypes">Slim</v>
+                  <v n="Priority">1</v>
+                  <v n="GeneratesCode">false</v>
+                  <v n="StartElementShowArrow">false</v>
+                  <v n="StartElementCardnality">""</v>
+                  <v n="EndElementCardnality">""</v>
+                  <v n="EndElementArrowFlag" t="ArrowTypes">Slim</v>
+                  <v n="EndElementShowArrow">true</v>
+                  <v n="StartElementRoleName">""</v>
+                  <v n="EndElementRoleName">""</v>
+                  <v n="UserCreated">true</v>
+                  <v n="GeneratedByCode">false</v>
+                  <v n="AllowRoutingOptimisation">true</v>
+                  <d n="flagTexts" t="Hashtable" ckt="String" cvt="String">
+                    <v>Priority</v>
+                    <v>1</v>
+                  </d>
+                  <v n="Position">-1L</v>
+                  <v n="PositionCounter">1L</v>
+                  <v n="IsModified">false</v>
+                  <v n="ARGBElementColor">0</v>
+                </o>
+                <v>0a4b6e74-d267-4997-a41a-e5bd8492f55d</v>
+                <o>
+                  <v n="HasGraphicalRepresentation">true</v>
+                  <v n="StartUMLElement">{2ba29472-6687-48ed-b404-90b84d730001}</v>
+                  <v n="HighlightedLine">false</v>
+                  <v n="ZOrder">237U</v>
+                  <v n="SpecialHandling">false</v>
+                  <v n="ActionLocalVariableName">""</v>
+                  <v n="ActionParametersString">""</v>
+                  <n n="ActionName" />
+                  <v n="ActionText">""</v>
+                  <v n="InjectedActionCode">""</v>
+                  <v n="ActionTextLength">100</v>
+                  <v n="ConditionText">""</v>
+                  <v n="LengthConditionText">100</v>
+                  <v n="RelationID">33</v>
+                  <v n="TriggerlessStatechartTransition">true</v>
+                  <v n="EndUMLElement">{b20d2d46-1ab6-4690-be40-987a9e00b918}</v>
+                  <o n="UMLRelationVisualisation" t="UMLRelationVisualisation">
+                    <v n="RelationID">{0a4b6e74-d267-4997-a41a-e5bd8492f55d}</v>
+                    <v n="FlagPosition" t="Double">0.5</v>
+                    <d n="flagsX" t="Hashtable" />
+                    <d n="flagsY" t="Hashtable" />
+                    <o n="StartAnchor" t="UMLAnchorPoint">
+                      <v n="AnchorID">0</v>
+                      <v n="AnchorLeftPosition">285</v>
+                      <v n="AnchorTopPosition">45</v>
+                      <v n="AnchorRelationID">{0a4b6e74-d267-4997-a41a-e5bd8492f55d}</v>
+                      <v n="StartAnchor">true</v>
+                      <v n="EndAnchor">false</v>
+                      <v n="AnchorDockedState" t="Docked">NotDocked</v>
+                    </o>
+                    <o n="EndAnchor" t="UMLAnchorPoint">
+                      <v n="AnchorID">1</v>
+                      <v n="AnchorLeftPosition">285</v>
+                      <v n="AnchorTopPosition">75</v>
+                      <v n="AnchorRelationID">{0a4b6e74-d267-4997-a41a-e5bd8492f55d}</v>
+                      <v n="StartAnchor">false</v>
+                      <v n="EndAnchor">true</v>
+                      <v n="AnchorDockedState" t="Docked">NotDocked</v>
+                    </o>
+                    <v n="NextAnchorID">1</v>
+                    <d n="AnchorPoints" t="Hashtable" />
+                    <v n="RelationIsLinear">true</v>
+                    <v n="RelationIsFreeHand">false</v>
+                  </o>
+                  <v n="ReferenceGuid">{0a4b6e74-d267-4997-a41a-e5bd8492f55d}</v>
+                  <v n="RelationGuid">{0a4b6e74-d267-4997-a41a-e5bd8492f55d}</v>
+                  <v n="RelationName">""</v>
+                  <n n="RelationStereotypes" />
+                  <v n="RelationType" t="RelationTypes">CompletionTransition</v>
+                  <v n="StartElementArrowFlag" t="ArrowTypes">Slim</v>
+                  <v n="Priority">1</v>
+                  <v n="GeneratesCode">false</v>
+                  <v n="StartElementShowArrow">false</v>
+                  <v n="StartElementCardnality">""</v>
+                  <v n="EndElementCardnality">""</v>
+                  <v n="EndElementArrowFlag" t="ArrowTypes">Slim</v>
+                  <v n="EndElementShowArrow">true</v>
+                  <v n="StartElementRoleName">""</v>
+                  <v n="EndElementRoleName">""</v>
+                  <v n="UserCreated">true</v>
+                  <v n="GeneratedByCode">false</v>
+                  <v n="AllowRoutingOptimisation">false</v>
+                  <d n="flagTexts" t="Hashtable" ckt="String" cvt="String">
+                    <v>Priority</v>
+                    <v>1</v>
+                  </d>
+                  <v n="Position">-1L</v>
+                  <v n="PositionCounter">1L</v>
+                  <v n="IsModified">false</v>
+                  <v n="ARGBElementColor">0</v>
+                </o>
+                <v>5343f36a-6dbc-4272-a54d-f975d536f840</v>
+                <o>
+                  <v n="HasGraphicalRepresentation">true</v>
+                  <v n="StartUMLElement">{985128e7-4000-430b-a441-6683df7f9809}</v>
+                  <v n="HighlightedLine">false</v>
+                  <v n="ZOrder">226U</v>
+                  <v n="SpecialHandling">false</v>
+                  <v n="ActionLocalVariableName">""</v>
+                  <v n="ActionParametersString">""</v>
+                  <v n="ActionName">""</v>
+                  <v n="ActionText">""</v>
+                  <v n="InjectedActionCode">""</v>
+                  <v n="ActionTextLength">100</v>
+                  <v n="ConditionText">""</v>
+                  <v n="LengthConditionText">100</v>
+                  <v n="RelationID">30</v>
+                  <v n="TriggerlessStatechartTransition">true</v>
+                  <v n="EndUMLElement">{76c96307-6ce0-470e-af90-e0ccbc636998}</v>
+                  <o n="UMLRelationVisualisation" t="UMLRelationVisualisation">
+                    <v n="RelationID">{5343f36a-6dbc-4272-a54d-f975d536f840}</v>
+                    <v n="FlagPosition" t="Double">0.5</v>
+                    <d n="flagsX" t="Hashtable" ckt="String" cvt="Int32">
+                      <v>ActionPosition</v>
+                      <v>0</v>
+                    </d>
+                    <d n="flagsY" t="Hashtable" ckt="String" cvt="Int32">
+                      <v>ActionPosition</v>
+                      <v>0</v>
+                    </d>
+                    <o n="StartAnchor" t="UMLAnchorPoint">
+                      <v n="AnchorID">0</v>
+                      <v n="AnchorLeftPosition">85</v>
+                      <v n="AnchorTopPosition">215</v>
+                      <v n="AnchorRelationID">{5343f36a-6dbc-4272-a54d-f975d536f840}</v>
+                      <v n="StartAnchor">true</v>
+                      <v n="EndAnchor">false</v>
+                      <v n="AnchorDockedState" t="Docked">NotDocked</v>
+                    </o>
+                    <o n="EndAnchor" t="UMLAnchorPoint">
+                      <v n="AnchorID">1</v>
+                      <v n="AnchorLeftPosition">85</v>
+                      <v n="AnchorTopPosition">245</v>
+                      <v n="AnchorRelationID">{5343f36a-6dbc-4272-a54d-f975d536f840}</v>
+                      <v n="StartAnchor">false</v>
+                      <v n="EndAnchor">true</v>
+                      <v n="AnchorDockedState" t="Docked">NotDocked</v>
+                    </o>
+                    <v n="NextAnchorID">1</v>
+                    <d n="AnchorPoints" t="Hashtable" />
+                    <v n="RelationIsLinear">true</v>
+                    <v n="RelationIsFreeHand">false</v>
+                  </o>
+                  <v n="ReferenceGuid">{5343f36a-6dbc-4272-a54d-f975d536f840}</v>
+                  <v n="RelationGuid">{5343f36a-6dbc-4272-a54d-f975d536f840}</v>
+                  <v n="RelationName">""</v>
+                  <n n="RelationStereotypes" />
+                  <v n="RelationType" t="RelationTypes">CompletionTransition</v>
+                  <v n="StartElementArrowFlag" t="ArrowTypes">Slim</v>
+                  <v n="Priority">1</v>
+                  <v n="GeneratesCode">false</v>
+                  <v n="StartElementShowArrow">false</v>
+                  <v n="StartElementCardnality">""</v>
+                  <v n="EndElementCardnality">""</v>
+                  <v n="EndElementArrowFlag" t="ArrowTypes">Slim</v>
+                  <v n="EndElementShowArrow">true</v>
+                  <v n="StartElementRoleName">""</v>
+                  <v n="EndElementRoleName">""</v>
+                  <v n="UserCreated">true</v>
+                  <v n="GeneratedByCode">false</v>
+                  <v n="AllowRoutingOptimisation">false</v>
+                  <d n="flagTexts" t="Hashtable" ckt="String" cvt="String">
+                    <v>Priority</v>
+                    <v>1</v>
+                  </d>
+                  <v n="Position">-1L</v>
+                  <v n="PositionCounter">1L</v>
+                  <v n="IsModified">false</v>
+                  <v n="ARGBElementColor">0</v>
+                </o>
+                <v>8cdcbeb1-0b4f-4863-9a59-b595885f8d24</v>
+                <o>
+                  <v n="HasGraphicalRepresentation">true</v>
+                  <v n="StartUMLElement">{76c96307-6ce0-470e-af90-e0ccbc636998}</v>
+                  <v n="HighlightedLine">false</v>
+                  <v n="ZOrder">226U</v>
+                  <v n="SpecialHandling">false</v>
+                  <v n="ActionLocalVariableName">""</v>
+                  <v n="ActionParametersString">""</v>
+                  <v n="ActionName">""</v>
+                  <v n="ActionText">""</v>
+                  <v n="InjectedActionCode">""</v>
+                  <v n="ActionTextLength">100</v>
+                  <v n="ConditionText">"stDevice.StateTable.bOk"</v>
+                  <v n="LengthConditionText">100</v>
+                  <v n="RelationID">29</v>
+                  <v n="TriggerlessStatechartTransition">true</v>
+                  <v n="EndUMLElement">{6b6ed550-70d3-4aa7-8ab1-ebec1f28e744}</v>
+                  <o n="UMLRelationVisualisation" t="UMLRelationVisualisation">
+                    <v n="RelationID">{8cdcbeb1-0b4f-4863-9a59-b595885f8d24}</v>
+                    <v n="FlagPosition" t="Double">0.5</v>
+                    <d n="flagsX" t="Hashtable" ckt="String" cvt="Int32">
+                      <v>ConditionPosition</v>
+                      <v>10</v>
+                    </d>
+                    <d n="flagsY" t="Hashtable" ckt="String" cvt="Int32">
+                      <v>ConditionPosition</v>
+                      <v>0</v>
+                    </d>
+                    <o n="StartAnchor" t="UMLAnchorPoint">
+                      <v n="AnchorID">0</v>
+                      <v n="AnchorLeftPosition">297</v>
+                      <v n="AnchorTopPosition">279</v>
+                      <v n="AnchorRelationID">{8cdcbeb1-0b4f-4863-9a59-b595885f8d24}</v>
+                      <v n="StartAnchor">true</v>
+                      <v n="EndAnchor">false</v>
+                      <v n="AnchorDockedState" t="Docked">NotDocked</v>
+                    </o>
+                    <o n="EndAnchor" t="UMLAnchorPoint">
+                      <v n="AnchorID">1</v>
+                      <v n="AnchorLeftPosition">395</v>
+                      <v n="AnchorTopPosition">279</v>
+                      <v n="AnchorRelationID">{8cdcbeb1-0b4f-4863-9a59-b595885f8d24}</v>
+                      <v n="StartAnchor">false</v>
+                      <v n="EndAnchor">true</v>
+                      <v n="AnchorDockedState" t="Docked">NotDocked</v>
+                    </o>
+                    <v n="NextAnchorID">1</v>
+                    <d n="AnchorPoints" t="Hashtable" />
+                    <v n="RelationIsLinear">true</v>
+                    <v n="RelationIsFreeHand">false</v>
+                  </o>
+                  <v n="ReferenceGuid">{8cdcbeb1-0b4f-4863-9a59-b595885f8d24}</v>
+                  <v n="RelationGuid">{8cdcbeb1-0b4f-4863-9a59-b595885f8d24}</v>
+                  <v n="RelationName">""</v>
+                  <n n="RelationStereotypes" />
+                  <v n="RelationType" t="RelationTypes">Transition</v>
+                  <v n="StartElementArrowFlag" t="ArrowTypes">Slim</v>
+                  <v n="Priority">1</v>
+                  <v n="GeneratesCode">false</v>
+                  <v n="StartElementShowArrow">false</v>
+                  <v n="StartElementCardnality">""</v>
+                  <v n="EndElementCardnality">""</v>
+                  <v n="EndElementArrowFlag" t="ArrowTypes">Slim</v>
+                  <v n="EndElementShowArrow">true</v>
+                  <v n="StartElementRoleName">""</v>
+                  <v n="EndElementRoleName">""</v>
+                  <v n="UserCreated">true</v>
+                  <v n="GeneratedByCode">false</v>
+                  <v n="AllowRoutingOptimisation">true</v>
+                  <d n="flagTexts" t="Hashtable" ckt="String" cvt="String">
+                    <v>Priority</v>
+                    <v>1</v>
+                  </d>
+                  <v n="Position">-1L</v>
+                  <v n="PositionCounter">1L</v>
+                  <v n="IsModified">false</v>
+                  <v n="ARGBElementColor">0</v>
+                </o>
+              </d>
+              <v n="NextRelationID">0</v>
+              <v n="DefaultAutomaticLayout">false</v>
+              <o n="ClassDiagrammProperties" t="UMLDiagramProperties">
+                <v n="ArrayOfPointerToClassPresentation" t="RelationTypes">Empty</v>
+                <v n="ArrayOfClassPresentation" t="RelationTypes">Empty</v>
+                <v n="ArrayOfInterfacePresentation" t="RelationTypes">Empty</v>
+                <v n="ArrayOfInterfaceAggregationPresentation" t="RelationTypes">Empty</v>
+                <v n="PointerToClassPresentation" t="RelationTypes">Empty</v>
+                <v n="ClassPresentation" t="RelationTypes">Empty</v>
+                <v n="InterfacePresentation" t="RelationTypes">Empty</v>
+                <v n="InterfaceAggregationPresentation" t="RelationTypes">Empty</v>
+                <v n="ShowRoleNames">true</v>
+                <v n="ShowCardinalities">true</v>
+                <v n="ShowRelationNames">true</v>
+                <v n="ShowAttributesinClasses">false</v>
+                <v n="ShowMethodsInClasses">false</v>
+                <v n="ParametersMaximumLength">20</v>
+              </o>
+              <v n="IsFastStateDiagram">false</v>
+              <l n="StereoTypeProfile" t="ArrayList" />
+              <v n="RelationRoleID">33</v>
+              <d n="PositionSerialization" t="Hashtable" ckt="Int64" cvt="Guid">
+                <v>41</v>
+                <v>0a4b6e74-d267-4997-a41a-e5bd8492f55d</v>
+                <v>40</v>
+                <v>2ba29472-6687-48ed-b404-90b84d730001</v>
+                <v>39</v>
+                <v>b20d2d46-1ab6-4690-be40-987a9e00b918</v>
+                <v>38</v>
+                <v>51035e75-bd9b-4019-8ab7-a8a4a6b4ea39</v>
+                <v>37</v>
+                <v>b042fa22-3a02-43e1-9aa9-0b440e365d32</v>
+                <v>36</v>
+                <v>691cab0f-d396-4228-8e02-3536907dc616</v>
+                <v>35</v>
+                <v>32a5e5ca-331e-4957-8d1d-8df7e14119bf</v>
+                <v>34</v>
+                <v>32a5e5ca-331e-4957-8d1d-8df7e14119bf</v>
+                <v>33</v>
+                <v>6b6ed550-70d3-4aa7-8ab1-ebec1f28e744</v>
+                <v>32</v>
+                <v>863449e8-31c1-4e45-92be-c41b6d57cc39</v>
+                <v>31</v>
+                <v>91d0acbb-182c-4908-970b-aa87bd380da4</v>
+                <v>30</v>
+                <v>a2174e03-ebed-4ae6-980e-d4e0c456f6ef</v>
+                <v>29</v>
+                <v>5343f36a-6dbc-4272-a54d-f975d536f840</v>
+                <v>28</v>
+                <v>8cdcbeb1-0b4f-4863-9a59-b595885f8d24</v>
+                <v>27</v>
+                <v>e4674a55-6fca-47d3-af7e-55d6010aba14</v>
+                <v>26</v>
+                <v>ae0557e5-e6ca-4774-aad7-b56c6a2245af</v>
+                <v>25</v>
+                <v>ae0557e5-e6ca-4774-aad7-b56c6a2245af</v>
+                <v>23</v>
+                <v>b92d7ff3-1ec3-4b94-8133-9320f9c84066</v>
+                <v>21</v>
+                <v>1c88254b-28e9-4d28-8a1f-fde5106578f8</v>
+                <v>18</v>
+                <v>24d9dda4-2f73-40c0-82cf-aaf62aa93404</v>
+                <v>17</v>
+                <v>840e61b0-9e66-49de-825e-3603561f62b1</v>
+                <v>16</v>
+                <v>840e61b0-9e66-49de-825e-3603561f62b1</v>
+                <v>15</v>
+                <v>f4757ebc-cda9-4320-8405-ac4f72a3b20e</v>
+                <v>14</v>
+                <v>f4757ebc-cda9-4320-8405-ac4f72a3b20e</v>
+                <v>13</v>
+                <v>76c96307-6ce0-470e-af90-e0ccbc636998</v>
+                <v>12</v>
+                <v>76c96307-6ce0-470e-af90-e0ccbc636998</v>
+                <v>10</v>
+                <v>79eb3450-2a0c-4ffb-b86a-388dfd92b5bf</v>
+                <v>9</v>
+                <v>3122a167-a38d-41bc-b9dd-ec35d18617bb</v>
+                <v>8</v>
+                <v>c9bd3ee8-ed1c-4da5-aaca-8e125e37e024</v>
+                <v>6</v>
+                <v>e79867e7-2b3a-47aa-af42-f5e58ca1d69c</v>
+                <v>4</v>
+                <v>01317ed0-894f-4589-9ddd-582e6efa85a7</v>
+                <v>3</v>
+                <v>985128e7-4000-430b-a441-6683df7f9809</v>
+                <v>1</v>
+                <v>52e0911d-0437-42a9-b217-3e2d41fb2bf3</v>
+              </d>
+            </o>
+          </Data>
+          <TypeList>
+            <Type n="ArrayList">System.Collections.ArrayList</Type>
+            <Type n="ArrowTypes">{812dac4c-85cd-4336-bb2f-f967774b251e}</Type>
+            <Type n="Boolean">System.Boolean</Type>
+            <Type n="Docked">{7586ffd4-4b2d-494c-aff5-a40d31dac111}</Type>
+            <Type n="Double">System.Double</Type>
+            <Type n="EditorRestrictions">{1ca7a370-7213-48b2-9df6-3ac7e85f0c68}</Type>
+            <Type n="Guid">System.Guid</Type>
+            <Type n="Hashtable">System.Collections.Hashtable</Type>
+            <Type n="HistoryTypes">{3534dff0-3cd3-4ab6-8e74-b81ff8613005}</Type>
+            <Type n="ImplicitStartStateTypes">{159536e2-c3a1-4501-a760-7b5009964f41}</Type>
+            <Type n="Int16">System.Int16</Type>
+            <Type n="Int32">System.Int32</Type>
+            <Type n="Int64">System.Int64</Type>
+            <Type n="RelationTypes">{f5146002-a332-47c0-9d9a-7997d539e6a9}</Type>
+            <Type n="String">System.String</Type>
+            <Type n="UInt32">System.UInt32</Type>
+            <Type n="UMLAnchorPoint">{610ad96d-085d-4ced-95e0-831f42edefc2}</Type>
+            <Type n="UMLArea">{7b0cf5f4-81b9-4f82-abc9-9de087e8469a}</Type>
+            <Type n="UMLCompositeVisualisation">{408045ae-deed-4f23-8f67-f77d80b7a749}</Type>
+            <Type n="UMLDiagramProperties">{71bc64fb-98e8-4f9a-b2ec-0da66cfaa0a0}</Type>
+            <Type n="UMLRelation">{66eb2f12-934d-4c0a-8710-d6fec8d1ff48}</Type>
+            <Type n="UMLRelationVisualisation">{79af0d10-00d2-4abe-9c91-6b4e07d4aa1d}</Type>
+            <Type n="UMLStateChart">{9b0dd937-6691-44b8-b0c0-27601a5e098a}</Type>
+            <Type n="UMLStateChartComposite">{05967c19-34ab-4e26-b363-c32e4509c5dc}</Type>
+            <Type n="UMLStateChartDiagramElementVisualisationDot">{573ce27a-c0d4-453b-8ffd-6d125a13ad66}</Type>
+            <Type n="UMLStateChartElement">{a9cbb7e7-7aa8-4772-a0f9-efee80bd48b2}</Type>
+            <Type n="UMLStateChartElementVisualisation">{861a8beb-602e-4017-bf45-a602984c46fe}</Type>
+            <Type n="UMLStateChartPseudoElement">{3569ebb7-c8a3-4ab4-b440-d179b9e0fe9b}</Type>
+            <Type n="UMLType">{0197b136-405a-42ee-bb27-fd08b621d0cf}</Type>
+          </TypeList>
+        </XmlArchive>
+      </StateChart>
+    </Implementation>
+    <Action Name="Always_DO" Id="{b7040fc6-552d-0c14-345b-f41f50f983f1}">
+      <Implementation>
+        <NWL>
+          <XmlArchive>
+            <Data>
+              <o xml:space="preserve" t="NWLImplementationObject">
+                <v n="NetworkListComment">""</v>
+                <v n="DefaultViewMode">"Fbd"</v>
+                <l2 n="NetworkList" cet="Network">
+                  <o>
+                    <v n="ILActive">false</v>
+                    <v n="FBDValid">false</v>
+                    <v n="ILValid">false</v>
+                    <l2 n="ILLines" />
+                    <v n="Comment">""</v>
+                    <v n="Title">""</v>
+                    <v n="Label">""</v>
+                    <v n="OutCommented">false</v>
+                    <l2 n="NetworkItems" cet="BoxTreeBox">
+                      <o>
+                        <v n="BoxType">"BeamParameterTransitionManager"</v>
+                        <o n="Instance" t="Operand">
+                          <v n="Operand">"fbBPTM"</v>
+                          <v n="Type">"BeamParameterTransitionManager"</v>
+                          <v n="Comment">""</v>
+                          <v n="SymbolComment">""</v>
+                          <v n="Address">""</v>
+                          <o n="Flags" t="Flags">
+                            <v n="Flags">0</v>
+                            <v n="Fixed">false</v>
+                            <v n="Extensible">false</v>
+                          </o>
+                          <v n="LValue">false</v>
+                          <v n="Boolean">false</v>
+                          <v n="IsInstance">true</v>
+                          <v n="Id">128L</v>
+                        </o>
+                        <o n="OutputItems" t="OutputItemList">
+                          <l2 n="OutputItems" cet="Operand">
+                            <n />
+                            <o>
+                              <v n="Operand">""</v>
+                              <n n="Type" />
+                              <v n="Comment">""</v>
+                              <v n="SymbolComment">""</v>
+                              <v n="Address">""</v>
+                              <o n="Flags" t="Flags">
+                                <v n="Flags">0</v>
+                                <v n="Fixed">false</v>
+                                <v n="Extensible">false</v>
+                              </o>
+                              <v n="LValue">true</v>
+                              <v n="Boolean">false</v>
+                              <v n="IsInstance">false</v>
+                              <v n="Id">63L</v>
+                            </o>
+                            <o>
+                              <v n="Operand">""</v>
+                              <n n="Type" />
+                              <v n="Comment">""</v>
+                              <v n="SymbolComment">""</v>
+                              <v n="Address">""</v>
+                              <o n="Flags" t="Flags">
+                                <v n="Flags">0</v>
+                                <v n="Fixed">false</v>
+                                <v n="Extensible">false</v>
+                              </o>
+                              <v n="LValue">true</v>
+                              <v n="Boolean">false</v>
+                              <v n="IsInstance">false</v>
+                              <v n="Id">64L</v>
+                            </o>
+                          </l2>
+                        </o>
+                        <o n="Flags" t="Flags">
+                          <v n="Flags">0</v>
+                          <v n="Fixed">true</v>
+                          <v n="Extensible">false</v>
+                        </o>
+                        <n n="InputFlags" />
+                        <l2 n="InputItems" cet="BoxTreeOperand">
+                          <o>
+                            <o n="Operand" t="Operand">
+                              <v n="Operand">"stDevice.stTransitionState.nStateRef"</v>
+                              <v n="Type">"UDINT"</v>
+                              <v n="Comment">""</v>
+                              <v n="SymbolComment">""</v>
+                              <v n="Address">""</v>
+                              <o n="Flags" t="Flags">
+                                <v n="Flags">0</v>
+                                <v n="Fixed">false</v>
+                                <v n="Extensible">false</v>
+                              </o>
+                              <v n="LValue">false</v>
+                              <v n="Boolean">false</v>
+                              <v n="IsInstance">false</v>
+                              <v n="Id">66L</v>
+                            </o>
+                            <v n="Id">65L</v>
+                          </o>
+                          <o>
+                            <o n="Operand" t="Operand">
+                              <v n="Operand">"stDevice.stTransitionState.stReqBeamParam"</v>
+                              <v n="Type">"ST_BeamParams"</v>
+                              <v n="Comment">""</v>
+                              <v n="SymbolComment">""</v>
+                              <v n="Address">""</v>
+                              <o n="Flags" t="Flags">
+                                <v n="Flags">0</v>
+                                <v n="Fixed">false</v>
+                                <v n="Extensible">false</v>
+                              </o>
+                              <v n="LValue">false</v>
+                              <v n="Boolean">false</v>
+                              <v n="IsInstance">false</v>
+                              <v n="Id">68L</v>
+                            </o>
+                            <v n="Id">67L</v>
+                          </o>
+                          <o>
+                            <o n="Operand" t="Operand">
+                              <v n="Operand">""</v>
+                              <n n="Type" />
+                              <v n="Comment">""</v>
+                              <v n="SymbolComment">""</v>
+                              <v n="Address">""</v>
+                              <o n="Flags" t="Flags">
+                                <v n="Flags">0</v>
+                                <v n="Fixed">false</v>
+                                <v n="Extensible">false</v>
+                              </o>
+                              <v n="LValue">false</v>
+                              <v n="Boolean">false</v>
+                              <v n="IsInstance">false</v>
+                              <v n="Id">70L</v>
+                            </o>
+                            <v n="Id">69L</v>
+                          </o>
+                          <o>
+                            <o n="Operand" t="Operand">
+                              <v n="Operand">""</v>
+                              <n n="Type" />
+                              <v n="Comment">""</v>
+                              <v n="SymbolComment">""</v>
+                              <v n="Address">""</v>
+                              <o n="Flags" t="Flags">
+                                <v n="Flags">0</v>
+                                <v n="Fixed">false</v>
+                                <v n="Extensible">false</v>
+                              </o>
+                              <v n="LValue">false</v>
+                              <v n="Boolean">false</v>
+                              <v n="IsInstance">false</v>
+                              <v n="Id">72L</v>
+                            </o>
+                            <v n="Id">71L</v>
+                          </o>
+                          <o>
+                            <o n="Operand" t="Operand">
+                              <v n="Operand">"mcAbsolute.Active"</v>
+                              <v n="Type">"BOOL"</v>
+                              <v n="Comment">""</v>
+                              <v n="SymbolComment">""</v>
+                              <v n="Address">""</v>
+                              <o n="Flags" t="Flags">
+                                <v n="Flags">0</v>
+                                <v n="Fixed">false</v>
+                                <v n="Extensible">false</v>
+                              </o>
+                              <v n="LValue">false</v>
+                              <v n="Boolean">false</v>
+                              <v n="IsInstance">false</v>
+                              <v n="Id">74L</v>
+                            </o>
+                            <v n="Id">73L</v>
+                          </o>
+                          <o>
+                            <o n="Operand" t="Operand">
+                              <v n="Operand">"mcAbsolute.Done"</v>
+                              <v n="Type">"BOOL"</v>
+                              <v n="Comment">""</v>
+                              <v n="SymbolComment">""</v>
+                              <v n="Address">""</v>
+                              <o n="Flags" t="Flags">
+                                <v n="Flags">0</v>
+                                <v n="Fixed">false</v>
+                                <v n="Extensible">false</v>
+                              </o>
+                              <v n="LValue">false</v>
+                              <v n="Boolean">false</v>
+                              <v n="IsInstance">false</v>
+                              <v n="Id">76L</v>
+                            </o>
+                            <v n="Id">75L</v>
+                          </o>
+                        </l2>
+                        <o n="InputParam" t="ParamList">
+                          <l2 n="Names" cet="String">
+                            <v>i_TransitionAssertionID</v>
+                            <v>i_stTransitionAssertion</v>
+                            <v>i_nRequestedAssertionID</v>
+                            <v>i_stRequestedAssertion</v>
+                            <v>i_xMoving</v>
+                            <v>i_xDoneMoving</v>
+                          </l2>
+                          <l2 n="Types" cet="String">
+                            <v>UDINT</v>
+                            <v>ST_BeamParams</v>
+                            <v>UDINT</v>
+                            <v>ST_BeamParams</v>
+                            <v>BOOL</v>
+                            <v>BOOL</v>
+                          </l2>
+                        </o>
+                        <o n="OutputParam" t="ParamList">
+                          <l2 n="Names" cet="String">
+                            <v>q_stFinalAssertion</v>
+                            <v>q_stTransitionAssertion</v>
+                            <v>q_xTransitionAuthorized</v>
+                          </l2>
+                          <l2 n="Types" cet="String">
+                            <v>ST_BeamParams</v>
+                            <v>ST_BeamParams</v>
+                            <v>BOOL</v>
+                          </l2>
+                        </o>
+                        <v n="CallType" t="Operator">FunctionBlock</v>
+                        <v n="EN">false</v>
+                        <v n="ENO">false</v>
+                        <n n="STSnippet" />
+                        <v n="ContainsExtensibleInputs">false</v>
+                        <v n="ProvidesSTSnippet">false</v>
+                        <v n="Id">129L</v>
+                      </o>
+                    </l2>
+                    <l2 n="Connectors" />
+                    <v n="Id">60L</v>
+                  </o>
+                  <o>
+                    <v n="ILActive">false</v>
+                    <v n="FBDValid">false</v>
+                    <v n="ILValid">false</v>
+                    <l2 n="ILLines" />
+                    <v n="Comment">""</v>
+                    <v n="Title">""</v>
+                    <v n="Label">""</v>
+                    <v n="OutCommented">false</v>
+                    <l2 n="NetworkItems" cet="BoxTreeBox">
+                      <o>
+                        <v n="BoxType">"MC_MoveAbsolute"</v>
+                        <o n="Instance" t="Operand">
+                          <v n="Operand">"mcAbsolute"</v>
+                          <v n="Type">"MC_MoveAbsolute"</v>
+                          <v n="Comment">""</v>
+                          <v n="SymbolComment">""</v>
+                          <v n="Address">""</v>
+                          <o n="Flags" t="Flags">
+                            <v n="Flags">0</v>
+                            <v n="Fixed">false</v>
+                            <v n="Extensible">false</v>
+                          </o>
+                          <v n="LValue">false</v>
+                          <v n="Boolean">false</v>
+                          <v n="IsInstance">true</v>
+                          <v n="Id">35L</v>
+                        </o>
+                        <o n="OutputItems" t="OutputItemList">
+                          <l2 n="OutputItems" />
+                        </o>
+                        <o n="Flags" t="Flags">
+                          <v n="Flags">0</v>
+                          <v n="Fixed">false</v>
+                          <v n="Extensible">false</v>
+                        </o>
+                        <n n="InputFlags" />
+                        <l2 n="InputItems">
+                          <o t="BoxTreeOperand">
+                            <o n="Operand" t="Operand">
+                              <v n="Operand">"stDevice.stAxis"</v>
+                              <v n="Type">"AXIS_REF"</v>
+                              <v n="Comment">""</v>
+                              <v n="SymbolComment">""</v>
+                              <v n="Address">""</v>
+                              <o n="Flags" t="Flags">
+                                <v n="Flags">0</v>
+                                <v n="Fixed">false</v>
+                                <v n="Extensible">false</v>
+                              </o>
+                              <v n="LValue">false</v>
+                              <v n="Boolean">false</v>
+                              <v n="IsInstance">false</v>
+                              <v n="Id">43L</v>
+                            </o>
+                            <v n="Id">42L</v>
+                          </o>
+                          <o t="BoxTreeBox">
+                            <v n="BoxType">"AND"</v>
+                            <o n="Instance" t="Operand">
+                              <n n="Operand" />
+                              <v n="Type">""</v>
+                              <v n="Comment">""</v>
+                              <v n="SymbolComment">""</v>
+                              <v n="Address">""</v>
+                              <o n="Flags" t="Flags">
+                                <v n="Flags">0</v>
+                                <v n="Fixed">false</v>
+                                <v n="Extensible">false</v>
+                              </o>
+                              <v n="LValue">false</v>
+                              <v n="Boolean">false</v>
+                              <v n="IsInstance">true</v>
+                              <v n="Id">79L</v>
+                            </o>
+                            <o n="OutputItems" t="OutputItemList">
+                              <l2 n="OutputItems">
+                                <n />
+                              </l2>
+                            </o>
+                            <o n="Flags" t="Flags">
+                              <v n="Flags">0</v>
+                              <v n="Fixed">false</v>
+                              <v n="Extensible">false</v>
+                            </o>
+                            <n n="InputFlags" />
+                            <l2 n="InputItems" cet="BoxTreeOperand">
+                              <o>
+                                <o n="Operand" t="Operand">
+                                  <v n="Operand">"fbBPTM.q_xTransitionAuthorized"</v>
+                                  <v n="Type">"BOOL"</v>
+                                  <v n="Comment">""</v>
+                                  <v n="SymbolComment">""</v>
+                                  <v n="Address">""</v>
+                                  <o n="Flags" t="Flags">
+                                    <v n="Flags">0</v>
+                                    <v n="Fixed">false</v>
+                                    <v n="Extensible">false</v>
+                                  </o>
+                                  <v n="LValue">false</v>
+                                  <v n="Boolean">false</v>
+                                  <v n="IsInstance">false</v>
+                                  <v n="Id">45L</v>
+                                </o>
+                                <v n="Id">44L</v>
+                              </o>
+                              <o>
+                                <o n="Operand" t="Operand">
+                                  <v n="Operand">"xStartMove"</v>
+                                  <v n="Type">"BOOL"</v>
+                                  <v n="Comment">""</v>
+                                  <v n="SymbolComment">""</v>
+                                  <v n="Address">""</v>
+                                  <o n="Flags" t="Flags">
+                                    <v n="Flags">0</v>
+                                    <v n="Fixed">false</v>
+                                    <v n="Extensible">false</v>
+                                  </o>
+                                  <v n="LValue">false</v>
+                                  <v n="Boolean">false</v>
+                                  <v n="IsInstance">false</v>
+                                  <v n="Id">82L</v>
+                                </o>
+                                <v n="Id">81L</v>
+                              </o>
+                            </l2>
+                            <o n="InputParam" t="ParamList">
+                              <l2 n="Names" />
+                              <l2 n="Types" />
+                            </o>
+                            <o n="OutputParam" t="ParamList">
+                              <l2 n="Names" cet="String">
+                                <v></v>
+                              </l2>
+                              <l2 n="Types" cet="String">
+                                <v>BOOL</v>
+                              </l2>
+                            </o>
+                            <v n="CallType" t="Operator">And</v>
+                            <v n="EN">false</v>
+                            <v n="ENO">false</v>
+                            <n n="STSnippet" />
+                            <v n="ContainsExtensibleInputs">false</v>
+                            <v n="ProvidesSTSnippet">false</v>
+                            <v n="Id">80L</v>
+                          </o>
+                          <o t="BoxTreeOperand">
+                            <o n="Operand" t="Operand">
+                              <v n="Operand">"g_rTestingVelocity"</v>
+                              <v n="Type">"LREAL"</v>
+                              <v n="Comment">""</v>
+                              <v n="SymbolComment">""</v>
+                              <v n="Address">""</v>
+                              <o n="Flags" t="Flags">
+                                <v n="Flags">0</v>
+                                <v n="Fixed">false</v>
+                                <v n="Extensible">false</v>
+                              </o>
+                              <v n="LValue">false</v>
+                              <v n="Boolean">false</v>
+                              <v n="IsInstance">false</v>
+                              <v n="Id">49L</v>
+                            </o>
+                            <v n="Id">48L</v>
+                          </o>
+                        </l2>
+                        <o n="InputParam" t="ParamList">
+                          <l2 n="Names" cet="String">
+                            <v>Axis</v>
+                            <v>Execute</v>
+                            <v>Velocity</v>
+                          </l2>
+                          <l2 n="Types" cet="String">
+                            <v>AXIS_REF[REF]</v>
+                            <v>BOOL</v>
+                            <v>LREAL</v>
+                          </l2>
+                        </o>
+                        <o n="OutputParam" t="ParamList">
+                          <l2 n="Names" />
+                          <l2 n="Types" />
+                        </o>
+                        <v n="CallType" t="Operator">FunctionBlock</v>
+                        <v n="EN">false</v>
+                        <v n="ENO">false</v>
+                        <n n="STSnippet" />
+                        <v n="ContainsExtensibleInputs">false</v>
+                        <v n="ProvidesSTSnippet">false</v>
+                        <v n="Id">36L</v>
+                      </o>
+                    </l2>
+                    <l2 n="Connectors" />
+                    <v n="Id">34L</v>
+                  </o>
+                  <o>
+                    <v n="ILActive">false</v>
+                    <v n="FBDValid">false</v>
+                    <v n="ILValid">false</v>
+                    <l2 n="ILLines" />
+                    <v n="Comment">""</v>
+                    <v n="Title">""</v>
+                    <v n="Label">""</v>
+                    <v n="OutCommented">false</v>
+                    <l2 n="NetworkItems" cet="BoxTreeBox">
+                      <o>
+                        <v n="BoxType">"MC_Stop"</v>
+                        <o n="Instance" t="Operand">
+                          <v n="Operand">"mcStop"</v>
+                          <v n="Type">"MC_Stop"</v>
+                          <v n="Comment">""</v>
+                          <v n="SymbolComment">""</v>
+                          <v n="Address">""</v>
+                          <o n="Flags" t="Flags">
+                            <v n="Flags">0</v>
+                            <v n="Fixed">false</v>
+                            <v n="Extensible">false</v>
+                          </o>
+                          <v n="LValue">false</v>
+                          <v n="Boolean">false</v>
+                          <v n="IsInstance">true</v>
+                          <v n="Id">93L</v>
+                        </o>
+                        <o n="OutputItems" t="OutputItemList">
+                          <l2 n="OutputItems" />
+                        </o>
+                        <o n="Flags" t="Flags">
+                          <v n="Flags">0</v>
+                          <v n="Fixed">false</v>
+                          <v n="Extensible">false</v>
+                        </o>
+                        <n n="InputFlags" />
+                        <l2 n="InputItems" cet="BoxTreeOperand">
+                          <o>
+                            <o n="Operand" t="Operand">
+                              <v n="Operand">"stDevice.stAxis"</v>
+                              <v n="Type">"AXIS_REF"</v>
+                              <v n="Comment">""</v>
+                              <v n="SymbolComment">""</v>
+                              <v n="Address">""</v>
+                              <o n="Flags" t="Flags">
+                                <v n="Flags">0</v>
+                                <v n="Fixed">false</v>
+                                <v n="Extensible">false</v>
+                              </o>
+                              <v n="LValue">false</v>
+                              <v n="Boolean">false</v>
+                              <v n="IsInstance">false</v>
+                              <v n="Id">101L</v>
+                            </o>
+                            <v n="Id">100L</v>
+                          </o>
+                        </l2>
+                        <o n="InputParam" t="ParamList">
+                          <l2 n="Names" cet="String">
+                            <v>Axis</v>
+                          </l2>
+                          <l2 n="Types" cet="String">
+                            <v>AXIS_REF[REF]</v>
+                          </l2>
+                        </o>
+                        <o n="OutputParam" t="ParamList">
+                          <l2 n="Names" />
+                          <l2 n="Types" />
+                        </o>
+                        <v n="CallType" t="Operator">FunctionBlock</v>
+                        <v n="EN">false</v>
+                        <v n="ENO">false</v>
+                        <n n="STSnippet" />
+                        <v n="ContainsExtensibleInputs">false</v>
+                        <v n="ProvidesSTSnippet">false</v>
+                        <v n="Id">94L</v>
+                      </o>
+                    </l2>
+                    <l2 n="Connectors" />
+                    <v n="Id">92L</v>
+                  </o>
+                  <o>
+                    <v n="ILActive">false</v>
+                    <v n="FBDValid">false</v>
+                    <v n="ILValid">false</v>
+                    <l2 n="ILLines" />
+                    <v n="Comment">""</v>
+                    <v n="Title">""</v>
+                    <v n="Label">"This block is handled by the governor."</v>
+                    <v n="OutCommented">true</v>
+                    <l2 n="NetworkItems" cet="BoxTreeBox">
+                      <o>
+                        <v n="BoxType">"MC_Power"</v>
+                        <o n="Instance" t="Operand">
+                          <v n="Operand">"mcPower"</v>
+                          <v n="Type">"MC_Power"</v>
+                          <v n="Comment">""</v>
+                          <v n="SymbolComment">""</v>
+                          <v n="Address">""</v>
+                          <o n="Flags" t="Flags">
+                            <v n="Flags">0</v>
+                            <v n="Fixed">false</v>
+                            <v n="Extensible">false</v>
+                          </o>
+                          <v n="LValue">false</v>
+                          <v n="Boolean">false</v>
+                          <v n="IsInstance">true</v>
+                          <v n="Id">22L</v>
+                        </o>
+                        <o n="OutputItems" t="OutputItemList">
+                          <l2 n="OutputItems" />
+                        </o>
+                        <o n="Flags" t="Flags">
+                          <v n="Flags">0</v>
+                          <v n="Fixed">true</v>
+                          <v n="Extensible">false</v>
+                        </o>
+                        <n n="InputFlags" />
+                        <l2 n="InputItems" cet="BoxTreeOperand">
+                          <o>
+                            <o n="Operand" t="Operand">
+                              <v n="Operand">"stDevice.stAxis"</v>
+                              <v n="Type">"AXIS_REF"</v>
+                              <v n="Comment">""</v>
+                              <v n="SymbolComment">""</v>
+                              <v n="Address">""</v>
+                              <o n="Flags" t="Flags">
+                                <v n="Flags">0</v>
+                                <v n="Fixed">false</v>
+                                <v n="Extensible">false</v>
+                              </o>
+                              <v n="LValue">false</v>
+                              <v n="Boolean">false</v>
+                              <v n="IsInstance">false</v>
+                              <v n="Id">9L</v>
+                            </o>
+                            <v n="Id">8L</v>
+                          </o>
+                          <o>
+                            <o n="Operand" t="Operand">
+                              <v n="Operand">"TRUE"</v>
+                              <v n="Type">"BOOL"</v>
+                              <v n="Comment">""</v>
+                              <v n="SymbolComment">""</v>
+                              <v n="Address">""</v>
+                              <o n="Flags" t="Flags">
+                                <v n="Flags">0</v>
+                                <v n="Fixed">false</v>
+                                <v n="Extensible">false</v>
+                              </o>
+                              <v n="LValue">false</v>
+                              <v n="Boolean">false</v>
+                              <v n="IsInstance">false</v>
+                              <v n="Id">11L</v>
+                            </o>
+                            <v n="Id">10L</v>
+                          </o>
+                          <o>
+                            <o n="Operand" t="Operand">
+                              <v n="Operand">"TRUE"</v>
+                              <v n="Type">"BOOL"</v>
+                              <v n="Comment">""</v>
+                              <v n="SymbolComment">""</v>
+                              <v n="Address">""</v>
+                              <o n="Flags" t="Flags">
+                                <v n="Flags">0</v>
+                                <v n="Fixed">false</v>
+                                <v n="Extensible">false</v>
+                              </o>
+                              <v n="LValue">false</v>
+                              <v n="Boolean">false</v>
+                              <v n="IsInstance">false</v>
+                              <v n="Id">13L</v>
+                            </o>
+                            <v n="Id">12L</v>
+                          </o>
+                          <o>
+                            <o n="Operand" t="Operand">
+                              <v n="Operand">"TRUE"</v>
+                              <v n="Type">"BOOL"</v>
+                              <v n="Comment">""</v>
+                              <v n="SymbolComment">""</v>
+                              <v n="Address">""</v>
+                              <o n="Flags" t="Flags">
+                                <v n="Flags">0</v>
+                                <v n="Fixed">false</v>
+                                <v n="Extensible">false</v>
+                              </o>
+                              <v n="LValue">false</v>
+                              <v n="Boolean">false</v>
+                              <v n="IsInstance">false</v>
+                              <v n="Id">15L</v>
+                            </o>
+                            <v n="Id">14L</v>
+                          </o>
+                        </l2>
+                        <o n="InputParam" t="ParamList">
+                          <l2 n="Names" cet="String">
+                            <v>Axis</v>
+                            <v>Enable</v>
+                            <v>Enable_Positive</v>
+                            <v>Enable_Negative</v>
+                          </l2>
+                          <l2 n="Types" cet="String">
+                            <v>AXIS_REF[REF]</v>
+                            <v>BOOL</v>
+                            <v>BOOL</v>
+                            <v>BOOL</v>
+                          </l2>
+                        </o>
+                        <o n="OutputParam" t="ParamList">
+                          <l2 n="Names" />
+                          <l2 n="Types" />
+                        </o>
+                        <v n="CallType" t="Operator">FunctionBlock</v>
+                        <v n="EN">false</v>
+                        <v n="ENO">false</v>
+                        <n n="STSnippet" />
+                        <v n="ContainsExtensibleInputs">false</v>
+                        <v n="ProvidesSTSnippet">false</v>
+                        <v n="Id">23L</v>
+                      </o>
+                    </l2>
+                    <l2 n="Connectors" />
+                    <v n="Id">1L</v>
+                  </o>
+                  <o>
+                    <v n="ILActive">false</v>
+                    <v n="FBDValid">false</v>
+                    <v n="ILValid">false</v>
+                    <l2 n="ILLines" />
+                    <v n="Comment">""</v>
+                    <v n="Title">""</v>
+                    <v n="Label">""</v>
+                    <v n="OutCommented">false</v>
+                    <l2 n="NetworkItems" cet="BoxTreeBox">
+                      <o>
+                        <v n="BoxType">"FB_LinearGovernor"</v>
+                        <o n="Instance" t="Operand">
+                          <v n="Operand">"fbGovernor"</v>
+                          <v n="Type">"FB_LinearGovernor"</v>
+                          <v n="Comment">""</v>
+                          <v n="SymbolComment">""</v>
+                          <v n="Address">""</v>
+                          <o n="Flags" t="Flags">
+                            <v n="Flags">0</v>
+                            <v n="Fixed">false</v>
+                            <v n="Extensible">false</v>
+                          </o>
+                          <v n="LValue">false</v>
+                          <v n="Boolean">false</v>
+                          <v n="IsInstance">true</v>
+                          <v n="Id">111L</v>
+                        </o>
+                        <o n="OutputItems" t="OutputItemList">
+                          <l2 n="OutputItems" cet="Operand">
+                            <n />
+                            <o>
+                              <v n="Operand">""</v>
+                              <n n="Type" />
+                              <v n="Comment">""</v>
+                              <v n="SymbolComment">""</v>
+                              <v n="Address">""</v>
+                              <o n="Flags" t="Flags">
+                                <v n="Flags">0</v>
+                                <v n="Fixed">false</v>
+                                <v n="Extensible">false</v>
+                              </o>
+                              <v n="LValue">true</v>
+                              <v n="Boolean">false</v>
+                              <v n="IsInstance">false</v>
+                              <v n="Id">113L</v>
+                            </o>
+                          </l2>
+                        </o>
+                        <o n="Flags" t="Flags">
+                          <v n="Flags">0</v>
+                          <v n="Fixed">false</v>
+                          <v n="Extensible">false</v>
+                        </o>
+                        <n n="InputFlags" />
+                        <l2 n="InputItems" cet="BoxTreeOperand">
+                          <o>
+                            <o n="Operand" t="Operand">
+                              <v n="Operand">"PMPS_GVL_BeamParams.stCurrentBeamParameters"</v>
+                              <v n="Type">"ST_BeamParams"</v>
+                              <v n="Comment">""</v>
+                              <v n="SymbolComment">""</v>
+                              <v n="Address">""</v>
+                              <o n="Flags" t="Flags">
+                                <v n="Flags">0</v>
+                                <v n="Fixed">false</v>
+                                <v n="Extensible">false</v>
+                              </o>
+                              <v n="LValue">false</v>
+                              <v n="Boolean">false</v>
+                              <v n="IsInstance">false</v>
+                              <v n="Id">115L</v>
+                            </o>
+                            <v n="Id">114L</v>
+                          </o>
+                          <o>
+                            <o n="Operand" t="Operand">
+                              <v n="Operand">""</v>
+                              <n n="Type" />
+                              <v n="Comment">""</v>
+                              <v n="SymbolComment">""</v>
+                              <v n="Address">""</v>
+                              <o n="Flags" t="Flags">
+                                <v n="Flags">0</v>
+                                <v n="Fixed">false</v>
+                                <v n="Extensible">false</v>
+                              </o>
+                              <v n="LValue">false</v>
+                              <v n="Boolean">false</v>
+                              <v n="IsInstance">false</v>
+                              <v n="Id">117L</v>
+                            </o>
+                            <v n="Id">116L</v>
+                          </o>
+                          <o>
+                            <o n="Operand" t="Operand">
+                              <v n="Operand">""</v>
+                              <n n="Type" />
+                              <v n="Comment">""</v>
+                              <v n="SymbolComment">""</v>
+                              <v n="Address">""</v>
+                              <o n="Flags" t="Flags">
+                                <v n="Flags">0</v>
+                                <v n="Fixed">false</v>
+                                <v n="Extensible">false</v>
+                              </o>
+                              <v n="LValue">false</v>
+                              <v n="Boolean">false</v>
+                              <v n="IsInstance">false</v>
+                              <v n="Id">119L</v>
+                            </o>
+                            <v n="Id">118L</v>
+                          </o>
+                          <o>
+                            <o n="Operand" t="Operand">
+                              <v n="Operand">""</v>
+                              <n n="Type" />
+                              <v n="Comment">""</v>
+                              <v n="SymbolComment">""</v>
+                              <v n="Address">""</v>
+                              <o n="Flags" t="Flags">
+                                <v n="Flags">0</v>
+                                <v n="Fixed">false</v>
+                                <v n="Extensible">false</v>
+                              </o>
+                              <v n="LValue">false</v>
+                              <v n="Boolean">false</v>
+                              <v n="IsInstance">false</v>
+                              <v n="Id">121L</v>
+                            </o>
+                            <v n="Id">120L</v>
+                          </o>
+                          <o>
+                            <o n="Operand" t="Operand">
+                              <v n="Operand">"stDevice"</v>
+                              <v n="Type">"ST_Device"</v>
+                              <v n="Comment">""</v>
+                              <v n="SymbolComment">""</v>
+                              <v n="Address">""</v>
+                              <o n="Flags" t="Flags">
+                                <v n="Flags">0</v>
+                                <v n="Fixed">false</v>
+                                <v n="Extensible">false</v>
+                              </o>
+                              <v n="LValue">false</v>
+                              <v n="Boolean">false</v>
+                              <v n="IsInstance">false</v>
+                              <v n="Id">123L</v>
+                            </o>
+                            <v n="Id">122L</v>
+                          </o>
+                          <o>
+                            <o n="Operand" t="Operand">
+                              <v n="Operand">"fbArbiter"</v>
+                              <v n="Type">"FB_Arbiter"</v>
+                              <v n="Comment">""</v>
+                              <v n="SymbolComment">""</v>
+                              <v n="Address">""</v>
+                              <o n="Flags" t="Flags">
+                                <v n="Flags">0</v>
+                                <v n="Fixed">false</v>
+                                <v n="Extensible">false</v>
+                              </o>
+                              <v n="LValue">false</v>
+                              <v n="Boolean">false</v>
+                              <v n="IsInstance">false</v>
+                              <v n="Id">125L</v>
+                            </o>
+                            <v n="Id">124L</v>
+                          </o>
+                        </l2>
+                        <o n="InputParam" t="ParamList">
+                          <l2 n="Names" cet="String">
+                            <v>i_stCurrentBeamParams</v>
+                            <v>i_xMPSOverride</v>
+                            <v>i_xTransitionRequested</v>
+                            <v>i_xResetMPSFault</v>
+                            <v>stDevice</v>
+                            <v>Arbiter</v>
+                          </l2>
+                          <l2 n="Types" cet="String">
+                            <v>ST_BeamParams</v>
+                            <v>BOOL</v>
+                            <v>BOOL</v>
+                            <v>BOOL</v>
+                            <v>ST_Device[REF]</v>
+                            <v>FB_Arbiter[REF]</v>
+                          </l2>
+                        </o>
+                        <o n="OutputParam" t="ParamList">
+                          <l2 n="Names" cet="String">
+                            <v>q_xTransitionPermitted</v>
+                            <v>q_xFault</v>
+                          </l2>
+                          <l2 n="Types" cet="String">
+                            <v>BOOL</v>
+                            <v>BOOL</v>
+                          </l2>
+                        </o>
+                        <v n="CallType" t="Operator">FunctionBlock</v>
+                        <v n="EN">false</v>
+                        <v n="ENO">false</v>
+                        <n n="STSnippet" />
+                        <v n="ContainsExtensibleInputs">false</v>
+                        <v n="ProvidesSTSnippet">false</v>
+                        <v n="Id">112L</v>
+                      </o>
+                    </l2>
+                    <l2 n="Connectors" />
+                    <v n="Id">110L</v>
+                  </o>
+                  <o>
+                    <v n="ILActive">false</v>
+                    <v n="FBDValid">false</v>
+                    <v n="ILValid">false</v>
+                    <l2 n="ILLines" />
+                    <v n="Comment">""</v>
+                    <v n="Title">""</v>
+                    <v n="Label">""</v>
+                    <v n="OutCommented">false</v>
+                    <l2 n="NetworkItems" cet="BoxTreeAssign">
+                      <o>
+                        <o n="OutputItems" t="OutputItemList">
+                          <l2 n="OutputItems" cet="Operand">
+                            <o>
+                              <v n="Operand">"stDevice.StateTable"</v>
+                              <v n="Type">"FB_LinearDeviceStateTable"</v>
+                              <v n="Comment">""</v>
+                              <v n="SymbolComment">""</v>
+                              <v n="Address">""</v>
+                              <o n="Flags" t="Flags">
+                                <v n="Flags">0</v>
+                                <v n="Fixed">false</v>
+                                <v n="Extensible">false</v>
+                              </o>
+                              <v n="LValue">true</v>
+                              <v n="Boolean">false</v>
+                              <v n="IsInstance">false</v>
+                              <v n="Id">153L</v>
+                            </o>
+                          </l2>
+                        </o>
+                        <o n="Flags" t="Flags">
+                          <v n="Flags">0</v>
+                          <v n="Fixed">false</v>
+                          <v n="Extensible">false</v>
+                        </o>
+                        <o n="RValue" t="BoxTreeBox">
+                          <v n="BoxType">"FB_MySQL_Client"</v>
+                          <o n="Instance" t="Operand">
+                            <v n="Operand">"fbDBClient"</v>
+                            <v n="Type">"FB_MySQL_Client"</v>
+                            <v n="Comment">""</v>
+                            <v n="SymbolComment">""</v>
+                            <v n="Address">""</v>
+                            <o n="Flags" t="Flags">
+                              <v n="Flags">0</v>
+                              <v n="Fixed">false</v>
+                              <v n="Extensible">false</v>
+                            </o>
+                            <v n="LValue">false</v>
+                            <v n="Boolean">false</v>
+                            <v n="IsInstance">true</v>
+                            <v n="Id">170L</v>
+                          </o>
+                          <o n="OutputItems" t="OutputItemList">
+                            <l2 n="OutputItems">
+                              <n />
+                            </l2>
+                          </o>
+                          <o n="Flags" t="Flags">
+                            <v n="Flags">0</v>
+                            <v n="Fixed">true</v>
+                            <v n="Extensible">false</v>
+                          </o>
+                          <n n="InputFlags" />
+                          <l2 n="InputItems" cet="BoxTreeOperand">
+                            <o>
+                              <o n="Operand" t="Operand">
+                                <v n="Operand">"sDeviceID"</v>
+                                <v n="Type">"STRING"</v>
+                                <v n="Comment">""</v>
+                                <v n="SymbolComment">""</v>
+                                <v n="Address">""</v>
+                                <o n="Flags" t="Flags">
+                                  <v n="Flags">0</v>
+                                  <v n="Fixed">false</v>
+                                  <v n="Extensible">false</v>
+                                </o>
+                                <v n="LValue">false</v>
+                                <v n="Boolean">false</v>
+                                <v n="IsInstance">false</v>
+                                <v n="Id">146L</v>
+                              </o>
+                              <v n="Id">145L</v>
+                            </o>
+                            <o>
+                              <o n="Operand" t="Operand">
+                                <v n="Operand">"iDBID"</v>
+                                <v n="Type">"UDINT"</v>
+                                <v n="Comment">""</v>
+                                <v n="SymbolComment">""</v>
+                                <v n="Address">""</v>
+                                <o n="Flags" t="Flags">
+                                  <v n="Flags">0</v>
+                                  <v n="Fixed">false</v>
+                                  <v n="Extensible">false</v>
+                                </o>
+                                <v n="LValue">false</v>
+                                <v n="Boolean">false</v>
+                                <v n="IsInstance">false</v>
+                                <v n="Id">148L</v>
+                              </o>
+                              <v n="Id">147L</v>
+                            </o>
+                            <o>
+                              <o n="Operand" t="Operand">
+                                <v n="Operand">"sDBNetId"</v>
+                                <v n="Type">"STRING"</v>
+                                <v n="Comment">""</v>
+                                <v n="SymbolComment">""</v>
+                                <v n="Address">""</v>
+                                <o n="Flags" t="Flags">
+                                  <v n="Flags">0</v>
+                                  <v n="Fixed">false</v>
+                                  <v n="Extensible">false</v>
+                                </o>
+                                <v n="LValue">false</v>
+                                <v n="Boolean">false</v>
+                                <v n="IsInstance">false</v>
+                                <v n="Id">150L</v>
+                              </o>
+                              <v n="Id">149L</v>
+                            </o>
+                            <o>
+                              <o n="Operand" t="Operand">
+                                <v n="Operand">""</v>
+                                <n n="Type" />
+                                <v n="Comment">""</v>
+                                <v n="SymbolComment">""</v>
+                                <v n="Address">""</v>
+                                <o n="Flags" t="Flags">
+                                  <v n="Flags">0</v>
+                                  <v n="Fixed">false</v>
+                                  <v n="Extensible">false</v>
+                                </o>
+                                <v n="LValue">false</v>
+                                <v n="Boolean">false</v>
+                                <v n="IsInstance">false</v>
+                                <v n="Id">152L</v>
+                              </o>
+                              <v n="Id">151L</v>
+                            </o>
+                          </l2>
+                          <o n="InputParam" t="ParamList">
+                            <l2 n="Names" cet="String">
+                              <v>sDeviceID</v>
+                              <v>iDBID</v>
+                              <v>sDBNetId</v>
+                              <v>bGetData</v>
+                            </l2>
+                            <l2 n="Types" cet="String">
+                              <v>STRING</v>
+                              <v>UDINT</v>
+                              <v>STRING</v>
+                              <v>BOOL</v>
+                            </l2>
+                          </o>
+                          <o n="OutputParam" t="ParamList">
+                            <l2 n="Names" cet="String">
+                              <v>StateTable</v>
+                            </l2>
+                            <l2 n="Types" cet="String">
+                              <v>FB_LinearDeviceStateTable</v>
+                            </l2>
+                          </o>
+                          <v n="CallType" t="Operator">FunctionBlock</v>
+                          <v n="EN">false</v>
+                          <v n="ENO">false</v>
+                          <n n="STSnippet" />
+                          <v n="ContainsExtensibleInputs">false</v>
+                          <v n="ProvidesSTSnippet">false</v>
+                          <v n="Id">171L</v>
+                        </o>
+                        <v n="Id">154L</v>
+                      </o>
+                    </l2>
+                    <l2 n="Connectors" />
+                    <v n="Id">130L</v>
+                  </o>
+                </l2>
+                <v n="BranchCounter">0</v>
+                <v n="ValidIds">true</v>
+              </o>
+            </Data>
+            <TypeList>
+              <Type n="Boolean">System.Boolean</Type>
+              <Type n="BoxTreeAssign">{9873c309-1f09-4ebf-9078-42d8057ef11b}</Type>
+              <Type n="BoxTreeBox">{acfc6f68-8e3a-4af5-bf81-3dd512095a46}</Type>
+              <Type n="BoxTreeOperand">{9de7f100-1b87-424c-a62e-45b0cfc85ed2}</Type>
+              <Type n="Flags">{668066f2-6069-46b3-8962-8db8d13d7db2}</Type>
+              <Type n="Int32">System.Int32</Type>
+              <Type n="Int64">System.Int64</Type>
+              <Type n="Network">{d9a99d73-b633-47db-b876-a752acb25871}</Type>
+              <Type n="NWLImplementationObject">{25e509de-33d4-4447-93f8-c9e4ea381c8b}</Type>
+              <Type n="Operand">{c9b2f165-48a2-4a45-8326-3952d8a3d708}</Type>
+              <Type n="Operator">{bffb3c53-f105-4e85-aba2-e30df579d75f}</Type>
+              <Type n="OutputItemList">{f40d3e09-c02c-4522-a88c-dac23558cfc4}</Type>
+              <Type n="ParamList">{71496971-9e0c-4677-a832-b9583b571130}</Type>
+              <Type n="String">System.String</Type>
+            </TypeList>
+          </XmlArchive>
+        </NWL>
+      </Implementation>
+    </Action>
+    <Action Name="AwaitingBeamParameters_ENTRY" Id="{308323c6-71eb-0793-1428-5718bc871ba6}">
+      <Implementation>
+        <ST><![CDATA[fbBPTM.i_stRequestedAssertion := stTargetState.stReqBeamParam;
+fbBPTM.i_nRequestedAssertionID := stTargetState.nStateRef;
+
+//Tell the governor that we're trying to move.
+fbGovernor.i_xTransitionRequested := TRUE;]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="Init" Id="{c06685e3-37af-0ab6-3611-507f4a13637b}">
+      <Implementation>
+        <ST><![CDATA[	
+//Safe State
+stDevice.nSafeState := cBase;
+stDevice.nTransitionState := cBase+100;
+
+//Initialize the State Table
+stDevice.StateTable.A_Reset();
+//Device State Table Instantiation
+F_SetStateParams(
+	nStateRef := stDevice.nSafeState,
+	rPosition := 0,
+	rTolerance := 10,
+	stBeamParams := PMPS_GVL_BeamParams.cstFullBeam,
+	Table := stDevice.StateTable
+);
+//Connect to DB and get state table data
+fbDBClient.bGetData:= TRUE;//fbMySQL.nState:=400; 
+
+stDevice.StateTable.A_Lookup(
+		key := stDevice.nTransitionState,
+		getValue => stDevice.stTransitionState
+);
+	
+//Need an initialization routine for setting the active state
+//Check if the device is at the last known state
+//If the device is within the state boundaries, it's considered to be in that state
+stDevice.StateTable.A_Lookup(key:= nLastActiveState);
+IF stDevice.StateTable.bOk THEN
+	stCheckState := stDevice.StateTable.getValue;
+ELSE
+	stCheckState := stDevice.stTransitionState; //This needs to be safer <TODO>
+END_IF
+
+IF stDevice.stAxis.NcToPlc.ActPos <= stCheckstate.rPosition + stCheckState.rTolerance AND
+	stDevice.stAxis.NcToPlc.ActPos >= stCheckState.rPosition - stCheckState.rTolerance THEN
+	stDevice.nActiveState := nLastActiveState;
+ELSE
+	stDevice.nActiveState := stDevice.nTransitionState;
+END_IF
+
+//Simulation Hardware Limit Switches
+stDevice.i_xHiLim := TRUE;
+stDevice.i_xLoLim := TRUE;
+]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="Initialize" Id="{4793adeb-9a2d-04b7-29fb-c32f845a369d}">
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="MoveComplete_ENTRY" Id="{ac4f37e3-45ba-0415-3abf-1fee22c799a4}">
+      <Implementation>
+        <ST><![CDATA[//Clear transition request
+fbGovernor.i_xTransitionRequested := FALSE;
+//Latch active state
+stDevice.nActiveState := stDevice.nTargetState;
+nLastActiveState := stDevice.nActiveState;]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="Moving_ENTRY" Id="{d3efb6ac-e160-0f50-192f-c8065e49ec03}">
+      <Implementation>
+        <ST><![CDATA[xStartMove := TRUE;
+mcAbsolute.Position := stTargetState.rPosition;]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="Moving_EXIT" Id="{fdbddb31-7921-0677-07bf-26c4f355fe44}">
+      <Implementation>
+        <ST><![CDATA[xStartMove := FALSE;]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="NewMove_ENTRY" Id="{43d7e41d-b2b2-0358-26ba-c5b25769f9c1}">
+      <Implementation>
+        <ST><![CDATA[
+]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="Stopping_ENTRY" Id="{47420e75-caa0-0702-33c2-1195eed639b8}">
+      <Implementation>
+        <ST><![CDATA[mcStop.Execute := TRUE;]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="Stopping_EXIT" Id="{1d0f151d-ebe2-0175-39a5-07688201a8d7}">
+      <Implementation>
+        <ST><![CDATA[mcStop.Execute := FALSE;]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="VerifyingNewTargetState_DO" Id="{f85818e7-15c2-01e9-286e-99071b70ff47}">
+      <Implementation>
+        <ST><![CDATA[stDevice.StateTable.A_Lookup(
+	key := stDevice.nRequestedState
+);
+
+IF stDevice.StateTable.bOk THEN
+	stTargetState := stDevice.StateTable.getValue;
+	stDevice.nTargetState := stDevice.nRequestedState;
+ELSE
+	; //log ignored state/ generate an error? <TODO>
+END_IF]]></ST>
+      </Implementation>
+    </Action>
+    <LineIds Name="FB_ExampleDeviceSM_DB.AwaitingBeamParameters_ENTRY">
+      <LineId Id="5" Count="2" />
+      <LineId Id="3" Count="0" />
+      <LineId Id="8" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ExampleDeviceSM_DB.Init">
+      <LineId Id="142" Count="0" />
+      <LineId Id="106" Count="1" />
+      <LineId Id="122" Count="0" />
+      <LineId Id="137" Count="0" />
+      <LineId Id="136" Count="0" />
+      <LineId Id="138" Count="0" />
+      <LineId Id="152" Count="6" />
+      <LineId Id="151" Count="0" />
+      <LineId Id="160" Count="1" />
+      <LineId Id="124" Count="2" />
+      <LineId Id="128" Count="1" />
+      <LineId Id="123" Count="0" />
+      <LineId Id="35" Count="0" />
+      <LineId Id="37" Count="1" />
+      <LineId Id="40" Count="0" />
+      <LineId Id="131" Count="1" />
+      <LineId Id="134" Count="1" />
+      <LineId Id="133" Count="0" />
+      <LineId Id="130" Count="0" />
+      <LineId Id="39" Count="0" />
+      <LineId Id="43" Count="0" />
+      <LineId Id="45" Count="0" />
+      <LineId Id="139" Count="1" />
+      <LineId Id="44" Count="0" />
+      <LineId Id="49" Count="0" />
+      <LineId Id="41" Count="0" />
+      <LineId Id="50" Count="1" />
+      <LineId Id="149" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ExampleDeviceSM_DB.Initialize">
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ExampleDeviceSM_DB.MoveComplete_ENTRY">
+      <LineId Id="1" Count="1" />
+      <LineId Id="4" Count="0" />
+      <LineId Id="3" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ExampleDeviceSM_DB.Moving_ENTRY">
+      <LineId Id="1" Count="1" />
+    </LineIds>
+    <LineIds Name="FB_ExampleDeviceSM_DB.Moving_EXIT">
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ExampleDeviceSM_DB.NewMove_ENTRY">
+      <LineId Id="7" Count="0" />
+      <LineId Id="14" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ExampleDeviceSM_DB.Stopping_ENTRY">
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ExampleDeviceSM_DB.Stopping_EXIT">
+      <LineId Id="1" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ExampleDeviceSM_DB.VerifyingNewTargetState_DO">
+      <LineId Id="2" Count="8" />
+      <LineId Id="1" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

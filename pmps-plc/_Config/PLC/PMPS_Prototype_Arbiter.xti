@@ -1,29 +1,26 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<TcSmProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4022.22">
-	<Project ProjectGUID="{11D93138-2D8B-49C5-B84D-11A4D2CA3157}" TargetNetId="5.52.45.90.1.1" ShowHideConfigurations="#x106">
-		<System>
-			<Settings>
-				<Cpu BaseTime="500"/>
-			</Settings>
-			<Tasks>
-				<Task Id="3" Priority="20" CycleTime="10000" AmsPort="350">
-					<Name>PlcTask</Name>
-				</Task>
-			</Tasks>
-		</System>
-		<Motion>
-			<NC File="NC.xti"/>
-		</Motion>
-		<Plc>
-			<Project File="PMPS_Prototype_Arbiter.xti"/>
-		</Plc>
-		<Io/>
-	</Project>
-	<Mappings>
-		<MappingInfo Identifier="{05000010-2001-0850-3000-040300205008}" Id="#x02030010" Watchdog="04000000080000000400000004000000"/>
-	</Mappings>
-</TcSmProject>
-C5AC-D5AA-44C6-AC5A-159774BA0F6D}" Namespace="MC" TcBaseType="true" HideType="true" IecDeclaration="DWORD;">NCTOPLC_AXIS_REF_STATE</Name>
+<TcSmItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmItem" TcSmVersion="1.0" TcVersion="3.1.4022.22" ClassName="CNestedPlcProjDef">
+	<DataTypes>
+		<DataType>
+			<Name GUID="{18071995-0000-0000-0000-000000000041}" TcBaseType="true" HideSubItems="true" CName="AmsNetId">AMSNETID</Name>
+			<BitSize>48</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000000000001}">BYTE</BaseType>
+			<ArrayInfo>
+				<LBound>0</LBound>
+				<Elements>6</Elements>
+			</ArrayInfo>
+			<Format>
+				<Printf>%d.%d.%d.%d.%d.%d</Printf>
+				<Parameter>[0]</Parameter>
+				<Parameter>[1]</Parameter>
+				<Parameter>[2]</Parameter>
+				<Parameter>[3]</Parameter>
+				<Parameter>[4]</Parameter>
+				<Parameter>[5]</Parameter>
+			</Format>
+		</DataType>
+		<DataType>
+			<Name GUID="{4C3FC5AC-D5AA-44C6-AC5A-159774BA0F6D}" Namespace="MC" TcBaseType="true" HideType="true" IecDeclaration="DWORD;">NCTOPLC_AXIS_REF_STATE</Name>
 			<BitSize>32</BitSize>
 			<SubItem>
 				<Name>Operational</Name>
@@ -909,41 +906,26 @@ External Setpoint Generation:
 			</ArrayInfo>
 		</DataType>
 	</DataTypes>
-	<Project ProjectGUID="{11D93138-2D8B-49C5-B84D-11A4D2CA3157}" Target64Bit="true" ShowHideConfigurations="#x106">
-		<System>
-			<Settings>
-				<Cpu BaseTime="500"/>
-			</Settings>
-			<Tasks>
-				<Task Id="3" Priority="20" CycleTime="10000" AmsPort="350">
-					<Name>PlcTask</Name>
-				</Task>
-			</Tasks>
-		</System>
-		<Motion>
-			<NC File="NC.xti"/>
-		</Motion>
-		<Plc>
-			<Project GUID="{E8A5EE9B-6606-423E-92F4-1FF908FBA45E}" Name="PMPS_Prototype_Arbiter" PrjFilePath="PMPS_Prototype_Arbiter\PMPS_Prototype_Arbiter.plcproj" TmcFilePath="PMPS_Prototype_Arbiter\PMPS_Prototype_Arbiter.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="PMPS_Prototype_Arbiter\PMPS_Prototype_Arbiter.tmc">
-					<Name>PMPS_Prototype_Arbiter Instance</Name>
-					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
-					<Vars VarGrpType="1">
-						<Name>PlcTask Inputs</Name>
-						<Var>
-							<Name>LCLS_General.DefaultGlobals.stSys.I_EcatMaster1</Name>
-							<Comment>
-								<![CDATA[ AMS Net ID used for FB_EcatDiag, among others ]]>
-							</Comment>
-							<Type GUID="{18071995-0000-0000-0000-000000000041}">AMSNETID</Type>
-						</Var>
-						<Var>
-							<Name>MAIN.fbDev1.stDevice.stAxis.NcToPlc</Name>
-							<Type GUID="{6A65C767-34E5-42BF-AD87-E1A503EAC7BE}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
-							<SubVar>
-								<Name>AxisState</Name>
-								<Comment>
-									<![CDATA[Present State Of The Axis Movement (continuous axis):
+	<Project GUID="{E8A5EE9B-6606-423E-92F4-1FF908FBA45E}" Name="PMPS_Prototype_Arbiter" PrjFilePath="..\..\PMPS_Prototype_Arbiter\PMPS_Prototype_Arbiter.plcproj" TmcFilePath="..\..\PMPS_Prototype_Arbiter\PMPS_Prototype_Arbiter.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e">
+		<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="PMPS_Prototype_Arbiter\PMPS_Prototype_Arbiter.tmc">
+			<Name>PMPS_Prototype_Arbiter Instance</Name>
+			<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
+			<Vars VarGrpType="1">
+				<Name>PlcTask Inputs</Name>
+				<Var>
+					<Name>LCLS_General.DefaultGlobals.stSys.I_EcatMaster1</Name>
+					<Comment>
+						<![CDATA[ AMS Net ID used for FB_EcatDiag, among others ]]>
+					</Comment>
+					<Type GUID="{18071995-0000-0000-0000-000000000041}">AMSNETID</Type>
+				</Var>
+				<Var>
+					<Name>MAIN.fbDev1.stDevice.stAxis.NcToPlc</Name>
+					<Type GUID="{6A65C767-34E5-42BF-AD87-E1A503EAC7BE}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
+					<SubVar>
+						<Name>AxisState</Name>
+						<Comment>
+							<![CDATA[Present State Of The Axis Movement (continuous axis):
 0  = INACTIVE:		axis has no job
 1  = RUNNING:		axis is executing a motion job
 2  = OVERRIDE_ZERO:	axis is executing a job but override is zero
@@ -958,12 +940,12 @@ External Setpoint Generation:
 41 = EXTSETGEN_MODE1:	external setpoint generation active
 42 = EXTSETGEN_MODE2:	internal and external setpoint gen. active
 ]]>
-								</Comment>
-							</SubVar>
-							<SubVar>
-								<Name>HomingState</Name>
-								<Comment>
-									<![CDATA[Axis Homing Status:
+						</Comment>
+					</SubVar>
+					<SubVar>
+						<Name>HomingState</Name>
+						<Comment>
+							<![CDATA[Axis Homing Status:
 0: idle
 1: start homing
 2: searching home switch
@@ -972,41 +954,41 @@ External Setpoint Generation:
 5: searching sync pulse
 6: stopping after homing
 ]]>
-								</Comment>
-							</SubVar>
-							<SubVar>
-								<Name>CoupleState</Name>
-								<Comment>
-									<![CDATA[Axis Coupling Status:
+						</Comment>
+					</SubVar>
+					<SubVar>
+						<Name>CoupleState</Name>
+						<Comment>
+							<![CDATA[Axis Coupling Status:
 0: axis is a single axis (not coupled)
 1: axis is a master axis
 2: axis is master and slave
 3: axis is a slave axis
 ]]>
-								</Comment>
-							</SubVar>
-						</Var>
-						<Var>
-							<Name>MAIN.fbDev1.stDevice.i_xLoLim</Name>
-							<Comment>
-								<![CDATA[Wire normally-closed]]>
-							</Comment>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>MAIN.fbDev1.stDevice.i_xHiLim</Name>
-							<Comment>
-								<![CDATA[Wire normally-closed]]>
-							</Comment>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>MAIN.fbDev2.stDevice.stAxis.NcToPlc</Name>
-							<Type GUID="{6A65C767-34E5-42BF-AD87-E1A503EAC7BE}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
-							<SubVar>
-								<Name>AxisState</Name>
-								<Comment>
-									<![CDATA[Present State Of The Axis Movement (continuous axis):
+						</Comment>
+					</SubVar>
+				</Var>
+				<Var>
+					<Name>MAIN.fbDev1.stDevice.i_xLoLim</Name>
+					<Comment>
+						<![CDATA[Wire normally-closed]]>
+					</Comment>
+					<Type>BOOL</Type>
+				</Var>
+				<Var>
+					<Name>MAIN.fbDev1.stDevice.i_xHiLim</Name>
+					<Comment>
+						<![CDATA[Wire normally-closed]]>
+					</Comment>
+					<Type>BOOL</Type>
+				</Var>
+				<Var>
+					<Name>MAIN.fbDev2.stDevice.stAxis.NcToPlc</Name>
+					<Type GUID="{6A65C767-34E5-42BF-AD87-E1A503EAC7BE}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
+					<SubVar>
+						<Name>AxisState</Name>
+						<Comment>
+							<![CDATA[Present State Of The Axis Movement (continuous axis):
 0  = INACTIVE:		axis has no job
 1  = RUNNING:		axis is executing a motion job
 2  = OVERRIDE_ZERO:	axis is executing a job but override is zero
@@ -1021,12 +1003,12 @@ External Setpoint Generation:
 41 = EXTSETGEN_MODE1:	external setpoint generation active
 42 = EXTSETGEN_MODE2:	internal and external setpoint gen. active
 ]]>
-								</Comment>
-							</SubVar>
-							<SubVar>
-								<Name>HomingState</Name>
-								<Comment>
-									<![CDATA[Axis Homing Status:
+						</Comment>
+					</SubVar>
+					<SubVar>
+						<Name>HomingState</Name>
+						<Comment>
+							<![CDATA[Axis Homing Status:
 0: idle
 1: start homing
 2: searching home switch
@@ -1035,61 +1017,124 @@ External Setpoint Generation:
 5: searching sync pulse
 6: stopping after homing
 ]]>
-								</Comment>
-							</SubVar>
-							<SubVar>
-								<Name>CoupleState</Name>
-								<Comment>
-									<![CDATA[Axis Coupling Status:
+						</Comment>
+					</SubVar>
+					<SubVar>
+						<Name>CoupleState</Name>
+						<Comment>
+							<![CDATA[Axis Coupling Status:
 0: axis is a single axis (not coupled)
 1: axis is a master axis
 2: axis is master and slave
 3: axis is a slave axis
 ]]>
-								</Comment>
-							</SubVar>
-						</Var>
-						<Var>
-							<Name>MAIN.fbDev2.stDevice.i_xLoLim</Name>
-							<Comment>
-								<![CDATA[Wire normally-closed]]>
-							</Comment>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>MAIN.fbDev2.stDevice.i_xHiLim</Name>
-							<Comment>
-								<![CDATA[Wire normally-closed]]>
-							</Comment>
-							<Type>BOOL</Type>
-						</Var>
-					</Vars>
-					<Vars VarGrpType="2">
-						<Name>PlcTask Outputs</Name>
-						<Var>
-							<Name>MAIN.fbDev1.stDevice.stAxis.PlcToNc</Name>
-							<Type GUID="{63A84524-72E3-41C8-BEAB-4CCE44690A13}" Namespace="MC">PLCTONC_AXIS_REF</Type>
-						</Var>
-						<Var>
-							<Name>MAIN.fbDev2.stDevice.stAxis.PlcToNc</Name>
-							<Type GUID="{63A84524-72E3-41C8-BEAB-4CCE44690A13}" Namespace="MC">PLCTONC_AXIS_REF</Type>
-						</Var>
-						<Var>
-							<Name>PMPS_Arbiter.fbMPSInterface.q_BC_ASSERTION_LINES</Name>
-							<Type GUID="{0B37E936-53FE-6A1D-9723-D7016BFD8546}">ARRAY [1..16] OF BOOL</Type>
-						</Var>
-					</Vars>
-					<TaskPouOids>
-						<TaskPouOid Prio="20" OTCID="#x08502001"/>
-					</TaskPouOids>
-				</Instance>
-			</Project>
-		</Plc>
-		<Io/>
+						</Comment>
+					</SubVar>
+				</Var>
+				<Var>
+					<Name>MAIN.fbDev2.stDevice.i_xLoLim</Name>
+					<Comment>
+						<![CDATA[Wire normally-closed]]>
+					</Comment>
+					<Type>BOOL</Type>
+				</Var>
+				<Var>
+					<Name>MAIN.fbDev3.stDevice.i_xLoLim</Name>
+					<Comment>
+						<![CDATA[Wire normally-closed]]>
+					</Comment>
+					<Type>BOOL</Type>
+				</Var>
+				<Var>
+					<Name>MAIN.fbDev3.stDevice.i_xHiLim</Name>
+					<Comment>
+						<![CDATA[Wire normally-closed]]>
+					</Comment>
+					<Type>BOOL</Type>
+				</Var>
+				<Var>
+					<Name>MAIN.fbDev2.stDevice.i_xHiLim</Name>
+					<Comment>
+						<![CDATA[Wire normally-closed]]>
+					</Comment>
+					<Type>BOOL</Type>
+				</Var>
+				<Var>
+					<Name>MAIN.fbDev3.stDevice.stAxis.NcToPlc</Name>
+					<Type GUID="{6A65C767-34E5-42BF-AD87-E1A503EAC7BE}" Namespace="MC">NCTOPLC_AXIS_REF</Type>
+					<SubVar>
+						<Name>AxisState</Name>
+						<Comment>
+							<![CDATA[Present State Of The Axis Movement (continuous axis):
+0  = INACTIVE:		axis has no job
+1  = RUNNING:		axis is executing a motion job
+2  = OVERRIDE_ZERO:	axis is executing a job but override is zero
+3  = PHASE_VELOCONST:	axis is moving at constant velocity
+4  = PHASE_ACCPOS:	axis is accelerating
+5  = PHASE_ACCNEG:	axis is decelerating
+Slaves only:
+11 = PREPHASE:		slave axis is in a motion pre-phase
+12 = SYNCHRONIZING:	slave axis is synchronizing
+13 = SYNCHRONOUS:	slave axis is moving synchronously
+External Setpoint Generation:
+41 = EXTSETGEN_MODE1:	external setpoint generation active
+42 = EXTSETGEN_MODE2:	internal and external setpoint gen. active
+]]>
+						</Comment>
+					</SubVar>
+					<SubVar>
+						<Name>HomingState</Name>
+						<Comment>
+							<![CDATA[Axis Homing Status:
+0: idle
+1: start homing
+2: searching home switch
+3: stopping on home switch
+4: moving off home switch
+5: searching sync pulse
+6: stopping after homing
+]]>
+						</Comment>
+					</SubVar>
+					<SubVar>
+						<Name>CoupleState</Name>
+						<Comment>
+							<![CDATA[Axis Coupling Status:
+0: axis is a single axis (not coupled)
+1: axis is a master axis
+2: axis is master and slave
+3: axis is a slave axis
+]]>
+						</Comment>
+					</SubVar>
+				</Var>
+			</Vars>
+			<Vars VarGrpType="2">
+				<Name>PlcTask Outputs</Name>
+				<Var>
+					<Name>MAIN.fbDev1.stDevice.stAxis.PlcToNc</Name>
+					<Type GUID="{63A84524-72E3-41C8-BEAB-4CCE44690A13}" Namespace="MC">PLCTONC_AXIS_REF</Type>
+				</Var>
+				<Var>
+					<Name>MAIN.fbDev2.stDevice.stAxis.PlcToNc</Name>
+					<Type GUID="{63A84524-72E3-41C8-BEAB-4CCE44690A13}" Namespace="MC">PLCTONC_AXIS_REF</Type>
+				</Var>
+				<Var>
+					<Name>MAIN.fbDev3.stDevice.stAxis.PlcToNc</Name>
+					<Type GUID="{63A84524-72E3-41C8-BEAB-4CCE44690A13}" Namespace="MC">PLCTONC_AXIS_REF</Type>
+				</Var>
+				<Var>
+					<Name>PMPS_Arbiter.fbMPSInterface.q_BC_ASSERTION_LINES</Name>
+					<Type GUID="{0B37E936-53FE-6A1D-9723-D7016BFD8546}">ARRAY [1..16] OF BOOL</Type>
+				</Var>
+			</Vars>
+			<TaskPouOids>
+				<TaskPouOid Prio="20" OTCID="#x08502001"/>
+			</TaskPouOids>
+		</Instance>
 	</Project>
 	<Mappings>
-		<MappingInfo Identifier="{05000010-2001-0850-3000-040300205008}" Id="#x02030010" Watchdog="04000000080000000400000004000000"/>
-		<OwnerA Name="TIPC^PMPS_Prototype_Arbiter^PMPS_Prototype_Arbiter Instance">
+		<OwnerA Name="PMPS_Prototype_Arbiter Instance">
 			<OwnerB Name="TINC^NC-Task 1 SAF^Axes^Dev 2">
 				<Link VarA="PlcTask Inputs^MAIN.fbDev2.stDevice.stAxis.NcToPlc" VarB="Outputs^ToPlc"/>
 				<Link VarA="PlcTask Outputs^MAIN.fbDev2.stDevice.stAxis.PlcToNc" VarB="Inputs^FromPlc"/>
@@ -1100,4 +1145,4 @@ External Setpoint Generation:
 			</OwnerB>
 		</OwnerA>
 	</Mappings>
-</TcSmProject>
+</TcSmItem>
