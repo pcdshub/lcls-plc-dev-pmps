@@ -327,6 +327,7 @@
     </PlaceholderResolution>
     <PlaceholderResolution Include="TcUnit">
       <Resolution>TcUnit, * (www.tcunit.org)</Resolution>
+    </PlaceholderResolution>
     <PlaceholderResolution Include="Tc3_Database">
       <Resolution>Tc3_Database, * (Beckhoff Automation GmbH)</Resolution>
     </PlaceholderResolution>
