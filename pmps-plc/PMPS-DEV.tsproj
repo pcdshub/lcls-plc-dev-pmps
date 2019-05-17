@@ -21,7 +21,7 @@
 			<Device File="Device 1 (EtherCAT).xti" Id="1"/>
 		</Io>
 	</Project>
-</TcSmProject>
-" Id="#x02030010" Watchdog="04000000080000000400000004000000"/>
+<Mappings>
+	<MappingInfo Identifier="{05000010-2001-0850-3000-040300205008}" Id="#x02030010" Watchdog="04000000080000000400000004000000"/>
 	</Mappings>
 </TcSmProject>
