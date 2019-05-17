@@ -17,7 +17,7 @@ END_VAR
     <Implementation>
       <ST><![CDATA[
 //Execute arbiter
-g_fbArbiter.q_stBeamParams:= g_fbArbiter.GetArbitratedBP();
+g_fbArbiter.GetArbitratedBP();
 
 //fbMPSInterface();
 
