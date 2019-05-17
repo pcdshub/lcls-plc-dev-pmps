@@ -31,9 +31,13 @@ IF (nRecordCount>0) THEN
 	stDeviceState.rPosition := aStatesParamsTable[iRow].rTargetPosition;
 	stDeviceState.rTolerance := aStatesParamsTable[iRow].rTolerance;  
 	stDeviceState.stReqBeamParam.fAtt := aStatesParamsTable[iRow].rTransmission;
-	stDeviceState.stReqBeamParam.reV := aStatesParamsTable[iRow].rPhotonEnergy;
+	stDeviceState.stReqBeamParam.fPP_mJ := (aStatesParamsTable[iRow].rPerPulseEnergy);
+	stDeviceState.stReqBeamParam.nRate := DINT_TO_UDINT(aStatesParamsTable[iRow].iPulseRate);
 	stDeviceState.stReqBeamParam.nBeamClass := DINT_TO_BYTE(aStatesParamsTable[iRow].iBeamClass);
-	
+//	stDeviceState.stReqBeamParam.fUpper_eV := (aStatesParamsTable[iRow].rUpper_eV);
+//	stDeviceState.stReqBeamParam.fLower_eV := (aStatesParamsTable[iRow].rLower_eV);
+	stDeviceState.stReqBeamParam.reV := aStatesParamsTable[iRow].rPhotonEnergy;
+	//stDeviceState.stReqBeamParam.neVReqRange := (aStatesParamsTable[iRow].rLower_eV);
 	Table.A_Add(
 		key := stDeviceState.nStateRef,
 		putValue := stDeviceState
@@ -49,7 +53,14 @@ F_DB_To_hTable := Table.bOk;]]></ST>
       <LineId Id="50" Count="6" />
       <LineId Id="48" Count="1" />
       <LineId Id="47" Count="0" />
-      <LineId Id="71" Count="11" />
+      <LineId Id="71" Count="5" />
+      <LineId Id="101" Count="0" />
+      <LineId Id="77" Count="0" />
+      <LineId Id="98" Count="0" />
+      <LineId Id="78" Count="0" />
+      <LineId Id="100" Count="0" />
+      <LineId Id="99" Count="0" />
+      <LineId Id="79" Count="3" />
       <LineId Id="69" Count="1" />
       <LineId Id="29" Count="0" />
       <LineId Id="38" Count="0" />
