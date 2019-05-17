@@ -11,7 +11,7 @@ VAR
 	
 	fbMPSInterface	:	FB_BeamClassOutputs;
 	{attribute 'pmps_interface' := 'TIID^Device 2 (EtherCAT)^Term 6 (EK1100)^Term 2 (EL6692)^IO Outputs^'}
-	ExchangeBeamParams	:	FB_BeamParamEx;
+	//ExchangeBeamParams	:	FB_BeamParamEx;
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -25,7 +25,7 @@ fbPhotonEnergyWatcher(i_stCurrentBeamParams	:= PMPS_GVL_BeamParams.stCurrentBeam
 					i_stRequestedBeamParams := g_fbArbiter.q_stBeamParams,
 					io_fbFFHWO:= GVL.g_FastFaultOutput1);
 
-ExchangeBeamParams();
+//ExchangeBeamParams();
 ]]></ST>
     </Implementation>
     <LineIds Name="PMPS_Arbiter">
