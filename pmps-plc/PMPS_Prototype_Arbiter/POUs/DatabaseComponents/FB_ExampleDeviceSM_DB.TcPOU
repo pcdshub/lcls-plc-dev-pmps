@@ -12,7 +12,8 @@ END_VAR
 VAR_OUTPUT
 END_VAR
 VAR_IN_OUT
-	
+	fbArbiter : FB_Arbiter;
+	fbFastFaultOutput	:	FB_HardwareFFOutput;
 END_VAR
 VAR
 	stDevice	:	ST_Device;
@@ -1612,43 +1613,11 @@ fbGovernor.q_xTransitionPermitted"</v>
                           <v n="LValue">false</v>
                           <v n="Boolean">false</v>
                           <v n="IsInstance">true</v>
-                          <v n="Id">128L</v>
+                          <v n="Id">177L</v>
                         </o>
                         <o n="OutputItems" t="OutputItemList">
-                          <l2 n="OutputItems" cet="Operand">
+                          <l2 n="OutputItems">
                             <n />
-                            <o>
-                              <v n="Operand">""</v>
-                              <n n="Type" />
-                              <v n="Comment">""</v>
-                              <v n="SymbolComment">""</v>
-                              <v n="Address">""</v>
-                              <o n="Flags" t="Flags">
-                                <v n="Flags">0</v>
-                                <v n="Fixed">false</v>
-                                <v n="Extensible">false</v>
-                              </o>
-                              <v n="LValue">true</v>
-                              <v n="Boolean">false</v>
-                              <v n="IsInstance">false</v>
-                              <v n="Id">63L</v>
-                            </o>
-                            <o>
-                              <v n="Operand">""</v>
-                              <n n="Type" />
-                              <v n="Comment">""</v>
-                              <v n="SymbolComment">""</v>
-                              <v n="Address">""</v>
-                              <o n="Flags" t="Flags">
-                                <v n="Flags">0</v>
-                                <v n="Fixed">false</v>
-                                <v n="Extensible">false</v>
-                              </o>
-                              <v n="LValue">true</v>
-                              <v n="Boolean">false</v>
-                              <v n="IsInstance">false</v>
-                              <v n="Id">64L</v>
-                            </o>
                           </l2>
                         </o>
                         <o n="Flags" t="Flags">
@@ -1660,8 +1629,8 @@ fbGovernor.q_xTransitionPermitted"</v>
                         <l2 n="InputItems" cet="BoxTreeOperand">
                           <o>
                             <o n="Operand" t="Operand">
-                              <v n="Operand">"stDevice.stTransitionState.nStateRef"</v>
-                              <v n="Type">"UDINT"</v>
+                              <v n="Operand">"fbArbiter"</v>
+                              <v n="Type">"FB_Arbiter"</v>
                               <v n="Comment">""</v>
                               <v n="SymbolComment">""</v>
                               <v n="Address">""</v>
@@ -1679,8 +1648,8 @@ fbGovernor.q_xTransitionPermitted"</v>
                           </o>
                           <o>
                             <o n="Operand" t="Operand">
-                              <v n="Operand">"stDevice.stTransitionState.stReqBeamParam"</v>
-                              <v n="Type">"ST_BeamParams"</v>
+                              <v n="Operand">"stDevice.stTransitionState.nStateRef"</v>
+                              <v n="Type">"UDINT"</v>
                               <v n="Comment">""</v>
                               <v n="SymbolComment">""</v>
                               <v n="Address">""</v>
@@ -1698,8 +1667,8 @@ fbGovernor.q_xTransitionPermitted"</v>
                           </o>
                           <o>
                             <o n="Operand" t="Operand">
-                              <v n="Operand">""</v>
-                              <n n="Type" />
+                              <v n="Operand">"stDevice.stTransitionState.stReqBeamParam"</v>
+                              <v n="Type">"ST_BeamParams"</v>
                               <v n="Comment">""</v>
                               <v n="SymbolComment">""</v>
                               <v n="Address">""</v>
@@ -1736,8 +1705,8 @@ fbGovernor.q_xTransitionPermitted"</v>
                           </o>
                           <o>
                             <o n="Operand" t="Operand">
-                              <v n="Operand">"mcAbsolute.Active"</v>
-                              <v n="Type">"BOOL"</v>
+                              <v n="Operand">""</v>
+                              <n n="Type" />
                               <v n="Comment">""</v>
                               <v n="SymbolComment">""</v>
                               <v n="Address">""</v>
@@ -1755,7 +1724,7 @@ fbGovernor.q_xTransitionPermitted"</v>
                           </o>
                           <o>
                             <o n="Operand" t="Operand">
-                              <v n="Operand">"mcAbsolute.Done"</v>
+                              <v n="Operand">"mcAbsolute.Active"</v>
                               <v n="Type">"BOOL"</v>
                               <v n="Comment">""</v>
                               <v n="SymbolComment">""</v>
@@ -1772,34 +1741,72 @@ fbGovernor.q_xTransitionPermitted"</v>
                             </o>
                             <v n="Id">75L</v>
                           </o>
+                          <o>
+                            <o n="Operand" t="Operand">
+                              <v n="Operand">"mcAbsolute.Done"</v>
+                              <v n="Type">"BOOL"</v>
+                              <v n="Comment">""</v>
+                              <v n="SymbolComment">""</v>
+                              <v n="Address">""</v>
+                              <o n="Flags" t="Flags">
+                                <v n="Flags">0</v>
+                                <v n="Fixed">false</v>
+                                <v n="Extensible">false</v>
+                              </o>
+                              <v n="LValue">false</v>
+                              <v n="Boolean">false</v>
+                              <v n="IsInstance">false</v>
+                              <v n="Id">180L</v>
+                            </o>
+                            <v n="Id">179L</v>
+                          </o>
+                          <o>
+                            <o n="Operand" t="Operand">
+                              <v n="Operand">""</v>
+                              <n n="Type" />
+                              <v n="Comment">""</v>
+                              <v n="SymbolComment">""</v>
+                              <v n="Address">""</v>
+                              <o n="Flags" t="Flags">
+                                <v n="Flags">0</v>
+                                <v n="Fixed">false</v>
+                                <v n="Extensible">false</v>
+                              </o>
+                              <v n="LValue">false</v>
+                              <v n="Boolean">false</v>
+                              <v n="IsInstance">false</v>
+                              <v n="Id">182L</v>
+                            </o>
+                            <v n="Id">181L</v>
+                          </o>
                         </l2>
                         <o n="InputParam" t="ParamList">
                           <l2 n="Names" cet="String">
+                            <v>fbArbiter</v>
                             <v>i_TransitionAssertionID</v>
                             <v>i_stTransitionAssertion</v>
                             <v>i_nRequestedAssertionID</v>
                             <v>i_stRequestedAssertion</v>
                             <v>i_xMoving</v>
                             <v>i_xDoneMoving</v>
+                            <v>stCurrentBeamParameters</v>
                           </l2>
                           <l2 n="Types" cet="String">
+                            <v>FB_Arbiter[REF]</v>
                             <v>UDINT</v>
                             <v>ST_BeamParams</v>
                             <v>UDINT</v>
                             <v>ST_BeamParams</v>
                             <v>BOOL</v>
                             <v>BOOL</v>
+                            <v>ST_BeamParams</v>
                           </l2>
                         </o>
                         <o n="OutputParam" t="ParamList">
                           <l2 n="Names" cet="String">
-                            <v>q_stFinalAssertion</v>
-                            <v>q_stTransitionAssertion</v>
                             <v>q_xTransitionAuthorized</v>
                           </l2>
                           <l2 n="Types" cet="String">
-                            <v>ST_BeamParams</v>
-                            <v>ST_BeamParams</v>
                             <v>BOOL</v>
                           </l2>
                         </o>
@@ -1809,7 +1816,7 @@ fbGovernor.q_xTransitionPermitted"</v>
                         <n n="STSnippet" />
                         <v n="ContainsExtensibleInputs">false</v>
                         <v n="ProvidesSTSnippet">false</v>
-                        <v n="Id">129L</v>
+                        <v n="Id">178L</v>
                       </o>
                     </l2>
                     <l2 n="Connectors" />
@@ -2262,7 +2269,7 @@ fbGovernor.q_xTransitionPermitted"</v>
                           <v n="LValue">false</v>
                           <v n="Boolean">false</v>
                           <v n="IsInstance">true</v>
-                          <v n="Id">111L</v>
+                          <v n="Id">172L</v>
                         </o>
                         <o n="OutputItems" t="OutputItemList">
                           <l2 n="OutputItems" cet="Operand">
@@ -2283,11 +2290,27 @@ fbGovernor.q_xTransitionPermitted"</v>
                               <v n="IsInstance">false</v>
                               <v n="Id">113L</v>
                             </o>
+                            <o>
+                              <v n="Operand">""</v>
+                              <n n="Type" />
+                              <v n="Comment">""</v>
+                              <v n="SymbolComment">""</v>
+                              <v n="Address">""</v>
+                              <o n="Flags" t="Flags">
+                                <v n="Flags">0</v>
+                                <v n="Fixed">false</v>
+                                <v n="Extensible">false</v>
+                              </o>
+                              <v n="LValue">true</v>
+                              <v n="Boolean">false</v>
+                              <v n="IsInstance">false</v>
+                              <v n="Id">174L</v>
+                            </o>
                           </l2>
                         </o>
                         <o n="Flags" t="Flags">
                           <v n="Flags">0</v>
-                          <v n="Fixed">false</v>
+                          <v n="Fixed">true</v>
                           <v n="Extensible">false</v>
                         </o>
                         <n n="InputFlags" />
@@ -2406,6 +2429,25 @@ fbGovernor.q_xTransitionPermitted"</v>
                             </o>
                             <v n="Id">124L</v>
                           </o>
+                          <o>
+                            <o n="Operand" t="Operand">
+                              <v n="Operand">"fbFastFaultOutput"</v>
+                              <v n="Type">"FB_HardwareFFOutput"</v>
+                              <v n="Comment">""</v>
+                              <v n="SymbolComment">""</v>
+                              <v n="Address">""</v>
+                              <o n="Flags" t="Flags">
+                                <v n="Flags">0</v>
+                                <v n="Fixed">false</v>
+                                <v n="Extensible">false</v>
+                              </o>
+                              <v n="LValue">false</v>
+                              <v n="Boolean">false</v>
+                              <v n="IsInstance">false</v>
+                              <v n="Id">176L</v>
+                            </o>
+                            <v n="Id">175L</v>
+                          </o>
                         </l2>
                         <o n="InputParam" t="ParamList">
                           <l2 n="Names" cet="String">
@@ -2415,6 +2457,7 @@ fbGovernor.q_xTransitionPermitted"</v>
                             <v>i_xResetMPSFault</v>
                             <v>stDevice</v>
                             <v>Arbiter</v>
+                            <v>FastFaultOutput</v>
                           </l2>
                           <l2 n="Types" cet="String">
                             <v>ST_BeamParams</v>
@@ -2423,14 +2466,17 @@ fbGovernor.q_xTransitionPermitted"</v>
                             <v>BOOL</v>
                             <v>ST_Device[REF]</v>
                             <v>FB_Arbiter[REF]</v>
+                            <v>FB_HardwareFFOutput[REF]</v>
                           </l2>
                         </o>
                         <o n="OutputParam" t="ParamList">
                           <l2 n="Names" cet="String">
                             <v>q_xTransitionPermitted</v>
                             <v>q_xFault</v>
+                            <v>q_xMPSLimitsOverridden</v>
                           </l2>
                           <l2 n="Types" cet="String">
+                            <v>BOOL</v>
                             <v>BOOL</v>
                             <v>BOOL</v>
                           </l2>
@@ -2441,7 +2487,7 @@ fbGovernor.q_xTransitionPermitted"</v>
                         <n n="STSnippet" />
                         <v n="ContainsExtensibleInputs">false</v>
                         <v n="ProvidesSTSnippet">false</v>
-                        <v n="Id">112L</v>
+                        <v n="Id">173L</v>
                       </o>
                     </l2>
                     <l2 n="Connectors" />
