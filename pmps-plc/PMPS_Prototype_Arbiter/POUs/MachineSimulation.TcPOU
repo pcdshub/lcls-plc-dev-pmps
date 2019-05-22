@@ -4,19 +4,27 @@
     <Declaration><![CDATA[PROGRAM MachineSimulation
 VAR
 	fbMachine	:	FB_MachineSimulator;
+	
+	i_SimReqBP	AT	%I*	:	ST_BeamParams;
+	q_SimCurrBP	AT %Q*	:	ST_BeamParams;
 END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[//Machine simulator
 fbMachine(
-	i_stAssertedParams := g_fbArbiter.q_stBeamParams,
+	i_stAssertedParams := i_SimReqBP,
 	q_stMachineParams => PMPS_GVL_BeamParams.stCurrentBeamParameters,
 	i_xFault	:= NOT GVL.g_FastFaultOutput1.q_xFastFaultOut
-	);]]></ST>
+	);
+	
+q_SimCurrBP	:= fbMachine.q_stMachineParams;
+q_SimCurrBP.neVReqRange := i_SimReqBP.neVReqRange;]]></ST>
     </Implementation>
     <LineIds Name="MachineSimulation">
       <LineId Id="6" Count="4" />
       <LineId Id="5" Count="0" />
+      <LineId Id="17" Count="1" />
+      <LineId Id="20" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>

@@ -18,7 +18,7 @@ VAR
 	//Fast faults add their name here to indicate they
 	//"check in" to indicate their status with this fast
 	//fault output. ie. They may be a culprit of beam off.
-	asList	:	ARRAY[0..cMaxList] OF T_MaxString;
+	asList	:	ARRAY[0..99] OF T_MaxString;
 	nIndex	:	INT;
 END_VAR
 VAR CONSTANT

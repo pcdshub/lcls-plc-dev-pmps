@@ -12,6 +12,8 @@ VAR
 	fbMPSInterface	:	FB_BeamClassOutputs;
 	{attribute 'pmps_interface' := 'TIID^Device 2 (EtherCAT)^Term 6 (EK1100)^Term 2 (EL6692)^IO Outputs^'}
 	//ExchangeBeamParams	:	FB_BeamParamEx;
+	
+	q_BP	AT	%Q*	:	ST_BeamParams;
 END_VAR
 ]]></Declaration>
     <Implementation>

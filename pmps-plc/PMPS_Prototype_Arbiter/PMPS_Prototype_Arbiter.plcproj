@@ -16,12 +16,12 @@
     <AutoUpdateUmlProfile>true</AutoUpdateUmlProfile>
     <CombineIds>true</CombineIds>
     <Released>true</Released>
+    <Company>SLAC</Company>
+    <Title>PMPS</Title>
+    <ProjectVersion>0.0.0</ProjectVersion>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="DUTs\E_ExampleDeviceStates.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="DUTs\ST_BeamParams.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DUTs\ST_BeamParamsReadback.TcDUT">
@@ -184,10 +184,17 @@
     <Compile Include="POUs\TestSetups.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Version\Global_Version.TcGVL">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Visualization Manager.TcVMO">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="VISUs\ArbiterStats.TcVIS">
+      <SubType>Code</SubType>
+      <DependentUpon>Visualization Manager.TcVMO</DependentUpon>
+    </Compile>
+    <Compile Include="VISUs\BeamParameterStats.TcVIS">
       <SubType>Code</SubType>
       <DependentUpon>Visualization Manager.TcVMO</DependentUpon>
     </Compile>
@@ -218,6 +225,7 @@
     <Folder Include="POUs\FlatMirrorEx" />
     <Folder Include="POUs\DatabaseComponents" />
     <Folder Include="POUs\TestComponents" />
+    <Folder Include="Version" />
     <Folder Include="VISUs" />
     <Folder Include="POUs" />
   </ItemGroup>
@@ -339,6 +347,9 @@
     <SubObject Include="MAIN.FB_Vis">
       <ExcludeFromBuild>true</ExcludeFromBuild>
     </SubObject>
+  </ItemGroup>
+  <ItemGroup>
+    <PinnedGlobalDataType Include="ST_BeamParams" />
   </ItemGroup>
   <ProjectExtensions>
     <PlcProjectOptions>

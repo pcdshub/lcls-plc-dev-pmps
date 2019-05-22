@@ -46,6 +46,9 @@ fbDev2(fbFastFaultOutput := g_FastFaultOutput1,
 
 fbDev3(fbArbiter := g_fbArbiter,
 		fbFastFaultOutput := g_FastFaultOutput1);
+		
+
+		
 PMPS_Arbiter();
 
 Fast_Faults_Evaluate();
@@ -363,6 +366,9 @@ END_IF]]></ST>
       <LineId Id="32" Count="0" />
       <LineId Id="130" Count="0" />
       <LineId Id="165" Count="0" />
+      <LineId Id="179" Count="0" />
+      <LineId Id="181" Count="0" />
+      <LineId Id="180" Count="0" />
       <LineId Id="131" Count="0" />
       <LineId Id="86" Count="0" />
       <LineId Id="88" Count="0" />
