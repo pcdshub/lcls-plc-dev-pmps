@@ -116,9 +116,6 @@
     <Compile Include="POUs\MajorComponents\FB_BeamParamFanout.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\MajorComponents\FB_BPRequestor_Test.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="POUs\MajorComponents\FB_FastFault.TcPOU">
       <SubType>Code</SubType>
     </Compile>
@@ -150,6 +147,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\TestComponents\FB_AttenuatorSimulator.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\TestComponents\FB_BPRequestor_Test.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\TestComponents\FB_BPTM_Test.TcPOU">
