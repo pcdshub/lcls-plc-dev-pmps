@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.12">
+  <POU Name="FB_BPRequestor" Id="{7bca38cb-b015-0bee-2b8d-d1d37159090d}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_BPRequestor
+VAR_INPUT
+	stReqBP	:	ST_ReqBeamParams;
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	{attribute 'TcLinkTo' := 'TIIB[PMPS_IF2]^IO Outputs^ReqBP'}
+	q_stReqBP	AT	%Q*	:	ST_ReqBeamParams;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <LineIds Name="FB_BPRequestor">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

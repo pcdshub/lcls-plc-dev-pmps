@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.12">
+  <POU Name="FB_BeamParamFanout_1" Id="{80b3baef-43ba-0d0e-3ca3-03159f78ed90}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_BeamParamFanout_1
+VAR_INPUT
+	{attribute 'TcLinkTo' := 'TIIB[PMPS_IF2]^IO Inputs^CurrentBP1'}
+	i_stBP	AT %I* :	ST_BeamParamsReadback;
+	{attribute 'TcLinkTo' := 'TIIB[PMPS_IF2]^SYNC Inputs^TxPDO toggle'}
+	xTxPDO_toggle	AT 	%I* :	BIT;
+	{attribute 'TcLinkTo' := 'TIIB[PMPS_IF2]^SYNC Inputs^TxPDO state'}
+	xTxPDO_state	AT	%I*	:	BIT;
+END_VAR
+VAR_OUTPUT
+	stBP	:	ST_BeamParamsReadback;
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <LineIds Name="FB_BeamParamFanout_1">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

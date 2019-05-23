@@ -128,7 +128,7 @@ CheckRequest := THIS^.fbBPAssertionPool.bOk;
       </Implementation>
     </Method>
     <Method Name="GetArbitratedBP" Id="{42c0af72-5a4d-02e2-043b-0505463fd885}">
-      <Declaration><![CDATA[METHOD GetArbitratedBP : ST_BeamParams
+      <Declaration><![CDATA[METHOD GetArbitratedBP : ST_ReqBeamParams
 VAR_INPUT
 END_VAR
 VAR
@@ -175,7 +175,12 @@ END_IF
 
 THIS^.q_stBeamParams := stOutputBP;
 
-GetArbitratedBP := stOutputBP;]]></ST>
+GetArbitratedBP.fAtt := stOutputBP.fAtt;
+GetArbitratedBP.fPP_mJ := stOutputBP.fPP_mJ;
+GetArbitratedBP.nBeamClass := stOutputBP.nBeamClass;
+GetArbitratedBP.neVPermRange := stOutputBP.neVReqRange;
+GetArbitratedBP.nRate := stOutputBP.nRate;
+GetArbitratedBP.xValidToggle := NOT GetArbitratedBP.xValidToggle;]]></ST>
       </Implementation>
     </Method>
     <Method Name="RemoveRequest" Id="{91259d93-276a-0acc-0f44-27a89e3b464d}">
@@ -237,6 +242,7 @@ RemoveRequest := THIS^.fbBPAssertionPool.bOk;]]></ST>
       <LineId Id="62" Count="1" />
       <LineId Id="51" Count="0" />
       <LineId Id="50" Count="0" />
+      <LineId Id="72" Count="4" />
     </LineIds>
     <LineIds Name="FB_Arbiter.RemoveRequest">
       <LineId Id="10" Count="7" />

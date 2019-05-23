@@ -24,14 +24,6 @@
     <Compile Include="DUTs\E_ExampleDeviceStates.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DUTs\ST_BeamParamsReadback.TcDUT">
-      <SubType>Code</SubType>
-      <ExcludeFromBuild>true</ExcludeFromBuild>
-    </Compile>
-    <Compile Include="DUTs\ST_ReqBeamParams.TcDUT">
-      <SubType>Code</SubType>
-      <ExcludeFromBuild>true</ExcludeFromBuild>
-    </Compile>
     <Compile Include="DUTs\ST_BinarySolidAttenuator.TcDUT">
       <SubType>Code</SubType>
     </Compile>
@@ -121,7 +113,10 @@
     <Compile Include="POUs\MajorComponents\FB_BeamClassOutputs.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\MajorComponents\FB_BeamParamEx.TcPOU">
+    <Compile Include="POUs\MajorComponents\FB_BeamParamFanout.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\MajorComponents\FB_BPRequestor_Test.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\MajorComponents\FB_FastFault.TcPOU">
@@ -350,6 +345,8 @@
   </ItemGroup>
   <ItemGroup>
     <PinnedGlobalDataType Include="ST_BeamParams" />
+    <PinnedGlobalDataType Include="ST_BeamParamsReadback" />
+    <PinnedGlobalDataType Include="ST_ReqBeamParams" />
   </ItemGroup>
   <ProjectExtensions>
     <PlcProjectOptions>

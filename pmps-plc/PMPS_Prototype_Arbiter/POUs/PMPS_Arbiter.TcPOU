@@ -10,8 +10,13 @@ VAR
 	fbPhotonEnergyWatcher	:	FB_PhotonEnergyWatcher;
 	
 	fbMPSInterface	:	FB_BeamClassOutputs;
-	{attribute 'pmps_interface' := 'TIID^Device 2 (EtherCAT)^Term 6 (EK1100)^Term 2 (EL6692)^IO Outputs^'}
-	//ExchangeBeamParams	:	FB_BeamParamEx;
+	
+	{attribute 'TcLinkTo' := '.i_stBP:=TIIB[PMPS_IF]^IO Inputs^CurrentBP1;.xTxPDO_toggle:=TIIB[PMPS_IF]^SYNC Inputs^TxPDO toggle;.xTxPDO_state:=TIIB[PMPS_IF]^SYNC Inputs^TxPDO state'}
+	fbBPFanout	:	FB_BeamParamFanout;
+	
+	fbBPFanout1	:	FB_BeamParamFanout_1;
+	
+	fbBPRequestor	:	FB_BPRequestor;
 	
 	q_BP	AT	%Q*	:	ST_BeamParams;
 END_VAR
@@ -27,21 +32,19 @@ fbPhotonEnergyWatcher(i_stCurrentBeamParams	:= PMPS_GVL_BeamParams.stCurrentBeam
 					i_stRequestedBeamParams := g_fbArbiter.q_stBeamParams,
 					io_fbFFHWO:= GVL.g_FastFaultOutput1);
 
-//ExchangeBeamParams();
-]]></ST>
+//Beam parameter fanout
+fbBPFanout();
+
+//Beam parameter requestor
+fbBPRequestor(stReqBP := g_fbArbiter.GetArbitratedBP());]]></ST>
     </Implementation>
     <LineIds Name="PMPS_Arbiter">
-      <LineId Id="75" Count="0" />
-      <LineId Id="16" Count="0" />
-      <LineId Id="74" Count="0" />
-      <LineId Id="84" Count="1" />
-      <LineId Id="95" Count="0" />
-      <LineId Id="94" Count="0" />
-      <LineId Id="98" Count="0" />
-      <LineId Id="111" Count="0" />
-      <LineId Id="67" Count="0" />
-      <LineId Id="73" Count="0" />
+      <LineId Id="168" Count="8" />
+      <LineId Id="179" Count="0" />
+      <LineId Id="177" Count="1" />
+      <LineId Id="189" Count="0" />
       <LineId Id="138" Count="0" />
+      <LineId Id="191" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>
