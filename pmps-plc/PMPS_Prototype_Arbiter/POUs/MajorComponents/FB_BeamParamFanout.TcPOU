@@ -16,9 +16,12 @@ VAR
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[]]></ST>
+      <ST><![CDATA[
+
+stBP.xValidToggle;]]></ST>
     </Implementation>
     <LineIds Name="FB_BeamParamFanout">
+      <LineId Id="23" Count="1" />
       <LineId Id="9" Count="0" />
     </LineIds>
   </POU>

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.18">
   <POU Name="FB_Arbiter_Test" Id="{db09e55a-38f4-0816-2f75-9c1afd6ec43c}" SpecialFunc="None">
     <Declaration><![CDATA[{attribute 'call_after_init'}
 FUNCTION_BLOCK FB_Arbiter_Test EXTENDS FB_TestSuite IMPLEMENTS I_RunnableTestSuite
@@ -33,8 +33,8 @@ VAR
 	nRateReqID	:	UDINT	:= 4;
 	stRateReqBP	:	ST_BeamParams := PMPS_GVL_BeamParams.cstFullBeam;
 	
-	stArbitratedBP	:	ST_BeamParams;
-	stExpectedBP	:	ST_BeamParams := PMPS_GVL_BeamParams.cstFullBeam;
+	stArbitratedBP	:	ST_ReqBeamParams;
+	stExpectedBP	:	ST_ReqBeamParams;
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[TEST('Arbitration');
@@ -65,12 +65,12 @@ fbAssert.AssertTrue(fbArbiter.AddRequest(nRateReqID, stRateReqBP),
 
 stExpectedBP.fAtt 	:= 	stAttReqBP.fAtt;
 stExpectedBP.fPP_mJ	:=  stPPEReqBP.fPP_mJ;
-stExpectedBP.neVReqRange := stEVReqBP.neVReqRange;
+stExpectedBP.neVPermRange := stEVReqBP.neVReqRange;
 stExpectedBP.nRate := stRateReqBP.nRate;
 
 stArbitratedBP := fbArbiter.GetArbitratedBP();
 
-fbAssert.AssertFalse(F_DifferentBeamParams(stExpectedBP, stArbitratedBP),
+fbAssert.AssertFalse(F_DiffReqBeamParams(stExpectedBP, stArbitratedBP),
 				'Arbitrated BP does not match expected.');
 ]]></ST>
       </Implementation>

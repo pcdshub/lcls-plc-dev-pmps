@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.12">
-  <POU Name="FB_BPRequestor_Test" Id="{2e76b681-c0a9-0f76-29da-160e72c43f83}" SpecialFunc="None">
+  <POU Name="FB_BeamParamFanout_Test" Id="{35b09878-0c41-0a31-0f77-f3e1a5b30d81}" SpecialFunc="None">
     <Declaration><![CDATA[{attribute 'call_after_init'}
-FUNCTION_BLOCK FB_BPRequestor_Test EXTENDS FB_TestSuite IMPLEMENTS I_RunnableTestSuite
+FUNCTION_BLOCK FB_BeamParamFanout_Test EXTENDS FB_TestSuite IMPLEMENTS I_RunnableTestSuite
 VAR_INPUT
 END_VAR
 VAR_OUTPUT
@@ -14,20 +14,29 @@ END_VAR
     <Implementation>
       <ST><![CDATA[]]></ST>
     </Implementation>
-    <Method Name="BPRequestorSafeGuardFunctionality" Id="{998205c2-d03c-03ca-3e9d-2b3342d79f18}">
-      <Declaration><![CDATA[METHOD PRIVATE BPRequestorSafeGuardFunctionality
+    <Method Name="BPFanoutSafeguard" Id="{8f6e225f-b54c-0582-05a2-5752ed28fff5}">
+      <Declaration><![CDATA[METHOD PRIVATE BPFanoutSafeguard
 VAR_INPUT
 END_VAR
 VAR
-	fbBPR	:	FB_BPRequestor;
+	fbBPF	:	FB_BeamParamFanout;
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[TEST('Reset Beam to Safe if Arbiter Faulted');
+        <ST><![CDATA[TEST('Reset validity bool if interface invalid');
+fbBPF.xTxPDO_state := 0; //OP
+fbBPF();
+fbAssert.AssertTrue(fbBPF.stBP.xValidToggle,
+	'Does not start valid');
+	
+fbBPF.xTxPDO_state := 1; // Not op	
+	
+fbAssert.AssertFalse(fbBPF.stBP.xValidToggle,
+	'Does not indicate invalid after IF goes non-op');
 
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="FB_init" Id="{72aa7fd8-8af4-04a7-1d17-210644634f4a}">
+    <Method Name="FB_init" Id="{afb07e4c-5aaf-0ae3-2f32-5fbeadbae009}">
       <Declaration><![CDATA[METHOD FB_init : BOOL
 VAR_INPUT
 	bInitRetains : BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
@@ -40,29 +49,33 @@ END_VAR
 ]]></ST>
       </Implementation>
     </Method>
-    <Method Name="RunTests" Id="{e51cd65a-564c-097b-0d67-be53e5d72842}">
+    <Method Name="RunTests" Id="{df0be30e-5623-0a47-1061-2b455d68ef21}">
       <Declaration><![CDATA[METHOD RunTests : TCUNIT.E_TestSuiteRunState
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[BPRequestorSafeGuardFunctionality();
+        <ST><![CDATA[BPFanoutSafeguard();
 
 RunTests := TcUnit.E_TestSuiteRunState.FINISHED;]]></ST>
       </Implementation>
     </Method>
-    <LineIds Name="FB_BPRequestor_Test">
+    <LineIds Name="FB_BeamParamFanout_Test">
       <LineId Id="9" Count="0" />
     </LineIds>
-    <LineIds Name="FB_BPRequestor_Test.BPRequestorSafeGuardFunctionality">
+    <LineIds Name="FB_BeamParamFanout_Test.BPFanoutSafeguard">
       <LineId Id="144" Count="0" />
+      <LineId Id="233" Count="4" />
+      <LineId Id="239" Count="1" />
+      <LineId Id="238" Count="0" />
+      <LineId Id="241" Count="0" />
       <LineId Id="227" Count="0" />
       <LineId Id="177" Count="0" />
     </LineIds>
-    <LineIds Name="FB_BPRequestor_Test.FB_init">
+    <LineIds Name="FB_BeamParamFanout_Test.FB_init">
       <LineId Id="7" Count="0" />
       <LineId Id="9" Count="0" />
       <LineId Id="8" Count="0" />
     </LineIds>
-    <LineIds Name="FB_BPRequestor_Test.RunTests">
+    <LineIds Name="FB_BeamParamFanout_Test.RunTests">
       <LineId Id="4" Count="0" />
       <LineId Id="6" Count="0" />
       <LineId Id="5" Count="0" />
