@@ -3,14 +3,14 @@
   <POU Name="MAIN" Id="{8a7bcfd2-1a2b-4363-aa47-c19391bf1f9c}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM MAIN
 VAR
-	fbDev1	:	FB_ExampleDeviceSM_All:=(cBase := 100);
+	fbDev1	:	FB_ExampleDeviceSM_All;
 	fbDev2	:	FB_ExampleDeviceSM_All;
 	
 	rtInit	:	R_TRIG;
 	Initialize	:	BOOL := TRUE;
 	
-	DemoMode: BOOL :=TRUE;
-	fbDev3	:	FB_ExampleDeviceSM_DB;
+	DemoMode: BOOL :=FALSE;
+	//fbDev3	:	FB_ExampleDeviceSM_DB;
 
 END_VAR
 ]]></Declaration>
@@ -44,8 +44,8 @@ fbDev2(fbFastFaultOutput := g_FastFaultOutput1,
 		fbArbiter := g_fbArbiter);
 
 
-fbDev3(fbArbiter := g_fbArbiter,
-		fbFastFaultOutput := g_FastFaultOutput1);
+//fbDev3(fbArbiter := g_fbArbiter,
+//		fbFastFaultOutput := g_FastFaultOutput1);
 		
 
 		

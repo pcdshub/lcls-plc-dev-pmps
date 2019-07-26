@@ -92,18 +92,26 @@ END_VAR]]></Declaration>
 TEST('RequestBP');
 AssertTrue(fbArbiter.AddRequest(nId, stReq),
 	'Request failed');
+
+TEST_FINISHED();
 	
 TEST('DuplicateID');
 AssertFalse(fbArbiter.AddRequest(nId, stReq),
 	'Duplicate request accepted, not good.');
+
+TEST_FINISHED();
 	
 TEST('CheckBP');
 AssertTrue(fbArbiter.CheckRequest(nId),
 	'Check failed');
+
+TEST_FINISHED();	
 	
 TEST('IDDoesNotExist');
 AssertFalse(fbArbiter.CheckRequest(nId+1),
 	'Check returned true when ID does not exist');
+
+TEST_FINISHED();
 	
 TEST('RemoveBP');
 AssertTrue(fbArbiter.RemoveRequest(nId),
@@ -145,13 +153,20 @@ TEST_FINISHED();]]></ST>
       <LineId Id="157" Count="0" />
       <LineId Id="30" Count="0" />
       <LineId Id="166" Count="0" />
+      <LineId Id="213" Count="1" />
       <LineId Id="195" Count="1" />
       <LineId Id="198" Count="0" />
       <LineId Id="197" Count="0" />
+      <LineId Id="215" Count="1" />
       <LineId Id="167" Count="3" />
-      <LineId Id="199" Count="1" />
+      <LineId Id="217" Count="0" />
+      <LineId Id="199" Count="0" />
+      <LineId Id="218" Count="0" />
+      <LineId Id="200" Count="0" />
       <LineId Id="202" Count="0" />
       <LineId Id="201" Count="0" />
+      <LineId Id="220" Count="0" />
+      <LineId Id="219" Count="0" />
       <LineId Id="179" Count="5" />
       <LineId Id="211" Count="1" />
     </LineIds>
