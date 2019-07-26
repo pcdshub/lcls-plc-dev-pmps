@@ -19,6 +19,18 @@
     <Company>SLAC</Company>
     <Title>PMPS</Title>
     <ProjectVersion>0.0.0</ProjectVersion>
+    <DeploymentEvents>
+      <Events>
+        <Event>
+          <CommandType>Execute</CommandType>
+          <DeploymentType>PlcAfterCompile</DeploymentType>
+          <Command1 />
+          <Command2 />
+        </Event>
+      </Events>
+    </DeploymentEvents>
+    <CompilerVersion>
+    </CompilerVersion>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="DUTs\E_ExampleDeviceStates.TcDUT">
@@ -92,6 +104,12 @@
     <Compile Include="POUs\HelperFunctions\F_DifferentBeamParams.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\HelperFunctions\F_DiffBeamParamsRB.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\HelperFunctions\F_DiffReqBeamParams.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="POUs\HelperFunctions\F_eVWithinSpec.TcPOU">
       <SubType>Code</SubType>
     </Compile>
@@ -114,6 +132,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\MajorComponents\FB_BeamParamFanout.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\MajorComponents\FB_BPRequestor.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\MajorComponents\FB_FastFault.TcPOU">
@@ -150,6 +171,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\TestComponents\FB_BPRequestor_Test.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\TestComponents\FB_BeamParamFanout_Test.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\TestComponents\FB_BPTM_Test.TcPOU">
@@ -208,6 +232,9 @@
     <Compile Include="VISUs\Visualization.TcVIS">
       <SubType>Code</SubType>
       <DependentUpon>Visualization Manager.TcVMO</DependentUpon>
+    </Compile>
+    <Compile Include="VISU_TASK.TcTTO">
+      <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -351,10 +378,19 @@
   <ProjectExtensions>
     <PlcProjectOptions>
       <XmlArchive>
-        <Data>
-          <o xml:space="preserve" t="OptionKey">
+  <Data>
+    <o xml:space="preserve" t="OptionKey">
       <v n="Name">"&lt;ProjectRoot&gt;"</v>
       <d n="SubKeys" t="Hashtable" ckt="String" cvt="OptionKey">
+        <v>{535658C0-5AF5-460d-99A4-BFFB984A829A}</v>
+        <o>
+          <v n="Name">"{535658C0-5AF5-460d-99A4-BFFB984A829A}"</v>
+          <d n="SubKeys" t="Hashtable" />
+          <d n="Values" t="Hashtable" ckt="String" cvt="NewestVersionConstraintToSave">
+            <v>VersionConstraint</v>
+            <o />
+          </d>
+        </o>
         <v>{8F99A816-E488-41E4-9FA3-846536012284}</v>
         <o>
           <v n="Name">"{8F99A816-E488-41E4-9FA3-846536012284}"</v>
@@ -406,7 +442,7 @@
           <d n="SubKeys" t="Hashtable" />
           <d n="Values" t="Hashtable" ckt="String" cvt="String">
             <v>CurrentUmlCompilerVersion</v>
-            <v>4.0.2.1</v>
+            <v>4.0.5.0</v>
           </d>
         </o>
         <v>{F66C7017-BDD8-4114-926C-81D6D687E35F}</v>
@@ -427,15 +463,16 @@
       </d>
       <d n="Values" t="Hashtable" />
     </o>
-        </Data>
-        <TypeList>
-          <Type n="Boolean">System.Boolean</Type>
-          <Type n="Hashtable">System.Collections.Hashtable</Type>
-          <Type n="Int32">System.Int32</Type>
-          <Type n="OptionKey">{54dd0eac-a6d8-46f2-8c27-2f43c7e49861}</Type>
-          <Type n="String">System.String</Type>
-        </TypeList>
-      </XmlArchive>
+  </Data>
+  <TypeList>
+    <Type n="Boolean">System.Boolean</Type>
+    <Type n="Hashtable">System.Collections.Hashtable</Type>
+    <Type n="Int32">System.Int32</Type>
+    <Type n="NewestVersionConstraintToSave">{af9bafe2-ba31-4b15-a2b9-48a0f2cd09fb}</Type>
+    <Type n="OptionKey">{54dd0eac-a6d8-46f2-8c27-2f43c7e49861}</Type>
+    <Type n="String">System.String</Type>
+  </TypeList>
+</XmlArchive>
     </PlcProjectOptions>
   </ProjectExtensions>
 </Project>

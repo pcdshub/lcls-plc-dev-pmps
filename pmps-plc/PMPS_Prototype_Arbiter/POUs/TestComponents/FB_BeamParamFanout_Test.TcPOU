@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.18">
   <POU Name="FB_BeamParamFanout_Test" Id="{35b09878-0c41-0a31-0f77-f3e1a5b30d81}" SpecialFunc="None">
     <Declaration><![CDATA[{attribute 'call_after_init'}
-FUNCTION_BLOCK FB_BeamParamFanout_Test EXTENDS FB_TestSuite IMPLEMENTS I_RunnableTestSuite
+FUNCTION_BLOCK FB_BeamParamFanout_Test EXTENDS TcUnit.FB_TestSuite
 VAR_INPUT
 END_VAR
 VAR_OUTPUT
 END_VAR
 VAR
-	fbAssert : TcUnit.FB_Assert;
+
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -25,37 +25,15 @@ END_VAR]]></Declaration>
         <ST><![CDATA[TEST('Reset validity bool if interface invalid');
 fbBPF.xTxPDO_state := 0; //OP
 fbBPF();
-fbAssert.AssertTrue(fbBPF.stBP.xValidToggle,
+AssertTrue(fbBPF.stBP.xValidToggle,
 	'Does not start valid');
 	
 fbBPF.xTxPDO_state := 1; // Not op	
 	
-fbAssert.AssertFalse(fbBPF.stBP.xValidToggle,
+AssertFalse(fbBPF.stBP.xValidToggle,
 	'Does not indicate invalid after IF goes non-op');
 
 ]]></ST>
-      </Implementation>
-    </Method>
-    <Method Name="FB_init" Id="{afb07e4c-5aaf-0ae3-2f32-5fbeadbae009}">
-      <Declaration><![CDATA[METHOD FB_init : BOOL
-VAR_INPUT
-	bInitRetains : BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
-	bInCopyCode : BOOL;  // if TRUE, the instance afterwards gets moved into the copy code (online change)
-END_VAR
-]]></Declaration>
-      <Implementation>
-        <ST><![CDATA[SUPER^.RegisterTestSuite(THIS^);
-
-]]></ST>
-      </Implementation>
-    </Method>
-    <Method Name="RunTests" Id="{df0be30e-5623-0a47-1061-2b455d68ef21}">
-      <Declaration><![CDATA[METHOD RunTests : TCUNIT.E_TestSuiteRunState
-]]></Declaration>
-      <Implementation>
-        <ST><![CDATA[BPFanoutSafeguard();
-
-RunTests := TcUnit.E_TestSuiteRunState.FINISHED;]]></ST>
       </Implementation>
     </Method>
     <LineIds Name="FB_BeamParamFanout_Test">
@@ -69,16 +47,6 @@ RunTests := TcUnit.E_TestSuiteRunState.FINISHED;]]></ST>
       <LineId Id="241" Count="0" />
       <LineId Id="227" Count="0" />
       <LineId Id="177" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_BeamParamFanout_Test.FB_init">
-      <LineId Id="7" Count="0" />
-      <LineId Id="9" Count="0" />
-      <LineId Id="8" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_BeamParamFanout_Test.RunTests">
-      <LineId Id="4" Count="0" />
-      <LineId Id="6" Count="0" />
-      <LineId Id="5" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>

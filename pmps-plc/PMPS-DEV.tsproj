@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<TcSmProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4022.22">
+<TcSmProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4022.30">
 	<DataTypes>
 		<DataType>
 			<Name GUID="{18071995-0000-0000-0000-002000000006}" IecBaseType="true" BitType="true" AutoDeleteType="true" HideSubItems="true">ARRAY [0..5] OF BIT</Name>
@@ -182,7 +182,7 @@
 			</SubItem>
 		</DataType>
 		<DataType>
-			<Name GUID="{FC42DB62-E617-435F-86F0-9A207B93F02E}" PersistentType="true">ST_ReqBeamParams</Name>
+			<Name GUID="{183E930A-4C64-4DC2-95B5-28EADAFA45EE}" PersistentType="true">ST_ReqBeamParams</Name>
 			<BitSize>160</BitSize>
 			<SubItem>
 				<Name>fAtt</Name>
@@ -250,6 +250,15 @@
 					</Property>
 				</Properties>
 			</SubItem>
+			<SubItem>
+				<Name>xValidToggle</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>144</BitOffs>
+			</SubItem>
+			<Hides>
+				<Hide GUID="{FC42DB62-E617-435F-86F0-9A207B93F02E}"/>
+			</Hides>
 		</DataType>
 	</DataTypes>
 	<ImageDatas>
@@ -261,14 +270,22 @@
 		<ImageData Id="1005">424de6000000000000007600000028000000100000000e000000010004000000000070000000120b0000120b0000100000001000000000000000000080000080000000808000800000008000800080800000c0c0c000808080000000ff0000ff000000ffff00ff000000ff00ff00ffff0000ffffff00dddddd88888888dddddddd77777778dddddddd77888778dddddddd77888778dddddddd77888778dddddddd77777778dddddddd77888778dd9b9b9b77888778ddb9b9b977888778dd9b9b9b77777778ddb9b9b9777a7778dd9b9b9b777a7778ddb9b9b9777a7778dd9b9b9b77777778dd</ImageData>
 		<ImageData Id="1006">424dd6020000000000003600000028000000100000000e0000000100180000000000a0020000c40e0000c40e00000000000000000000ff00ffff00ffff00ffff00ffff00ffff00ff808080808080808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ff</ImageData>
 	</ImageDatas>
-	<Project ProjectGUID="{11D93138-2D8B-49C5-B84D-11A4D2CA3157}" TargetNetId="5.57.239.252.1.1" Target64Bit="true" ShowHideConfigurations="#x106">
+	<Project ProjectGUID="{11D93138-2D8B-49C5-B84D-11A4D2CA3157}" Target64Bit="true" ShowHideConfigurations="#x106">
 		<System>
 			<Settings>
 				<Cpu BaseTime="500"/>
 			</Settings>
+			<Licenses>
+				<Target>
+					<ManualSelect>{3EBB9639-5FF3-42B6-8847-35C70DC013C8}</ManualSelect>
+				</Target>
+			</Licenses>
 			<Tasks>
 				<Task Id="3" Priority="20" CycleTime="10000" AmsPort="350">
 					<Name>PlcTask</Name>
+				</Task>
+				<Task Id="6" Priority="30" CycleTime="2000000" AmsPort="351" AdtTasks="true">
+					<Name>VISU_TASK</Name>
 				</Task>
 			</Tasks>
 			<Routes>
@@ -282,7 +299,7 @@
 			<Project File="PMPS_Prototype_Arbiter.xti"/>
 		</Plc>
 		<Io>
-			<Device DevType="111" DevFlags="#x0003" AmsPort="28673" AmsNetId="5.57.239.252.2.1" RemoteName="Device 1 (EtherCAT)" Id="1">
+			<Device Disabled="true" DevType="111" DevFlags="#x0003" AmsPort="28673" AmsNetId="169.254.224.1.2.1" RemoteName="Device 1 (EtherCAT)" Id="1">
 				<Name>Device 1 (EtherCAT)</Name>
 				<AddressInfo>
 					<Ccat>
@@ -729,7 +746,7 @@
 				</Box>
 				<EtherCAT EnableVirtualSwitch="true" MaxSwitchPorts="3" MaxSwitchFrames="140"/>
 			</Device>
-			<Device Disabled="true" DevType="111" DevFlags="#x0003" AmsPort="28674" AmsNetId="5.57.239.252.3.1" RemoteName="Device 2 (EtherCAT)" Id="2">
+			<Device Disabled="true" DevType="111" DevFlags="#x0003" AmsPort="28674" AmsNetId="169.254.224.1.3.1" RemoteName="Device 2 (EtherCAT)" Id="2">
 				<Name>Device 2 (EtherCAT)</Name>
 				<AddressInfo>
 					<Ccat>
@@ -965,6 +982,5 @@
 	</Project>
 	<Mappings>
 		<MappingInfo Identifier="{05000010-2001-0850-3000-040300205008}" Id="#x02030010" Watchdog="04000000080000000400000004000000"/>
-		<MappingInfo Identifier="{00000000-2001-0850-0020-500810000403}" Id="#x02030020"/>
 	</Mappings>
 </TcSmProject>

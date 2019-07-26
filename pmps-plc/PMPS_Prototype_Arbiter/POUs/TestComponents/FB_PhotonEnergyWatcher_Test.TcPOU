@@ -1,34 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.18">
   <POU Name="FB_PhotonEnergyWatcher_Test" Id="{0fcbd199-c111-05e5-208f-efd836b137da}" SpecialFunc="None">
     <Declaration><![CDATA[{attribute 'call_after_init'}
-FUNCTION_BLOCK FB_PhotonEnergyWatcher_Test EXTENDS FB_TestSuite IMPLEMENTS I_RunnableTestSuite
+FUNCTION_BLOCK FB_PhotonEnergyWatcher_Test EXTENDS TcUnit.FB_TestSuite
 VAR_INPUT
 END_VAR
 VAR_OUTPUT
 END_VAR
 VAR
-	fbAssert : TcUnit.FB_Assert;
+
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[]]></ST>
+      <ST><![CDATA[PEWatcherBasicFunction();]]></ST>
     </Implementation>
-    <Method Name="FB_init" Id="{abd746e0-90e2-04be-08b3-63a259c2c23d}">
-      <Declaration><![CDATA[METHOD FB_init : BOOL
-VAR_INPUT
-	bInitRetains : BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
-	bInCopyCode : BOOL;  // if TRUE, the instance afterwards gets moved into the copy code (online change)
-END_VAR
-]]></Declaration>
-      <Implementation>
-        <ST><![CDATA[SUPER^.RegisterTestSuite(THIS^);
-
-]]></ST>
-      </Implementation>
-    </Method>
     <Method Name="PEWatcherBasicFunction" Id="{70274a01-fe93-0062-336d-e1158923f781}">
-      <Declaration><![CDATA[METHOD PRIVATE PEWatcherBasicFunction
+      <Declaration><![CDATA[METHOD PEWatcherBasicFunction
 VAR_INPUT
 END_VAR
 VAR
@@ -64,7 +51,7 @@ fbPEW(i_stCurrentBeamParams := stCurBeamParams,
 fbFFO.EvaluateOutput(q_xFastFaultOut=>q_Output); //This simulates a completed PLC cycle
 //Evaluate output should be called once at the end of a PLC cycle.
 
-fbAssert.AssertTrue(q_Output,
+AssertTrue(q_Output,
 	'Beam within limits, FFO should be true');
 	
 	
@@ -83,7 +70,7 @@ fbPEW(i_stCurrentBeamParams := stCurBeamParams,
 	
 fbFFO.EvaluateOutput(q_xFastFaultOut=>q_Output);
 
-fbAssert.AssertFalse(q_Output,
+AssertFalse(q_Output,
 	'Limits moved beyond current and target beam, should produce a fault.');
 
 //Beam and target eV moved back within permitted ranges, reset clears fault
@@ -104,7 +91,7 @@ fbPEW(i_stCurrentBeamParams := stCurBeamParams, //Beam params are now within spe
 	
 fbFFO.EvaluateOutput(q_xFastFaultOut=>q_Output);
 
-fbAssert.AssertTrue(q_Output,
+AssertTrue(q_Output,
 	'Beam within limits after reset, FFO should be true');
 	
 //At this point, the fast fault would be cleared
@@ -123,7 +110,7 @@ fbPEW(i_stCurrentBeamParams := stCurBeamParams,
 	
 fbFFO.EvaluateOutput(q_xFastFaultOut=>q_Output);
 
-fbAssert.AssertFalse(q_Output,
+AssertFalse(q_Output,
 	'Current beam moved beyond set limits, should produce a fault');
 
 //Target beam eV moved out of range
@@ -144,26 +131,14 @@ fbPEW(i_stCurrentBeamParams := stCurBeamParams,
 	
 fbFFO.EvaluateOutput(q_xFastFaultOut=>q_Output);
 
-fbAssert.AssertFalse(q_Output,
-	'Target beam moved beyond set limits, should produce a fault');]]></ST>
-      </Implementation>
-    </Method>
-    <Method Name="RunTests" Id="{976dac7f-a350-02ab-3863-62d5a7981b89}">
-      <Declaration><![CDATA[METHOD RunTests : TCUNIT.E_TestSuiteRunState
-]]></Declaration>
-      <Implementation>
-        <ST><![CDATA[PEWatcherBasicFunction();
-
-RunTests := TcUnit.E_TestSuiteRunState.FINISHED;]]></ST>
+AssertFalse(q_Output,
+	'Target beam moved beyond set limits, should produce a fault');
+	
+TEST_FINISHED();]]></ST>
       </Implementation>
     </Method>
     <LineIds Name="FB_PhotonEnergyWatcher_Test">
       <LineId Id="9" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_PhotonEnergyWatcher_Test.FB_init">
-      <LineId Id="7" Count="0" />
-      <LineId Id="9" Count="0" />
-      <LineId Id="8" Count="0" />
     </LineIds>
     <LineIds Name="FB_PhotonEnergyWatcher_Test.PEWatcherBasicFunction">
       <LineId Id="144" Count="0" />
@@ -218,11 +193,7 @@ RunTests := TcUnit.E_TestSuiteRunState.FINISHED;]]></ST>
       <LineId Id="270" Count="0" />
       <LineId Id="253" Count="8" />
       <LineId Id="221" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_PhotonEnergyWatcher_Test.RunTests">
-      <LineId Id="4" Count="0" />
-      <LineId Id="6" Count="0" />
-      <LineId Id="5" Count="0" />
+      <LineId Id="282" Count="1" />
     </LineIds>
   </POU>
 </TcPlcObject>
