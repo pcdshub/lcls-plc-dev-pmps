@@ -44,7 +44,7 @@ AssertFalse(
 	F_eVWithinSpec(1700, 2#1000_0000_0000_0000),
 	'eV range should not evaluate past 1.6keV');
 	
-TEST_FINISHED();]]></ST>
+TEST_FINISHED('');]]></ST>
       </Implementation>
     </Method>
     <LineIds Name="FB_eVWithinSpec_Test">

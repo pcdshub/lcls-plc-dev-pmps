@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.18">
   <POU Name="TestSetups" Id="{b76e0cd1-9067-0211-3640-810a8ad26b8e}" SpecialFunc="None">
     <Declaration><![CDATA[//Test setups (fixtures), for PMPS components
 PROGRAM TestSetups

@@ -134,7 +134,7 @@ fbFFO.EvaluateOutput(q_xFastFaultOut=>q_Output);
 AssertFalse(q_Output,
 	'Target beam moved beyond set limits, should produce a fault');
 	
-TEST_FINISHED();]]></ST>
+TEST_FINISHED('');]]></ST>
       </Implementation>
     </Method>
     <LineIds Name="FB_PhotonEnergyWatcher_Test">
