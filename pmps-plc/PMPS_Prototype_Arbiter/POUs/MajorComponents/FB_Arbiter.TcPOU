@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.18">
   <POU Name="FB_Arbiter" Id="{9cc1f6b7-c43c-0fbb-09be-271b21ce1be7}" SpecialFunc="None">
     <Declaration><![CDATA[(* FB Arbiter
 
@@ -58,14 +58,19 @@ fbBPAssertionPool.A_Reset();]]></ST>
     <Method Name="AddRequest" Id="{1e467c4a-5c4c-0f06-2179-99208c80fe24}">
       <Declaration><![CDATA[METHOD AddRequest : BOOL
 VAR_INPUT
-	nStateID	:	DWORD; //StateID of state requesting beam parameter set
+	nReqID	:	DWORD; //StateID of state requesting beam parameter set
 	stReqBP		:	ST_BeamParams; //Requested beam params
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[IF nStateID <> EXCLUDED_ASSERTION_ID THEN
+        <ST><![CDATA[IF CheckRequest(nReqID) THEN
+	AddRequest := FALSE;
+	RETURN;
+END_IF
+
+IF nReqID <> EXCLUDED_ASSERTION_ID THEN
 	THIS^.fbBPAssertionPool.A_Add(
-		key := nStateID,
+		key := nReqID,
 		putValue := stReqBP
 	);
 END_IF
@@ -219,7 +224,9 @@ RemoveRequest := THIS^.fbBPAssertionPool.bOk;]]></ST>
       <LineId Id="1" Count="0" />
     </LineIds>
     <LineIds Name="FB_Arbiter.AddRequest">
-      <LineId Id="27" Count="10" />
+      <LineId Id="52" Count="0" />
+      <LineId Id="67" Count="0" />
+      <LineId Id="53" Count="13" />
       <LineId Id="20" Count="0" />
     </LineIds>
     <LineIds Name="FB_Arbiter.ArbitrateBP">
