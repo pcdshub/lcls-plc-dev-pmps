@@ -95,9 +95,6 @@
     <Compile Include="POUs\Fast_Faults_Evaluate.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\FlatMirrorEx\FB_FlatMirrorPMPS.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="POUs\HelperFunctions\F_DeviceState_To_DeviceStateExt.TcPOU">
       <SubType>Code</SubType>
     </Compile>
@@ -167,14 +164,19 @@
     <Compile Include="POUs\MajorComponents\FB_LinearDeviceStateTable.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\TestComponents\eBPTMTestStates.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="POUs\TestComponents\FB_AttenuatorSimulator.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\TestComponents\FB_BPRequestor_Test.TcPOU">
       <SubType>Code</SubType>
+      <ExcludeFromBuild>true</ExcludeFromBuild>
     </Compile>
     <Compile Include="POUs\TestComponents\FB_BeamParamFanout_Test.TcPOU">
       <SubType>Code</SubType>
+      <ExcludeFromBuild>true</ExcludeFromBuild>
     </Compile>
     <Compile Include="POUs\TestComponents\FB_BPTM_Test.TcPOU">
       <SubType>Code</SubType>
@@ -244,7 +246,6 @@
     <Folder Include="POUs\DeviceImplementationEx2" />
     <Folder Include="POUs\HelperFunctions" />
     <Folder Include="POUs\MajorComponents" />
-    <Folder Include="POUs\FlatMirrorEx" />
     <Folder Include="POUs\DatabaseComponents" />
     <Folder Include="POUs\TestComponents" />
     <Folder Include="Version" />
@@ -326,10 +327,6 @@
       <DefaultResolution>Tc3_Module, * (Beckhoff Automation GmbH)</DefaultResolution>
       <Namespace>Tc3_Module</Namespace>
     </PlaceholderReference>
-    <PlaceholderReference Include="TcUnit">
-      <DefaultResolution>TcUnit, * (www.tcunit.org)</DefaultResolution>
-      <Namespace>TcUnit</Namespace>
-    </PlaceholderReference>
     <PlaceholderReference Include="UML State Chart Types">
       <DefaultResolution>UML Statechart Types, 4.0.2.1 (3S - Smart Software Solutions GmbH)</DefaultResolution>
       <Namespace>UML_SC</Namespace>
@@ -347,6 +344,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <LibraryReference Include="TcUnit,0.0.0.0,www.tcunit.org">
+      <Namespace>TcUnit</Namespace>
+    </LibraryReference>
     <LibraryReference Include="VisuSymbols,3.5.10.0,System">
       <Namespace>VisuSymbols</Namespace>
     </LibraryReference>
@@ -360,9 +360,6 @@
     </PlaceholderResolution>
     <PlaceholderResolution Include="Tc3_EventLogger">
       <Resolution>Tc3_EventLogger, * (Beckhoff Automation GmbH)</Resolution>
-    </PlaceholderResolution>
-    <PlaceholderResolution Include="TcUnit">
-      <Resolution>TcUnit, * (www.tcunit.org)</Resolution>
     </PlaceholderResolution>
   </ItemGroup>
   <ItemGroup>
@@ -378,8 +375,8 @@
   <ProjectExtensions>
     <PlcProjectOptions>
       <XmlArchive>
-  <Data>
-    <o xml:space="preserve" t="OptionKey">
+        <Data>
+          <o xml:space="preserve" t="OptionKey">
       <v n="Name">"&lt;ProjectRoot&gt;"</v>
       <d n="SubKeys" t="Hashtable" ckt="String" cvt="OptionKey">
         <v>{535658C0-5AF5-460d-99A4-BFFB984A829A}</v>
@@ -463,16 +460,16 @@
       </d>
       <d n="Values" t="Hashtable" />
     </o>
-  </Data>
-  <TypeList>
-    <Type n="Boolean">System.Boolean</Type>
-    <Type n="Hashtable">System.Collections.Hashtable</Type>
-    <Type n="Int32">System.Int32</Type>
-    <Type n="NewestVersionConstraintToSave">{af9bafe2-ba31-4b15-a2b9-48a0f2cd09fb}</Type>
-    <Type n="OptionKey">{54dd0eac-a6d8-46f2-8c27-2f43c7e49861}</Type>
-    <Type n="String">System.String</Type>
-  </TypeList>
-</XmlArchive>
+        </Data>
+        <TypeList>
+          <Type n="Boolean">System.Boolean</Type>
+          <Type n="Hashtable">System.Collections.Hashtable</Type>
+          <Type n="Int32">System.Int32</Type>
+          <Type n="NewestVersionConstraintToSave">{af9bafe2-ba31-4b15-a2b9-48a0f2cd09fb}</Type>
+          <Type n="OptionKey">{54dd0eac-a6d8-46f2-8c27-2f43c7e49861}</Type>
+          <Type n="String">System.String</Type>
+        </TypeList>
+      </XmlArchive>
     </PlcProjectOptions>
   </ProjectExtensions>
 </Project>
