@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.18">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
   <POU Name="FB_BPTM_Test" Id="{133fabf5-7f1b-0226-02c8-8a8094610674}" SpecialFunc="None">
     <Declaration><![CDATA[{attribute 'call_after_init'}
 FUNCTION_BLOCK FB_BPTM_Test EXTENDS TcUnit.FB_TestSuite
@@ -65,7 +65,7 @@ eBPTMTestStates.WaitingForTransitionAssertion:
 		AssertFalse(fbBPTM_TestBasicFunction.q_xTransitionAuthorized,
 			'Transition should not be authorized until the arbiter has final assertion');
 			
-		TEST_FINISHED('');
+		TEST_FINISHED_NAMED('BPTMBasicFunction');
 		
 		eTestStep := eBPTMTestStates.WaitingForFinalAssertion;
 	END_IF
@@ -88,7 +88,7 @@ eBPTMTestStates.WaitingForFinalAssertion:
 		AssertFalse(fbBPTM_TestBasicFunction.q_xTransitionAuthorized,
 			'Transition should not be authorized until the arbiter has final assertion');
 			
-		TEST_FINISHED('');
+		TEST_FINISHED_NAMED('BPTM Requests Final');
 	
 		eTestStep := eBPTMTestStates.Transitioning;
 	END_IF
@@ -113,7 +113,7 @@ eBPTMTestStates.Transitioning:
 		AssertEquals(nReqID, fbBPTM_TestBasicFunction.nCurrentAssertionID,
 			'nCurrentAssertionID not set.');
 	
-		TEST_FINISHED('');
+		TEST_FINISHED_NAMED('BPTM Authorizes Transition');
 	END_IF
 
 eBPTMTestStates.CleaningUp:	
@@ -123,19 +123,19 @@ END_CASE
 TEST('BPTM Authorizes Transition');
 AssertTrue(fbBPTM.q_xTransitionAuthorized,
 	'Transition should be authorized at this point');
-TEST_FINISHED('');
+TEST_FINISHED();
 	
 TEST('BPTM Current assertion id is set');
 AssertEquals(nReqID, fbBPTM.nCurrentAssertionID,
 	'nCurrentAssertionID not set.');
-TEST_FINISHED('');
+TEST_FINISHED();
 	
 TEST('BPTM Transition Deauthorized');
 fbBPTM(fbArbiter := fbArbiter,
 		i_xDoneMoving := TRUE);
 AssertFalse(fbBPTM.q_xTransitionAuthorized,
 	'Transition authorization should go away when done moving');
-TEST_FINISHED('');
+TEST_FINISHED();
 	
 TEST('BPTM Transition BP request removed');
 AssertFalse(fbArbiter.CheckRequest(nTransitionID),
@@ -144,7 +144,7 @@ AssertFalse(fbArbiter.CheckRequest(nTransitionID),
 //Basic testing is complete, interruption functionality testing next
 //Continuing to use the same BPTM because internal variable nCurrentAssertionID is now non-zero
 
-TEST_FINISHED('');*)]]></ST>
+TEST_FINISHED();*)]]></ST>
       </Implementation>
     </Method>
     <LineIds Name="FB_BPTM_Test">

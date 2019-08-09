@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.18">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
   <POU Name="FB_Arbiter_Test" Id="{db09e55a-38f4-0816-2f75-9c1afd6ec43c}" SpecialFunc="None">
     <Declaration><![CDATA[{attribute 'call_after_init'}
 FUNCTION_BLOCK FB_Arbiter_Test EXTENDS TcUnit.FB_TestSuite
@@ -73,7 +73,7 @@ stArbitratedBP := fbArbiter.GetArbitratedBP();
 AssertFalse(F_DiffReqBeamParams(stExpectedBP, stArbitratedBP),
 				'Arbitrated BP does not match expected.');
 
-TEST_FINISHED('');]]></ST>
+TEST_FINISHED();]]></ST>
       </Implementation>
     </Method>
     <Method Name="RequestCheckRemoveBP" Id="{8a012cde-0038-03e6-02ee-15f6a358c4a9}">
@@ -93,25 +93,25 @@ TEST('RequestBP');
 AssertTrue(fbArbiter.AddRequest(nId, stReq),
 	'Request failed');
 
-TEST_FINISHED('');
+TEST_FINISHED();
 	
 TEST('DuplicateID');
 AssertFalse(fbArbiter.AddRequest(nId, stReq),
 	'Duplicate request accepted, not good.');
 
-TEST_FINISHED('');
+TEST_FINISHED();
 	
 TEST('CheckBP');
 AssertTrue(fbArbiter.CheckRequest(nId),
 	'Check failed');
 
-TEST_FINISHED('');	
+TEST_FINISHED();	
 	
 TEST('IDDoesNotExist');
 AssertFalse(fbArbiter.CheckRequest(nId+1),
 	'Check returned true when ID does not exist');
 
-TEST_FINISHED('');
+TEST_FINISHED();
 	
 TEST('RemoveBP');
 AssertTrue(fbArbiter.RemoveRequest(nId),
@@ -119,7 +119,7 @@ AssertTrue(fbArbiter.RemoveRequest(nId),
 AssertFalse(fbArbiter.CheckRequest(nId),
 	'Remove did not remove request');
 	
-TEST_FINISHED('');]]></ST>
+TEST_FINISHED();]]></ST>
       </Implementation>
     </Method>
     <LineIds Name="FB_Arbiter_Test">

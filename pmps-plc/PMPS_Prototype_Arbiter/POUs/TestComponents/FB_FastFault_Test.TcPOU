@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.18">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
   <POU Name="FB_FastFault_Test" Id="{c6666cf6-8125-0d8d-3cf9-a2348e99781e}" SpecialFunc="None">
     <Declaration><![CDATA[{attribute 'call_after_init'}
 FUNCTION_BLOCK FB_FastFault_Test EXTENDS TcUnit.FB_TestSuite
@@ -81,7 +81,7 @@ fbFFO.EvaluateOutput(); //FFO eval called at end of cycle
 AssertFalse(fbFFO.q_xFastFaultOut,
 	'Fast fault cleared while fault remains, very bad');
 	
-TEST_FINISHED('');]]></ST>
+TEST_FINISHED();]]></ST>
       </Implementation>
     </Method>
     <Method Name="FFRegistration" Id="{d751f466-f83a-0e08-0ef0-631e8f42af98}">
@@ -100,7 +100,7 @@ fbFF(io_fbFFHWO := fbFFO);
 AssertEquals_STRING(fbFF.sPath, fbFFO.asList[fbFFO.nIndex-1],
 	'FF registration with FFO did not succeed');
 
-TEST_FINISHED('');]]></ST>
+TEST_FINISHED();]]></ST>
       </Implementation>
     </Method>
     <LineIds Name="FB_FastFault_Test">

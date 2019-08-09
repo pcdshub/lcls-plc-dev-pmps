@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.18">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
   <POU Name="FB_eVWithinSpec_Test" Id="{b622c686-f9dd-0ccb-3e3a-bfb750a08cb0}" SpecialFunc="None">
     <Declaration><![CDATA[{attribute 'call_after_init'}
 FUNCTION_BLOCK FB_eVWithinSpec_Test EXTENDS TcUnit.FB_TestSuite
@@ -44,7 +44,7 @@ AssertFalse(
 	F_eVWithinSpec(1700, 2#1000_0000_0000_0000),
 	'eV range should not evaluate past 1.6keV');
 	
-TEST_FINISHED('');]]></ST>
+TEST_FINISHED();]]></ST>
       </Implementation>
     </Method>
     <LineIds Name="FB_eVWithinSpec_Test">

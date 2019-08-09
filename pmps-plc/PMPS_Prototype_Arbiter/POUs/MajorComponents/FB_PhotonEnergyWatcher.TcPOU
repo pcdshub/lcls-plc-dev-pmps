@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
   <POU Name="FB_PhotonEnergyWatcher" Id="{dedd735b-7eee-031d-1b56-a60d5aa8ea22}" SpecialFunc="None">
     <Declaration><![CDATA[(*
-A. Wallace 4-22-2019
+A. Wallace 2019-4-22
 The photon energy watcher ensures the current and target photon energy is within
 the arbirated bounds. Target in this case means, the calculated target photon energy
 from the PVs that control the mechatronics of the undulators/ the electron energy.
@@ -22,7 +22,7 @@ FUNCTION_BLOCK FB_PhotonEnergyWatcher
 VAR_INPUT
 	i_stCurrentBeamParams	:	ST_BeamParams; //Link to global beam params
 	i_stMachineTargetBeamParams	:	ST_BeamParams; //Link to global machine target beam params
-	i_stRequestedBeamParams	:	ST_BeamParams; //Link to arbiter output or beam param. requestor
+	i_stRequestedBeamParams	:	ST_ReqBeamParams; //Link to arbiter output or beam param. requestor
 	// Reset fault
 	i_xReset: BOOL;
 END_VAR
@@ -37,8 +37,8 @@ VAR
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[xPhotonEnergyWithinBounds := F_eVWithinSpec(i_stCurrentBeamParams.reV, i_stRequestedBeamParams.neVReqRange) AND
-							F_eVWithinSpec(i_stMachineTargetBeamParams.reV, i_stRequestedBeamParams.neVReqRange);
+      <ST><![CDATA[xPhotonEnergyWithinBounds := F_eVWithinSpec(i_stCurrentBeamParams.reV, i_stRequestedBeamParams.neVPermRange) AND
+							F_eVWithinSpec(i_stMachineTargetBeamParams.reV, i_stRequestedBeamParams.neVPermRange);
 
 fbFF(i_xOK := xPhotonEnergyWithinBounds,
 	i_xReset := i_xReset,

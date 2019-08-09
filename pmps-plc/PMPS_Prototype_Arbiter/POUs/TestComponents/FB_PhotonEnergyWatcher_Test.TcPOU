@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.18">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
   <POU Name="FB_PhotonEnergyWatcher_Test" Id="{0fcbd199-c111-05e5-208f-efd836b137da}" SpecialFunc="None">
     <Declaration><![CDATA[{attribute 'call_after_init'}
 FUNCTION_BLOCK FB_PhotonEnergyWatcher_Test EXTENDS TcUnit.FB_TestSuite
@@ -25,7 +25,7 @@ VAR
 	
 	stCurBeamParams	:	ST_BeamParams;
 	stMachineTargetBeamParams	:	ST_BeamParams;
-	stReqBeamParams	:	ST_BeamParams;
+	stReqBeamParams	:	ST_ReqBeamParams;
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[TEST('PEWatcherBasicFunction');
@@ -38,7 +38,7 @@ stCurBeamParams.reV := 800;
 	
 stMachineTargetBeamParams.reV := 800;
 
-stReqBeamParams.neVReqRange := 2#1111_1111_1111_1111;	
+stReqBeamParams.neVPermRange := 2#1111_1111_1111_1111;	
 
 fbFFO(i_xReset:=FALSE); //Reset request released
 	
@@ -60,7 +60,7 @@ stCurBeamParams.reV := 800;
 	
 stMachineTargetBeamParams.reV := 800;
 
-stReqBeamParams.neVReqRange := 2#0000_1111_0011_1111;
+stReqBeamParams.neVPermRange := 2#0000_1111_0011_1111;
 
 fbPEW.i_xReset := FALSE; //release local FF reset req	
 fbPEW(i_stCurrentBeamParams := stCurBeamParams,
@@ -78,7 +78,7 @@ stCurBeamParams.reV := 300;
 	
 stMachineTargetBeamParams.reV := 300;
 
-stReqBeamParams.neVReqRange := 2#0000_1111_0011_1111;
+stReqBeamParams.neVPermRange := 2#0000_1111_0011_1111;
 
 fbFFO(i_xReset:=TRUE); //New reset request
 
@@ -101,7 +101,7 @@ stCurBeamParams.reV := 800; //Moved out of range
 	
 stMachineTargetBeamParams.reV := 300; //Still within range
 
-stReqBeamParams.neVReqRange := 2#0000_1111_0011_1111;
+stReqBeamParams.neVPermRange := 2#0000_1111_0011_1111;
 
 fbPEW(i_stCurrentBeamParams := stCurBeamParams,
 	i_stMachineTargetBeamParams := stMachineTargetBeamParams,
@@ -121,7 +121,7 @@ stCurBeamParams.reV := 300; //Now within range
 	
 stMachineTargetBeamParams.reV := 800; //Moved out of range
 
-stReqBeamParams.neVReqRange := 2#0000_1111_0011_1111;
+stReqBeamParams.neVPermRange := 2#0000_1111_0011_1111;
 
 fbPEW.i_xReset := TRUE; //Attempt to reset local FF will fail
 fbPEW(i_stCurrentBeamParams := stCurBeamParams,
@@ -134,7 +134,7 @@ fbFFO.EvaluateOutput(q_xFastFaultOut=>q_Output);
 AssertFalse(q_Output,
 	'Target beam moved beyond set limits, should produce a fault');
 	
-TEST_FINISHED('');]]></ST>
+TEST_FINISHED();]]></ST>
       </Implementation>
     </Method>
     <LineIds Name="FB_PhotonEnergyWatcher_Test">

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.18">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
   <POU Name="FB_SafeBPCompare_Test" Id="{62b97377-b21f-044f-1c6b-240c0b0588d1}" SpecialFunc="None">
     <Declaration><![CDATA[{attribute 'call_after_init'}
 FUNCTION_BLOCK FB_SafeBPCompare_Test EXTENDS TcUnit.FB_TestSuite
@@ -43,7 +43,7 @@ TEST('BeamOffIsSafe');
 AssertTrue(
 	F_SafeBPCompare(stBeamOff, stBeamOn),
 	'SafeBPCompare does not think beam rate = 0 is safer than anything else.'); 
-TEST_FINISHED('');]]></ST>
+TEST_FINISHED();]]></ST>
       </Implementation>
     </Method>
     <Method Name="BPComparisonCheck" Id="{c8eb9cec-e825-0eaa-0cdf-7eb32c4c8e5c}">
@@ -148,7 +148,7 @@ AssertTrue(
 AssertFalse(
 	F_SafeBPCompare(stNotSoSafe, stSafer),
 	'Photon energy eval is broken (False)');	
-TEST_FINISHED('');]]></ST>
+TEST_FINISHED();]]></ST>
       </Implementation>
     </Method>
     <LineIds Name="FB_SafeBPCompare_Test">
