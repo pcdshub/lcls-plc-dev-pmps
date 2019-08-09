@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.18">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
   <POU Name="MAIN" Id="{8a7bcfd2-1a2b-4363-aa47-c19391bf1f9c}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM MAIN
 VAR
@@ -20,16 +20,16 @@ END_VAR
 IF DemoMode	THEN
 
 //Fast Faults must run first
-Fast_Faults();
+Fast_Faults_Setup();
 
 IF Initialize THEN
 	fbDev1(cBase := 10,
 		fbFastFaultOutput := g_FastFaultOutput1,
-		fbArbiter := g_fbArbiter);
+		fbArbiter := g_fbArbiter1);
 	fbDev2(cBase := 1000,
 		fbFastFaultOutput := g_FastFaultOutput1,
-		fbArbiter := g_fbArbiter);
-	g_fbArbiter.A_Init();
+		fbArbiter := g_fbArbiter1);
+	g_fbArbiter1.A_Init();
 
 //	fbDev3(cBase := 0,iDBID:=1,sDBNetId:='172.21.42.53.1.1',sDeviceID:='1',
 //		fbArbiter := g_fbArbiter,
@@ -39,9 +39,9 @@ END_IF
 
 //Example devices
 fbDev1(fbFastFaultOutput := g_FastFaultOutput1,
-		fbArbiter := g_fbArbiter);
+		fbArbiter := g_fbArbiter1);
 fbDev2(fbFastFaultOutput := g_FastFaultOutput1,
-		fbArbiter := g_fbArbiter);
+		fbArbiter := g_fbArbiter1);
 
 
 //fbDev3(fbArbiter := g_fbArbiter,
