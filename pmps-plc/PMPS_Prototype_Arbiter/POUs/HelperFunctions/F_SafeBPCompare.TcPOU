@@ -28,7 +28,7 @@ END_VAR
 
 xAttOK := BeamParam1.fAtt >= BeamParam2.fAtt;
 xPPmjOK := BeamParam1.fPP_mJ <= BeamParam2.fPP_mJ;
-xEvOK := F_eVWithinSpec(BeamParam1.reV, BeamParam2.neVRange);
+xEvOK := (BeamParam1.neVRange AND BeamParam2.neVRange) = BeamParam2.neVRange;
 xZeroRate	:= BeamParam1.nRate = 0;
 xRateOK	:= BeamParam1.nRate <= BeamParam2.nRate;
 

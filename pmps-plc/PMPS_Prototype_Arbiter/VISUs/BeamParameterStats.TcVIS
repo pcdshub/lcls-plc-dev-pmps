@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
   <Visu Name="BeamParameterStats" Id="{2f2224ca-1c7f-0a51-36f0-787385162996}">
     <XmlArchive>
       <Data>
@@ -117,10 +117,13 @@
                               <l n="Value" t="ArrayList" cet="NamedStyleFont">
                                 <o>
                                   <v n="FontStyle">0</v>
+                                  <v n="AdditionalFontStyle" t="UInt16">0</v>
                                   <v n="ExplicitColor">-16777216</v>
                                   <v n="CanonicalName">"Font-Standard"</v>
                                   <v n="FontName">"Arial"</v>
                                   <v n="FontSize">12</v>
+                                  <v n="ScriptIdentification">0</v>
+                                  <v n="DoubleFontSize" t="Double">0</v>
                                   <o n="NamedColor" t="NamedStyleColor">
                                     <v n="Color">-16777216</v>
                                     <v n="CanonicalName">"Font-Default-Color"</v>
@@ -147,6 +150,10 @@
                             <o>
                               <v n="Id">2477733581L</v>
                               <v n="Value">"BP.fAtt"</v>
+                            </o>
+                            <o>
+                              <v n="Id">3719097617L</v>
+                              <v n="Value">0</v>
                             </o>
                             <o>
                               <v n="Id">823443203L</v>
@@ -283,10 +290,13 @@
                           <l n="Value" t="ArrayList" cet="NamedStyleFont">
                             <o>
                               <v n="FontStyle">0</v>
+                              <v n="AdditionalFontStyle" t="UInt16">0</v>
                               <v n="ExplicitColor">-16777216</v>
                               <v n="CanonicalName">"Font-Standard"</v>
                               <v n="FontName">"Arial"</v>
                               <v n="FontSize">12</v>
+                              <v n="ScriptIdentification">0</v>
+                              <v n="DoubleFontSize" t="Double">0</v>
                               <o n="NamedColor" t="NamedStyleColor">
                                 <v n="Color">-16777216</v>
                                 <v n="CanonicalName">"Font-Default-Color"</v>
@@ -317,6 +327,10 @@
                         <o>
                           <v n="Id">2597686782L</v>
                           <v n="Value">false</v>
+                        </o>
+                        <o>
+                          <v n="Id">3719097617L</v>
+                          <v n="Value">0</v>
                         </o>
                         <o>
                           <v n="Id">823443203L</v>
@@ -444,10 +458,13 @@
                               <l n="Value" t="ArrayList" cet="NamedStyleFont">
                                 <o>
                                   <v n="FontStyle">0</v>
+                                  <v n="AdditionalFontStyle" t="UInt16">0</v>
                                   <v n="ExplicitColor">-16777216</v>
                                   <v n="CanonicalName">"Font-Standard"</v>
                                   <v n="FontName">"Arial"</v>
                                   <v n="FontSize">12</v>
+                                  <v n="ScriptIdentification">0</v>
+                                  <v n="DoubleFontSize" t="Double">0</v>
                                   <o n="NamedColor" t="NamedStyleColor">
                                     <v n="Color">-16777216</v>
                                     <v n="CanonicalName">"Font-Default-Color"</v>
@@ -474,6 +491,10 @@
                             <o>
                               <v n="Id">2477733581L</v>
                               <v n="Value">"BP.fPP_mJ"</v>
+                            </o>
+                            <o>
+                              <v n="Id">3719097617L</v>
+                              <v n="Value">0</v>
                             </o>
                             <o>
                               <v n="Id">823443203L</v>
@@ -610,10 +631,13 @@
                           <l n="Value" t="ArrayList" cet="NamedStyleFont">
                             <o>
                               <v n="FontStyle">0</v>
+                              <v n="AdditionalFontStyle" t="UInt16">0</v>
                               <v n="ExplicitColor">-16777216</v>
                               <v n="CanonicalName">"Font-Standard"</v>
                               <v n="FontName">"Arial"</v>
                               <v n="FontSize">12</v>
+                              <v n="ScriptIdentification">0</v>
+                              <v n="DoubleFontSize" t="Double">0</v>
                               <o n="NamedColor" t="NamedStyleColor">
                                 <v n="Color">-16777216</v>
                                 <v n="CanonicalName">"Font-Default-Color"</v>
@@ -644,6 +668,10 @@
                         <o>
                           <v n="Id">2597686782L</v>
                           <v n="Value">false</v>
+                        </o>
+                        <o>
+                          <v n="Id">3719097617L</v>
+                          <v n="Value">0</v>
                         </o>
                         <o>
                           <v n="Id">823443203L</v>
@@ -771,10 +799,13 @@
                               <l n="Value" t="ArrayList" cet="NamedStyleFont">
                                 <o>
                                   <v n="FontStyle">0</v>
+                                  <v n="AdditionalFontStyle" t="UInt16">0</v>
                                   <v n="ExplicitColor">-16777216</v>
                                   <v n="CanonicalName">"Font-Standard"</v>
                                   <v n="FontName">"Arial"</v>
                                   <v n="FontSize">12</v>
+                                  <v n="ScriptIdentification">0</v>
+                                  <v n="DoubleFontSize" t="Double">0</v>
                                   <o n="NamedColor" t="NamedStyleColor">
                                     <v n="Color">-16777216</v>
                                     <v n="CanonicalName">"Font-Default-Color"</v>
@@ -792,7 +823,7 @@
                             </o>
                             <o>
                               <v n="Id">390574330L</v>
-                              <v n="Value">"%3.2f"</v>
+                              <v n="Value">"%d"</v>
                             </o>
                             <o>
                               <v n="Id">2597686782L</v>
@@ -803,8 +834,12 @@
                               <v n="Value">"BP.nRate"</v>
                             </o>
                             <o>
+                              <v n="Id">3719097617L</v>
+                              <v n="Value">0</v>
+                            </o>
+                            <o>
                               <v n="Id">823443203L</v>
-                              <v n="Value">"108"</v>
+                              <v n="Value">"632"</v>
                             </o>
                           </l>
                         </o>
@@ -937,10 +972,13 @@
                           <l n="Value" t="ArrayList" cet="NamedStyleFont">
                             <o>
                               <v n="FontStyle">0</v>
+                              <v n="AdditionalFontStyle" t="UInt16">0</v>
                               <v n="ExplicitColor">-16777216</v>
                               <v n="CanonicalName">"Font-Standard"</v>
                               <v n="FontName">"Arial"</v>
                               <v n="FontSize">12</v>
+                              <v n="ScriptIdentification">0</v>
+                              <v n="DoubleFontSize" t="Double">0</v>
                               <o n="NamedColor" t="NamedStyleColor">
                                 <v n="Color">-16777216</v>
                                 <v n="CanonicalName">"Font-Default-Color"</v>
@@ -971,6 +1009,10 @@
                         <o>
                           <v n="Id">2597686782L</v>
                           <v n="Value">false</v>
+                        </o>
+                        <o>
+                          <v n="Id">3719097617L</v>
+                          <v n="Value">0</v>
                         </o>
                         <o>
                           <v n="Id">823443203L</v>
@@ -1098,10 +1140,13 @@
                               <l n="Value" t="ArrayList" cet="NamedStyleFont">
                                 <o>
                                   <v n="FontStyle">0</v>
+                                  <v n="AdditionalFontStyle" t="UInt16">0</v>
                                   <v n="ExplicitColor">-16777216</v>
                                   <v n="CanonicalName">"Font-Standard"</v>
                                   <v n="FontName">"Arial"</v>
                                   <v n="FontSize">12</v>
+                                  <v n="ScriptIdentification">0</v>
+                                  <v n="DoubleFontSize" t="Double">0</v>
                                   <o n="NamedColor" t="NamedStyleColor">
                                     <v n="Color">-16777216</v>
                                     <v n="CanonicalName">"Font-Default-Color"</v>
@@ -1128,6 +1173,10 @@
                             <o>
                               <v n="Id">2477733581L</v>
                               <v n="Value">"BP.reV"</v>
+                            </o>
+                            <o>
+                              <v n="Id">3719097617L</v>
+                              <v n="Value">0</v>
                             </o>
                             <o>
                               <v n="Id">823443203L</v>
@@ -1264,10 +1313,13 @@
                           <l n="Value" t="ArrayList" cet="NamedStyleFont">
                             <o>
                               <v n="FontStyle">0</v>
+                              <v n="AdditionalFontStyle" t="UInt16">0</v>
                               <v n="ExplicitColor">-16777216</v>
                               <v n="CanonicalName">"Font-Standard"</v>
                               <v n="FontName">"Arial"</v>
                               <v n="FontSize">12</v>
+                              <v n="ScriptIdentification">0</v>
+                              <v n="DoubleFontSize" t="Double">0</v>
                               <o n="NamedColor" t="NamedStyleColor">
                                 <v n="Color">-16777216</v>
                                 <v n="CanonicalName">"Font-Default-Color"</v>
@@ -1298,6 +1350,10 @@
                         <o>
                           <v n="Id">2597686782L</v>
                           <v n="Value">false</v>
+                        </o>
+                        <o>
+                          <v n="Id">3719097617L</v>
+                          <v n="Value">0</v>
                         </o>
                         <o>
                           <v n="Id">823443203L</v>
@@ -1434,10 +1490,13 @@
                       <l n="Value" t="ArrayList" cet="NamedStyleFont">
                         <o>
                           <v n="FontStyle">0</v>
+                          <v n="AdditionalFontStyle" t="UInt16">0</v>
                           <v n="ExplicitColor">-16777216</v>
                           <v n="CanonicalName">"Font-Standard"</v>
                           <v n="FontName">"Arial"</v>
                           <v n="FontSize">12</v>
+                          <v n="ScriptIdentification">0</v>
+                          <v n="DoubleFontSize" t="Double">0</v>
                           <o n="NamedColor" t="NamedStyleColor">
                             <v n="Color">-16777216</v>
                             <v n="CanonicalName">"Font-Default-Color"</v>
@@ -1468,6 +1527,10 @@
                     <o>
                       <v n="Id">2597686782L</v>
                       <v n="Value">false</v>
+                    </o>
+                    <o>
+                      <v n="Id">3719097617L</v>
+                      <v n="Value">0</v>
                     </o>
                     <o>
                       <v n="Id">823443203L</v>
@@ -1545,6 +1608,8 @@
                 <v>df26f6f0-8a71-4d0c-adfa-81f382445d27</v>
                 <v>GetTextProperties</v>
                 <v>8bb78eab-c89f-4538-9a83-656306207153</v>
+                <v>IsAntialiasingInactive</v>
+                <v>0055b4f2-05ec-53cf-baed-f480bf6eb564</v>
                 <v>Initialize</v>
                 <v>8154a6f4-9cae-473f-b5e8-07d1c4b3eeb5</v>
                 <v>Destruct</v>
@@ -1589,10 +1654,10 @@
               <d n="FbMethods" t="CaseInsensitiveHashtable" ckt="String" cvt="Guid">
                 <v>FB_Init</v>
                 <v>1bf680c4-fe4c-4b55-89ca-eb79128322a6</v>
-                <v>FB_Reinit</v>
-                <v>6c9c5c7f-2ffa-44ad-9af7-5c0812ca8093</v>
                 <v>FB_Exit</v>
                 <v>21439a31-a0a3-4f96-92e6-f7b9873f1035</v>
+                <v>FB_Reinit</v>
+                <v>6c9c5c7f-2ffa-44ad-9af7-5c0812ca8093</v>
               </d>
               <v n="FbName">"NotImportant"</v>
               <v n="FbGuid">{c0e7d19b-20e9-425c-8e84-ecd2cad9aebd}</v>
@@ -1677,6 +1742,7 @@
         <Type n="Boolean">System.Boolean</Type>
         <Type n="CaseInsensitiveHashtable">{7df88604-7ac5-4e36-91c4-55e4fdad3e68}</Type>
         <Type n="ComplexInput">{1de566f6-72a7-494c-9353-9a418172c96e}</Type>
+        <Type n="Double">System.Double</Type>
         <Type n="GeneratedLanguageModelEntriesData">{703465dc-4679-4ff2-bcc3-c57d0a204da3}</Type>
         <Type n="GenericFbDescription">{40d6dd8d-dfd0-493a-8e29-c9a35e1e6539}</Type>
         <Type n="GenericVisualElem">{f86c2928-8614-4cca-824b-e819ac4d58c4}</Type>
@@ -1691,6 +1757,7 @@
         <Type n="String">System.String</Type>
         <Type n="TextDocument">{f3878285-8e4f-490b-bb1b-9acbb7eb04db}</Type>
         <Type n="TextLine">{a5de0b0b-1cb5-4913-ac21-9d70293ec00d}</Type>
+        <Type n="UInt16">System.UInt16</Type>
         <Type n="UInt32">System.UInt32</Type>
         <Type n="VisualElemCollection">{ef9d0b20-c96e-48db-b361-2ded4063150e}</Type>
         <Type n="VisualElemList">{f285c9a3-7019-446b-b98c-ccec3a0af8fa}</Type>

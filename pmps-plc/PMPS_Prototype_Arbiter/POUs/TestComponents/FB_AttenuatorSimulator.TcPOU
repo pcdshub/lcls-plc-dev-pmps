@@ -4,7 +4,7 @@
     <Declaration><![CDATA[FUNCTION_BLOCK FB_AttenuatorSimulator
 VAR_INPUT
 	i_rRequestedAttenuation	:	REAL;
-	i_stBPReadback	:	ST_BeamParamsReadback;
+	i_stBPReadback	:	ST_BeamParams;
 END_VAR
 VAR_OUTPUT
 	q_xFault	:	BOOL;

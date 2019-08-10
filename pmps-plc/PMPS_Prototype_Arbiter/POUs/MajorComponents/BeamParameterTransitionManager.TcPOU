@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.18">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
   <POU Name="BeamParameterTransitionManager" Id="{843312b6-3630-0fa6-1e20-da1ce4aaad4c}" SpecialFunc="None">
     <Declaration><![CDATA[(*
 Implements the procedure for safely transitioning between device states by asserting the correct beam parameters for 
@@ -89,9 +89,9 @@ WaitingForFinalAssertion:INT:=9;
               <n n="StateNamesInitString" />
               <v n="ForceActionRemove">false</v>
               <d n="RegionsWithStartStatesTable" t="Hashtable" ckt="Guid" cvt="Int32">
-                <v>00000000-0000-0000-0000-000000000000</v>
-                <v>1</v>
                 <v>6f7e44ba-88b2-43d7-909b-74059e90ad45</v>
+                <v>1</v>
+                <v>00000000-0000-0000-0000-000000000000</v>
                 <v>1</v>
               </d>
               <d n="RegionsWithHistoryStatesTable" t="Hashtable" ckt="Guid" cvt="Int32">
@@ -194,8 +194,8 @@ WaitingForFinalAssertion:INT:=9;
                     <v n="ShowMethods">true</v>
                     <v n="RepresentedElement">1</v>
                     <v n="IsElementVisible">true</v>
-                    <v n="TopPosition">250</v>
-                    <v n="LeftPosition">200</v>
+                    <v n="TopPosition">230</v>
+                    <v n="LeftPosition">90</v>
                     <v n="WidthValue">20</v>
                     <v n="MinWidthValue">0</v>
                     <v n="Height">20</v>
@@ -254,7 +254,7 @@ WaitingForFinalAssertion:INT:=9;
                   <v n="UMLPosition">-1L</v>
                   <v n="IsModified">false</v>
                   <v n="ARGBElementColor">0</v>
-                  <v n="ZOrder">134U</v>
+                  <v n="ZOrder">135U</v>
                 </o>
                 <v>c9bd3ee8-ed1c-4da5-aaca-8e125e37e024</v>
                 <o t="UMLStateChartElement">
@@ -290,9 +290,9 @@ WaitingForFinalAssertion:INT:=9;
                     <v n="IsElementVisible">true</v>
                     <v n="TopPosition">400</v>
                     <v n="LeftPosition">620</v>
-                    <v n="WidthValue">167</v>
+                    <v n="WidthValue">239</v>
                     <v n="MinWidthValue">0</v>
-                    <v n="Height">66</v>
+                    <v n="Height">87</v>
                     <v n="MinHeight">0</v>
                     <v n="AutomaticLayout">false</v>
                     <d n="DockingPoints" t="Hashtable" />
@@ -358,9 +358,9 @@ WaitingForFinalAssertion:INT:=9;
                     <v n="IsElementVisible">true</v>
                     <v n="TopPosition">270</v>
                     <v n="LeftPosition">610</v>
-                    <v n="WidthValue">213</v>
+                    <v n="WidthValue">308</v>
                     <v n="MinWidthValue">0</v>
-                    <v n="Height">83</v>
+                    <v n="Height">111</v>
                     <v n="MinHeight">0</v>
                     <v n="AutomaticLayout">false</v>
                     <d n="DockingPoints" t="Hashtable" />
@@ -424,11 +424,11 @@ WaitingForFinalAssertion:INT:=9;
                     <v n="ShowMethods">true</v>
                     <v n="RepresentedElement">1</v>
                     <v n="IsElementVisible">true</v>
-                    <v n="TopPosition">230</v>
-                    <v n="LeftPosition">310</v>
-                    <v n="WidthValue">169</v>
+                    <v n="TopPosition">210</v>
+                    <v n="LeftPosition">130</v>
+                    <v n="WidthValue">241</v>
                     <v n="MinWidthValue">0</v>
-                    <v n="Height">66</v>
+                    <v n="Height">87</v>
                     <v n="MinHeight">0</v>
                     <v n="AutomaticLayout">false</v>
                     <d n="DockingPoints" t="Hashtable" />
@@ -494,9 +494,9 @@ WaitingForFinalAssertion:INT:=9;
                     <v n="IsElementVisible">true</v>
                     <v n="TopPosition">510</v>
                     <v n="LeftPosition">620</v>
-                    <v n="WidthValue">208</v>
+                    <v n="WidthValue">300</v>
                     <v n="MinWidthValue">0</v>
-                    <v n="Height">66</v>
+                    <v n="Height">87</v>
                     <v n="MinHeight">0</v>
                     <v n="AutomaticLayout">false</v>
                     <d n="DockingPoints" t="Hashtable" />
@@ -639,9 +639,9 @@ WaitingForFinalAssertion:INT:=9;
                     <v n="IsElementVisible">true</v>
                     <v n="TopPosition">140</v>
                     <v n="LeftPosition">600</v>
-                    <v n="WidthValue">237</v>
+                    <v n="WidthValue">344</v>
                     <v n="MinWidthValue">0</v>
-                    <v n="Height">83</v>
+                    <v n="Height">111</v>
                     <v n="MinHeight">0</v>
                     <v n="AutomaticLayout">false</v>
                     <d n="DockingPoints" t="Hashtable" />
@@ -682,7 +682,7 @@ WaitingForFinalAssertion:INT:=9;
                   <v n="HasGraphicalRepresentation">true</v>
                   <v n="StartUMLElement">{99c581e9-b63f-46b6-97d6-d2139c7110b0}</v>
                   <v n="HighlightedLine">false</v>
-                  <v n="ZOrder">134U</v>
+                  <v n="ZOrder">135U</v>
                   <v n="SpecialHandling">false</v>
                   <v n="ActionLocalVariableName">""</v>
                   <v n="ActionParametersString">""</v>
@@ -702,8 +702,8 @@ WaitingForFinalAssertion:INT:=9;
                     <d n="flagsY" t="Hashtable" />
                     <o n="StartAnchor" t="UMLAnchorPoint">
                       <v n="AnchorID">0</v>
-                      <v n="AnchorLeftPosition">215</v>
-                      <v n="AnchorTopPosition">255</v>
+                      <v n="AnchorLeftPosition">105</v>
+                      <v n="AnchorTopPosition">235</v>
                       <v n="AnchorRelationID">{86f0c859-fdc1-437b-98e7-58a9ee939bd0}</v>
                       <v n="StartAnchor">true</v>
                       <v n="EndAnchor">false</v>
@@ -711,8 +711,8 @@ WaitingForFinalAssertion:INT:=9;
                     </o>
                     <o n="EndAnchor" t="UMLAnchorPoint">
                       <v n="AnchorID">1</v>
-                      <v n="AnchorLeftPosition">305</v>
-                      <v n="AnchorTopPosition">255</v>
+                      <v n="AnchorLeftPosition">125</v>
+                      <v n="AnchorTopPosition">235</v>
                       <v n="AnchorRelationID">{86f0c859-fdc1-437b-98e7-58a9ee939bd0}</v>
                       <v n="StartAnchor">false</v>
                       <v n="EndAnchor">true</v>
@@ -865,8 +865,8 @@ WaitingForFinalAssertion:INT:=9;
                     </o>
                     <o n="EndAnchor" t="UMLAnchorPoint">
                       <v n="AnchorID">2</v>
-                      <v n="AnchorLeftPosition">345</v>
-                      <v n="AnchorTopPosition">225</v>
+                      <v n="AnchorLeftPosition">165</v>
+                      <v n="AnchorTopPosition">205</v>
                       <v n="AnchorRelationID">{e62a680c-8a65-40ca-950a-e942320f20e1}</v>
                       <v n="StartAnchor">false</v>
                       <v n="EndAnchor">true</v>
@@ -877,7 +877,7 @@ WaitingForFinalAssertion:INT:=9;
                       <v>1</v>
                       <o>
                         <v n="AnchorID">1</v>
-                        <v n="AnchorLeftPosition">345</v>
+                        <v n="AnchorLeftPosition">165</v>
                         <v n="AnchorTopPosition">135</v>
                         <v n="AnchorRelationID">{e62a680c-8a65-40ca-950a-e942320f20e1}</v>
                         <v n="StartAnchor">false</v>
@@ -948,7 +948,7 @@ WaitingForFinalAssertion:INT:=9;
                     <o n="StartAnchor" t="UMLAnchorPoint">
                       <v n="AnchorID">0</v>
                       <v n="AnchorLeftPosition">665</v>
-                      <v n="AnchorTopPosition">218</v>
+                      <v n="AnchorTopPosition">246</v>
                       <v n="AnchorRelationID">{002c3585-6619-483d-a4ad-24e3c5556da1}</v>
                       <v n="StartAnchor">true</v>
                       <v n="EndAnchor">false</v>
@@ -1012,23 +1012,23 @@ WaitingForFinalAssertion:INT:=9;
                   <v n="ConditionText">"xNewBP"</v>
                   <v n="LengthConditionText">100</v>
                   <v n="RelationID">17</v>
-                  <v n="TriggerlessStatechartTransition">false</v>
+                  <v n="TriggerlessStatechartTransition">true</v>
                   <v n="EndUMLElement">{05b85c88-bc4c-449a-8d4b-fa14df9e06e9}</v>
                   <o n="UMLRelationVisualisation" t="UMLRelationVisualisation">
                     <v n="RelationID">{c69b9e26-460f-49f6-a4c8-f415f63e2679}</v>
                     <v n="FlagPosition" t="Double">0.5</v>
                     <d n="flagsX" t="Hashtable" ckt="String" cvt="Int32">
                       <v>ConditionPosition</v>
-                      <v>-50</v>
+                      <v>-10</v>
                     </d>
                     <d n="flagsY" t="Hashtable" ckt="String" cvt="Int32">
                       <v>ConditionPosition</v>
-                      <v>60</v>
+                      <v>40</v>
                     </d>
                     <o n="StartAnchor" t="UMLAnchorPoint">
                       <v n="AnchorID">0</v>
-                      <v n="AnchorLeftPosition">474</v>
-                      <v n="AnchorTopPosition">245</v>
+                      <v n="AnchorLeftPosition">366</v>
+                      <v n="AnchorTopPosition">225</v>
                       <v n="AnchorRelationID">{c69b9e26-460f-49f6-a4c8-f415f63e2679}</v>
                       <v n="StartAnchor">true</v>
                       <v n="EndAnchor">false</v>
@@ -1037,7 +1037,7 @@ WaitingForFinalAssertion:INT:=9;
                     <o n="EndAnchor" t="UMLAnchorPoint">
                       <v n="AnchorID">1</v>
                       <v n="AnchorLeftPosition">545</v>
-                      <v n="AnchorTopPosition">245</v>
+                      <v n="AnchorTopPosition">225</v>
                       <v n="AnchorRelationID">{c69b9e26-460f-49f6-a4c8-f415f63e2679}</v>
                       <v n="StartAnchor">false</v>
                       <v n="EndAnchor">true</v>
@@ -1108,7 +1108,7 @@ WaitingForFinalAssertion:INT:=9;
                     <o n="StartAnchor" t="UMLAnchorPoint">
                       <v n="AnchorID">0</v>
                       <v n="AnchorLeftPosition">682</v>
-                      <v n="AnchorTopPosition">461</v>
+                      <v n="AnchorTopPosition">482</v>
                       <v n="AnchorRelationID">{9029f252-54cc-4dd0-a293-39c809826399}</v>
                       <v n="StartAnchor">true</v>
                       <v n="EndAnchor">false</v>
@@ -1188,7 +1188,7 @@ WaitingForFinalAssertion:INT:=9;
                     <o n="StartAnchor" t="UMLAnchorPoint">
                       <v n="AnchorID">0</v>
                       <v n="AnchorLeftPosition">665</v>
-                      <v n="AnchorTopPosition">348</v>
+                      <v n="AnchorTopPosition">376</v>
                       <v n="AnchorRelationID">{21afc9f0-b07d-446b-b648-e3f8868ba4c8}</v>
                       <v n="StartAnchor">true</v>
                       <v n="EndAnchor">false</v>
