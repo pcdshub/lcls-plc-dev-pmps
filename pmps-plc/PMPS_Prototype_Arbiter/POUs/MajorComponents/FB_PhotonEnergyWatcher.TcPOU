@@ -22,7 +22,7 @@ FUNCTION_BLOCK FB_PhotonEnergyWatcher
 VAR_INPUT
 	i_stCurrentBeamParams	:	ST_BeamParams; //Link to global beam params
 	i_stMachineTargetBeamParams	:	ST_BeamParams; //Link to global machine target beam params
-	i_stRequestedBeamParams	:	ST_ReqBeamParams; //Link to arbiter output or beam param. requestor
+	i_stRequestedBeamParams	:	ST_BeamParams; //Link to arbiter output or beam param. requestor
 	// Reset fault
 	i_xReset: BOOL;
 END_VAR
@@ -37,8 +37,8 @@ VAR
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[xPhotonEnergyWithinBounds := F_eVWithinSpec(i_stCurrentBeamParams.reV, i_stRequestedBeamParams.neVPermRange) AND
-							F_eVWithinSpec(i_stMachineTargetBeamParams.reV, i_stRequestedBeamParams.neVPermRange);
+      <ST><![CDATA[xPhotonEnergyWithinBounds := F_eVWithinSpec(i_stCurrentBeamParams.reV, i_stRequestedBeamParams.neVRange) AND
+							F_eVWithinSpec(i_stMachineTargetBeamParams.reV, i_stRequestedBeamParams.neVRange);
 
 fbFF(i_xOK := xPhotonEnergyWithinBounds,
 	i_xReset := i_xReset,

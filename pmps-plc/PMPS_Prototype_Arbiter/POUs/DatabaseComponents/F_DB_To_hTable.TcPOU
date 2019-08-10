@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
   <POU Name="F_DB_To_hTable" Id="{b446f4e5-0f67-00a4-07ce-4356f8d4de9b}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION F_DB_To_hTable : BOOL
 VAR_INPUT
@@ -37,7 +37,7 @@ IF (nRecordCount>0) THEN
 //	stDeviceState.stReqBeamParam.fUpper_eV := (aStatesParamsTable[iRow].rUpper_eV);
 //	stDeviceState.stReqBeamParam.fLower_eV := (aStatesParamsTable[iRow].rLower_eV);
 	stDeviceState.stReqBeamParam.reV := aStatesParamsTable[iRow].rPhotonEnergy;
-	//stDeviceState.stReqBeamParam.neVReqRange := (aStatesParamsTable[iRow].rLower_eV);
+	//stDeviceState.stReqBeamParam.neVRange := (aStatesParamsTable[iRow].rLower_eV);
 	Table.A_Add(
 		key := stDeviceState.nStateRef,
 		putValue := stDeviceState

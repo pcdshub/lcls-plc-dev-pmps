@@ -21,14 +21,18 @@ END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[
+IF reV < 0 THEN F_eVRangeCalculator := 16#FFFF; RETURN; END_IF
+
 FOR nIndex := 0 TO PMPS_GVL_BeamParams.g_cBoundaries DO
 	
 	// If previously active then check if it should be cleared
 	IF LastWord.0 THEN 
 		// Hysteresis condition
-		IF (reV >= MIN(PMPS_GVL_BeamParams.g_areVBoundaries[nIndex]*1000 + rHyst*1000, MaxEv) ) AND
-		(reV <= MAX(rPreviousBoundary*1000 - rHyst*1000, 0) ) THEN
+		IF (reV > MIN(PMPS_GVL_BeamParams.g_areVBoundaries[nIndex]*1000 + rHyst*1000, MaxEv) ) OR
+		(reV < MAX(rPreviousBoundary*1000 - rHyst*1000, 0) ) THEN
 			RangeWord.0 := 0; // If out of range of hys. mark inactive
+		ELSE
+			RangeWord.0 := 1;
 		END_IF
 	ELSE // Check if we should mark as active
 		IF (reV <= PMPS_GVL_BeamParams.g_areVBoundaries[nIndex]*1000) AND
@@ -53,6 +57,7 @@ END_FOR
 F_eVRangeCalculator := RangeWord;]]></ST>
     </Implementation>
     <LineIds Name="F_eVRangeCalculator">
+      <LineId Id="79" Count="1" />
       <LineId Id="26" Count="0" />
       <LineId Id="15" Count="0" />
       <LineId Id="60" Count="0" />
@@ -62,6 +67,7 @@ F_eVRangeCalculator := RangeWord;]]></ST>
       <LineId Id="42" Count="0" />
       <LineId Id="44" Count="1" />
       <LineId Id="47" Count="0" />
+      <LineId Id="82" Count="1" />
       <LineId Id="46" Count="0" />
       <LineId Id="50" Count="2" />
       <LineId Id="48" Count="0" />

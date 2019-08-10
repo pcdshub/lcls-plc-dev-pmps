@@ -15,19 +15,23 @@ VAR
 	fbBPFanout	:	FB_BeamParamFanout;
 	
 	{attribute 'TcLinkTo' := '.i_stBP:=TIIB[PMPS_IF]^IO Outputs^ReqBP'}
-	q_stReqBeamParams	AT %Q*	:	ST_ReqBeamParams;
+	q_stReqBeamParams	AT %Q*	:	ST_BeamParams;
 	
 	//fbBPFanout1	:	FB_BeamParamFanout_1;
 	
 	fbBPRequestor	:	FB_BPRequestor;
 	fbSimAttenuator :	FB_AttenuatorSimulator;
 	
-	stCurrentBeamParam	AT %I*	:	ST_BeamParamsReadback;
+	stCurrentBeamParam	AT %I*	:	ST_BeamParams;
 	
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[//Example with attenuator peel-off
+      <ST><![CDATA[PMPS_GVL_BeamParams.stCurrentBeamParameters.neVRange := F_eVRangeCalculator(
+	PMPS_GVL_BeamParams.stCurrentBeamParameters.reV,
+	PMPS_GVL_BeamParams.stCurrentBeamParameters.neVRange);
+
+//Example with attenuator peel-off
 //////////////////////////////////
 
 //Beam parameter requestor
@@ -52,6 +56,9 @@ fbSimAttenuator(Arbiter:=g_fbArbiter2);
 //fbBPFanout();]]></ST>
     </Implementation>
     <LineIds Name="PMPS_Arbiter">
+      <LineId Id="235" Count="0" />
+      <LineId Id="237" Count="1" />
+      <LineId Id="236" Count="0" />
       <LineId Id="228" Count="2" />
       <LineId Id="214" Count="0" />
       <LineId Id="168" Count="0" />

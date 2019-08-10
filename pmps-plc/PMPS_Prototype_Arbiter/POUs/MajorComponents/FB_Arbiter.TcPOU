@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.18">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
   <POU Name="FB_Arbiter" Id="{9cc1f6b7-c43c-0fbb-09be-271b21ce1be7}" SpecialFunc="None">
     <Declaration><![CDATA[(* FB Arbiter
 
@@ -99,7 +99,7 @@ ArbitrateBP.fAtt := MAX(stBP1.fAtt, stBP2.fAtt);
 ArbitrateBP.fPP_mJ := MIN(stBP1.fPP_mJ, stBP2.fPP_mJ);
 
 //Photon energy ranges
-ArbitrateBP.neVReqRange := stBP1.neVReqRange AND stBP2.neVReqRange;
+ArbitrateBP.neVRange := stBP1.neVRange AND stBP2.neVRange;
 
 //Rate
 ArbitrateBP.nRate := MIN(stBP1.nRate, stBP2.nRate);]]></ST>
@@ -133,7 +133,7 @@ CheckRequest := THIS^.fbBPAssertionPool.bOk;
       </Implementation>
     </Method>
     <Method Name="GetArbitratedBP" Id="{42c0af72-5a4d-02e2-043b-0505463fd885}">
-      <Declaration><![CDATA[METHOD GetArbitratedBP : ST_ReqBeamParams
+      <Declaration><![CDATA[METHOD GetArbitratedBP : ST_BeamParams
 VAR_INPUT
 END_VAR
 VAR
@@ -162,7 +162,7 @@ IF THIS^.fbBPAssertionPool.bOk THEN //If the table is empty (not OK), we are lef
 	stOutputBP := F_SetBeamParams(
 		fAtt := getBPStruct.fAtt,
 		fPP_mJ := getBPStruct.fPP_mJ,
-		neVReqRange	:= getBPStruct.neVReqRange,
+		neVRange	:= getBPStruct.neVRange,
 		nRate := getBPStruct.nRate
 	);
 
@@ -183,7 +183,7 @@ THIS^.q_stBeamParams := stOutputBP;
 GetArbitratedBP.fAtt := stOutputBP.fAtt;
 GetArbitratedBP.fPP_mJ := stOutputBP.fPP_mJ;
 GetArbitratedBP.nBeamClass := stOutputBP.nBeamClass;
-GetArbitratedBP.neVPermRange := stOutputBP.neVReqRange;
+GetArbitratedBP.neVRange := stOutputBP.neVRange;
 GetArbitratedBP.nRate := stOutputBP.nRate;
 GetArbitratedBP.xValidToggle := NOT GetArbitratedBP.xValidToggle;]]></ST>
       </Implementation>

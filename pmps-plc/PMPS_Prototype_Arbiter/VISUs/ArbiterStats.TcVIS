@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
   <Visu Name="ArbiterStats" Id="{ef270ad9-bed8-084d-3237-50f5c5a698e2}">
     <XmlArchive>
       <Data>
@@ -117,10 +117,13 @@
                               <l n="Value" t="ArrayList" cet="NamedStyleFont">
                                 <o>
                                   <v n="FontStyle">0</v>
+                                  <v n="AdditionalFontStyle" t="UInt16">0</v>
                                   <v n="ExplicitColor">-16777216</v>
                                   <v n="CanonicalName">"Font-Standard"</v>
                                   <v n="FontName">"Arial"</v>
                                   <v n="FontSize">12</v>
+                                  <v n="ScriptIdentification">0</v>
+                                  <v n="DoubleFontSize" t="Double">0</v>
                                   <o n="NamedColor" t="NamedStyleColor">
                                     <v n="Color">-16777216</v>
                                     <v n="CanonicalName">"Font-Default-Color"</v>
@@ -147,6 +150,10 @@
                             <o>
                               <v n="Id">2477733581L</v>
                               <v n="Value">"fbArbiter.q_stBeamParams.fAtt"</v>
+                            </o>
+                            <o>
+                              <v n="Id">3719097617L</v>
+                              <v n="Value">0</v>
                             </o>
                             <o>
                               <v n="Id">823443203L</v>
@@ -283,10 +290,13 @@
                           <l n="Value" t="ArrayList" cet="NamedStyleFont">
                             <o>
                               <v n="FontStyle">0</v>
+                              <v n="AdditionalFontStyle" t="UInt16">0</v>
                               <v n="ExplicitColor">-16777216</v>
                               <v n="CanonicalName">"Font-Standard"</v>
                               <v n="FontName">"Arial"</v>
                               <v n="FontSize">12</v>
+                              <v n="ScriptIdentification">0</v>
+                              <v n="DoubleFontSize" t="Double">0</v>
                               <o n="NamedColor" t="NamedStyleColor">
                                 <v n="Color">-16777216</v>
                                 <v n="CanonicalName">"Font-Default-Color"</v>
@@ -317,6 +327,10 @@
                         <o>
                           <v n="Id">2597686782L</v>
                           <v n="Value">false</v>
+                        </o>
+                        <o>
+                          <v n="Id">3719097617L</v>
+                          <v n="Value">0</v>
                         </o>
                         <o>
                           <v n="Id">823443203L</v>
@@ -444,10 +458,13 @@
                               <l n="Value" t="ArrayList" cet="NamedStyleFont">
                                 <o>
                                   <v n="FontStyle">0</v>
+                                  <v n="AdditionalFontStyle" t="UInt16">0</v>
                                   <v n="ExplicitColor">-16777216</v>
                                   <v n="CanonicalName">"Font-Standard"</v>
                                   <v n="FontName">"Arial"</v>
                                   <v n="FontSize">12</v>
+                                  <v n="ScriptIdentification">0</v>
+                                  <v n="DoubleFontSize" t="Double">0</v>
                                   <o n="NamedColor" t="NamedStyleColor">
                                     <v n="Color">-16777216</v>
                                     <v n="CanonicalName">"Font-Default-Color"</v>
@@ -474,6 +491,10 @@
                             <o>
                               <v n="Id">2477733581L</v>
                               <v n="Value">"fbArbiter.q_stBeamParams.fPP_mJ"</v>
+                            </o>
+                            <o>
+                              <v n="Id">3719097617L</v>
+                              <v n="Value">0</v>
                             </o>
                             <o>
                               <v n="Id">823443203L</v>
@@ -610,10 +631,13 @@
                           <l n="Value" t="ArrayList" cet="NamedStyleFont">
                             <o>
                               <v n="FontStyle">0</v>
+                              <v n="AdditionalFontStyle" t="UInt16">0</v>
                               <v n="ExplicitColor">-16777216</v>
                               <v n="CanonicalName">"Font-Standard"</v>
                               <v n="FontName">"Arial"</v>
                               <v n="FontSize">12</v>
+                              <v n="ScriptIdentification">0</v>
+                              <v n="DoubleFontSize" t="Double">0</v>
                               <o n="NamedColor" t="NamedStyleColor">
                                 <v n="Color">-16777216</v>
                                 <v n="CanonicalName">"Font-Default-Color"</v>
@@ -644,6 +668,10 @@
                         <o>
                           <v n="Id">2597686782L</v>
                           <v n="Value">false</v>
+                        </o>
+                        <o>
+                          <v n="Id">3719097617L</v>
+                          <v n="Value">0</v>
                         </o>
                         <o>
                           <v n="Id">823443203L</v>
@@ -771,10 +799,13 @@
                               <l n="Value" t="ArrayList" cet="NamedStyleFont">
                                 <o>
                                   <v n="FontStyle">0</v>
+                                  <v n="AdditionalFontStyle" t="UInt16">0</v>
                                   <v n="ExplicitColor">-16777216</v>
                                   <v n="CanonicalName">"Font-Standard"</v>
                                   <v n="FontName">"Arial"</v>
                                   <v n="FontSize">12</v>
+                                  <v n="ScriptIdentification">0</v>
+                                  <v n="DoubleFontSize" t="Double">0</v>
                                   <o n="NamedColor" t="NamedStyleColor">
                                     <v n="Color">-16777216</v>
                                     <v n="CanonicalName">"Font-Default-Color"</v>
@@ -801,6 +832,10 @@
                             <o>
                               <v n="Id">2477733581L</v>
                               <v n="Value">"fbArbiter.stOutputBP.nRate"</v>
+                            </o>
+                            <o>
+                              <v n="Id">3719097617L</v>
+                              <v n="Value">0</v>
                             </o>
                             <o>
                               <v n="Id">823443203L</v>
@@ -937,10 +972,13 @@
                           <l n="Value" t="ArrayList" cet="NamedStyleFont">
                             <o>
                               <v n="FontStyle">0</v>
+                              <v n="AdditionalFontStyle" t="UInt16">0</v>
                               <v n="ExplicitColor">-16777216</v>
                               <v n="CanonicalName">"Font-Standard"</v>
                               <v n="FontName">"Arial"</v>
                               <v n="FontSize">12</v>
+                              <v n="ScriptIdentification">0</v>
+                              <v n="DoubleFontSize" t="Double">0</v>
                               <o n="NamedColor" t="NamedStyleColor">
                                 <v n="Color">-16777216</v>
                                 <v n="CanonicalName">"Font-Default-Color"</v>
@@ -971,6 +1009,10 @@
                         <o>
                           <v n="Id">2597686782L</v>
                           <v n="Value">false</v>
+                        </o>
+                        <o>
+                          <v n="Id">3719097617L</v>
+                          <v n="Value">0</v>
                         </o>
                         <o>
                           <v n="Id">823443203L</v>
@@ -1098,10 +1140,13 @@
                               <l n="Value" t="ArrayList" cet="NamedStyleFont">
                                 <o>
                                   <v n="FontStyle">0</v>
+                                  <v n="AdditionalFontStyle" t="UInt16">0</v>
                                   <v n="ExplicitColor">-16777216</v>
                                   <v n="CanonicalName">"Font-Standard"</v>
                                   <v n="FontName">"Arial"</v>
                                   <v n="FontSize">12</v>
+                                  <v n="ScriptIdentification">0</v>
+                                  <v n="DoubleFontSize" t="Double">0</v>
                                   <o n="NamedColor" t="NamedStyleColor">
                                     <v n="Color">-16777216</v>
                                     <v n="CanonicalName">"Font-Default-Color"</v>
@@ -1128,6 +1173,10 @@
                             <o>
                               <v n="Id">2477733581L</v>
                               <v n="Value">"fbArbiter.fbBPAssertionPool.hTable.nCount"</v>
+                            </o>
+                            <o>
+                              <v n="Id">3719097617L</v>
+                              <v n="Value">0</v>
                             </o>
                             <o>
                               <v n="Id">823443203L</v>
@@ -1264,10 +1313,13 @@
                           <l n="Value" t="ArrayList" cet="NamedStyleFont">
                             <o>
                               <v n="FontStyle">0</v>
+                              <v n="AdditionalFontStyle" t="UInt16">0</v>
                               <v n="ExplicitColor">-16777216</v>
                               <v n="CanonicalName">"Font-Standard"</v>
                               <v n="FontName">"Arial"</v>
                               <v n="FontSize">12</v>
+                              <v n="ScriptIdentification">0</v>
+                              <v n="DoubleFontSize" t="Double">0</v>
                               <o n="NamedColor" t="NamedStyleColor">
                                 <v n="Color">-16777216</v>
                                 <v n="CanonicalName">"Font-Default-Color"</v>
@@ -1298,6 +1350,10 @@
                         <o>
                           <v n="Id">2597686782L</v>
                           <v n="Value">false</v>
+                        </o>
+                        <o>
+                          <v n="Id">3719097617L</v>
+                          <v n="Value">0</v>
                         </o>
                         <o>
                           <v n="Id">823443203L</v>
@@ -1425,10 +1481,13 @@
                               <l n="Value" t="ArrayList" cet="NamedStyleFont">
                                 <o>
                                   <v n="FontStyle">0</v>
+                                  <v n="AdditionalFontStyle" t="UInt16">0</v>
                                   <v n="ExplicitColor">-16777216</v>
                                   <v n="CanonicalName">"Font-Standard"</v>
                                   <v n="FontName">"Arial"</v>
                                   <v n="FontSize">12</v>
+                                  <v n="ScriptIdentification">0</v>
+                                  <v n="DoubleFontSize" t="Double">0</v>
                                   <o n="NamedColor" t="NamedStyleColor">
                                     <v n="Color">-16777216</v>
                                     <v n="CanonicalName">"Font-Default-Color"</v>
@@ -1455,6 +1514,10 @@
                             <o>
                               <v n="Id">2477733581L</v>
                               <v n="Value">"fbArbiter.fbBPAssertionPool.hTable.nFree"</v>
+                            </o>
+                            <o>
+                              <v n="Id">3719097617L</v>
+                              <v n="Value">0</v>
                             </o>
                             <o>
                               <v n="Id">823443203L</v>
@@ -1591,10 +1654,13 @@
                           <l n="Value" t="ArrayList" cet="NamedStyleFont">
                             <o>
                               <v n="FontStyle">0</v>
+                              <v n="AdditionalFontStyle" t="UInt16">0</v>
                               <v n="ExplicitColor">-16777216</v>
                               <v n="CanonicalName">"Font-Standard"</v>
                               <v n="FontName">"Arial"</v>
                               <v n="FontSize">12</v>
+                              <v n="ScriptIdentification">0</v>
+                              <v n="DoubleFontSize" t="Double">0</v>
                               <o n="NamedColor" t="NamedStyleColor">
                                 <v n="Color">-16777216</v>
                                 <v n="CanonicalName">"Font-Default-Color"</v>
@@ -1625,6 +1691,10 @@
                         <o>
                           <v n="Id">2597686782L</v>
                           <v n="Value">false</v>
+                        </o>
+                        <o>
+                          <v n="Id">3719097617L</v>
+                          <v n="Value">0</v>
                         </o>
                         <o>
                           <v n="Id">823443203L</v>
@@ -1749,10 +1819,13 @@
                           <l n="Value" t="ArrayList" cet="NamedStyleFont">
                             <o>
                               <v n="FontStyle">0</v>
+                              <v n="AdditionalFontStyle" t="UInt16">0</v>
                               <v n="ExplicitColor">-16777216</v>
                               <v n="CanonicalName">"Font-Standard"</v>
                               <v n="FontName">"Arial"</v>
                               <v n="FontSize">12</v>
+                              <v n="ScriptIdentification">0</v>
+                              <v n="DoubleFontSize" t="Double">0</v>
                               <o n="NamedColor" t="NamedStyleColor">
                                 <v n="Color">-16777216</v>
                                 <v n="CanonicalName">"Font-Default-Color"</v>
@@ -1778,7 +1851,11 @@
                         </o>
                         <o>
                           <v n="Id">2477733581L</v>
-                          <v n="Value">"fbArbiter.q_stBeamParams.neVReqRange"</v>
+                          <v n="Value">"fbArbiter.q_stBeamParams.neVRange"</v>
+                        </o>
+                        <o>
+                          <v n="Id">3719097617L</v>
+                          <v n="Value">0</v>
                         </o>
                         <o>
                           <v n="Id">823443203L</v>
@@ -1915,10 +1992,13 @@
                       <l n="Value" t="ArrayList" cet="NamedStyleFont">
                         <o>
                           <v n="FontStyle">0</v>
+                          <v n="AdditionalFontStyle" t="UInt16">0</v>
                           <v n="ExplicitColor">-16777216</v>
                           <v n="CanonicalName">"Font-Standard"</v>
                           <v n="FontName">"Arial"</v>
                           <v n="FontSize">12</v>
+                          <v n="ScriptIdentification">0</v>
+                          <v n="DoubleFontSize" t="Double">0</v>
                           <o n="NamedColor" t="NamedStyleColor">
                             <v n="Color">-16777216</v>
                             <v n="CanonicalName">"Font-Default-Color"</v>
@@ -1949,6 +2029,10 @@
                     <o>
                       <v n="Id">2597686782L</v>
                       <v n="Value">false</v>
+                    </o>
+                    <o>
+                      <v n="Id">3719097617L</v>
+                      <v n="Value">0</v>
                     </o>
                     <o>
                       <v n="Id">823443203L</v>
@@ -2026,6 +2110,8 @@
                 <v>57aa775b-1de7-41e8-ac21-2b1ab6a60f6b</v>
                 <v>GetTextProperties</v>
                 <v>e30ab2a6-380f-4ac5-8261-c3e7e729a837</v>
+                <v>IsAntialiasingInactive</v>
+                <v>9959682c-f208-5854-93f5-9247e986ebb4</v>
                 <v>Initialize</v>
                 <v>e4c8d8b5-9b0b-49b4-8f8b-8ce7b416e209</v>
                 <v>Destruct</v>
@@ -2070,10 +2156,10 @@
               <d n="FbMethods" t="CaseInsensitiveHashtable" ckt="String" cvt="Guid">
                 <v>FB_Init</v>
                 <v>ac1d6d55-a925-486a-a420-2e4dabc8ebef</v>
-                <v>FB_Exit</v>
-                <v>04c590b6-6bca-4ccf-bf24-b7aca3b18068</v>
                 <v>FB_Reinit</v>
                 <v>b30345bd-0145-4a1d-9501-59bbdf4b0efa</v>
+                <v>FB_Exit</v>
+                <v>04c590b6-6bca-4ccf-bf24-b7aca3b18068</v>
               </d>
               <v n="FbName">"NotImportant"</v>
               <v n="FbGuid">{850810aa-374d-44af-8f65-118fa6bc3212}</v>
@@ -2158,6 +2244,7 @@
         <Type n="Boolean">System.Boolean</Type>
         <Type n="CaseInsensitiveHashtable">{7df88604-7ac5-4e36-91c4-55e4fdad3e68}</Type>
         <Type n="ComplexInput">{1de566f6-72a7-494c-9353-9a418172c96e}</Type>
+        <Type n="Double">System.Double</Type>
         <Type n="GeneratedLanguageModelEntriesData">{703465dc-4679-4ff2-bcc3-c57d0a204da3}</Type>
         <Type n="GenericFbDescription">{40d6dd8d-dfd0-493a-8e29-c9a35e1e6539}</Type>
         <Type n="GenericVisualElem">{f86c2928-8614-4cca-824b-e819ac4d58c4}</Type>
@@ -2172,6 +2259,7 @@
         <Type n="String">System.String</Type>
         <Type n="TextDocument">{f3878285-8e4f-490b-bb1b-9acbb7eb04db}</Type>
         <Type n="TextLine">{a5de0b0b-1cb5-4913-ac21-9d70293ec00d}</Type>
+        <Type n="UInt16">System.UInt16</Type>
         <Type n="UInt32">System.UInt32</Type>
         <Type n="VisualElemCollection">{ef9d0b20-c96e-48db-b361-2ded4063150e}</Type>
         <Type n="VisualElemList">{f285c9a3-7019-446b-b98c-ccec3a0af8fa}</Type>

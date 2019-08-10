@@ -25,7 +25,7 @@ VAR
 	
 	stCurBeamParams	:	ST_BeamParams;
 	stMachineTargetBeamParams	:	ST_BeamParams;
-	stReqBeamParams	:	ST_ReqBeamParams;
+	stReqBeamParams	:	ST_BeamParams;
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[TEST('PEWatcherBasicFunction');
@@ -38,7 +38,7 @@ stCurBeamParams.reV := 800;
 	
 stMachineTargetBeamParams.reV := 800;
 
-stReqBeamParams.neVPermRange := 2#1111_1111_1111_1111;	
+stReqBeamParams.neVRange := 2#1111_1111_1111_1111;	
 
 fbFFO(i_xReset:=FALSE); //Reset request released
 	
@@ -60,7 +60,7 @@ stCurBeamParams.reV := 800;
 	
 stMachineTargetBeamParams.reV := 800;
 
-stReqBeamParams.neVPermRange := 2#0000_1111_0011_1111;
+stReqBeamParams.neVRange := 2#0000_1111_0011_1111;
 
 fbPEW.i_xReset := FALSE; //release local FF reset req	
 fbPEW(i_stCurrentBeamParams := stCurBeamParams,
@@ -78,7 +78,7 @@ stCurBeamParams.reV := 300;
 	
 stMachineTargetBeamParams.reV := 300;
 
-stReqBeamParams.neVPermRange := 2#0000_1111_0011_1111;
+stReqBeamParams.neVRange := 2#0000_1111_0011_1111;
 
 fbFFO(i_xReset:=TRUE); //New reset request
 
@@ -101,7 +101,7 @@ stCurBeamParams.reV := 800; //Moved out of range
 	
 stMachineTargetBeamParams.reV := 300; //Still within range
 
-stReqBeamParams.neVPermRange := 2#0000_1111_0011_1111;
+stReqBeamParams.neVRange := 2#0000_1111_0011_1111;
 
 fbPEW(i_stCurrentBeamParams := stCurBeamParams,
 	i_stMachineTargetBeamParams := stMachineTargetBeamParams,
@@ -121,7 +121,7 @@ stCurBeamParams.reV := 300; //Now within range
 	
 stMachineTargetBeamParams.reV := 800; //Moved out of range
 
-stReqBeamParams.neVPermRange := 2#0000_1111_0011_1111;
+stReqBeamParams.neVRange := 2#0000_1111_0011_1111;
 
 fbPEW.i_xReset := TRUE; //Attempt to reset local FF will fail
 fbPEW(i_stCurrentBeamParams := stCurBeamParams,

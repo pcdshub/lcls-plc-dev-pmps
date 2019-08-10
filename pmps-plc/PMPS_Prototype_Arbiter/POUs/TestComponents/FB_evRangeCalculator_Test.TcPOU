@@ -30,10 +30,18 @@ AssertTrue(
 AssertTrue(
 	F_eVRangeCalculator(300, 0) = 2#0000_0000_0000_0110,
 	'Upper limit not inclusive');
+//Mid range
+AssertTrue(
+	F_eVRangeCalculator(251, 0) = 2#0000_0000_0000_0010,
+	'In range failed, whatever you did, it broke this really bad.');
 //Out of range
 AssertFalse(
-	F_eVRangeCalculator(300.1, 0) = 2#0000_0000_0000_0100,
+	F_eVRangeCalculator(300.1, 0) = 2#0000_0000_0000_0010,
 	'Out of range failed, whatever you did, it broke this really bad.');
+
+TEST_FINISHED();
+
+TEST('Negative eV failsafes');
 //Negative eV
 AssertTrue(
 	F_eVRangeCalculator(-300, 0) = 16#FFFF,
@@ -64,6 +72,7 @@ AssertTrue(
 	'Moving down does not drop.');
 
 TEST_FINISHED();
+
 TEST_FINISHED_NAMED('FOO');]]></ST>
       </Implementation>
     </Method>
@@ -75,9 +84,16 @@ TEST_FINISHED_NAMED('FOO');]]></ST>
       <LineId Id="26" Count="0" />
       <LineId Id="28" Count="3" />
       <LineId Id="46" Count="1" />
-      <LineId Id="34" Count="1" />
+      <LineId Id="34" Count="0" />
+      <LineId Id="73" Count="2" />
+      <LineId Id="72" Count="0" />
+      <LineId Id="35" Count="0" />
       <LineId Id="49" Count="1" />
       <LineId Id="48" Count="0" />
+      <LineId Id="77" Count="0" />
+      <LineId Id="76" Count="0" />
+      <LineId Id="79" Count="0" />
+      <LineId Id="78" Count="0" />
       <LineId Id="39" Count="1" />
       <LineId Id="51" Count="0" />
       <LineId Id="42" Count="0" />
@@ -100,6 +116,7 @@ TEST_FINISHED_NAMED('FOO');]]></ST>
       <LineId Id="64" Count="0" />
       <LineId Id="52" Count="0" />
       <LineId Id="22" Count="0" />
+      <LineId Id="71" Count="0" />
       <LineId Id="21" Count="0" />
     </LineIds>
   </POU>

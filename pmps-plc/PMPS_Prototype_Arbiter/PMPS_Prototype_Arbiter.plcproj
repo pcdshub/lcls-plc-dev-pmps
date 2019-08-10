@@ -375,6 +375,7 @@
   </ItemGroup>
   <ItemGroup>
     <PinnedGlobalDataType Include="ST_BeamParams" />
+    <PinnedGlobalDataType Include="ST_PMPS_Attenuator" />
   </ItemGroup>
   <ProjectExtensions>
     <PlcProjectOptions>

@@ -33,8 +33,8 @@ VAR
 	nRateReqID	:	UDINT	:= 4;
 	stRateReqBP	:	ST_BeamParams := PMPS_GVL_BeamParams.cstFullBeam;
 	
-	stArbitratedBP	:	ST_ReqBeamParams;
-	stExpectedBP	:	ST_ReqBeamParams;
+	stArbitratedBP	:	ST_BeamParams;
+	stExpectedBP	:	ST_BeamParams;
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[TEST('Arbitration');
@@ -44,7 +44,7 @@ fbArbiter.A_Init();
 
 stAttReqBP.fAtt := 50;
 stPPEReqBP.fPP_mJ := 1;
-stEVReqBP.neVReqRange := 2#1111_1100_1111_1111;
+stEVReqBP.neVRange := 2#1111_1100_1111_1111;
 stRateReqBP.nRate := 120;
 
 //Load arbiter with beam parameter sets
@@ -65,7 +65,7 @@ AssertTrue(fbArbiter.AddRequest(nRateReqID, stRateReqBP),
 
 stExpectedBP.fAtt 	:= 	stAttReqBP.fAtt;
 stExpectedBP.fPP_mJ	:=  stPPEReqBP.fPP_mJ;
-stExpectedBP.neVPermRange := stEVReqBP.neVReqRange;
+stExpectedBP.neVRange := stEVReqBP.neVRange;
 stExpectedBP.nRate := stRateReqBP.nRate;
 
 stArbitratedBP := fbArbiter.GetArbitratedBP();
