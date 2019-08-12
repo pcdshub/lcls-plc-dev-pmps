@@ -5,6 +5,11 @@
 Implements the procedure for safely transitioning between device states by asserting the correct beam parameters for 
 the state *)
 FUNCTION_BLOCK BeamParameterTransitionManager
+VAR_IN_OUT
+	
+	fbArbiter	:	FB_Arbiter; //Connect to local arbiter
+	
+END_VAR
 VAR_INPUT
 	i_TransitionAssertionID	:	UDINT := 0;
 	i_stTransitionAssertion : ST_BeamParams := PMPS_GVL_BeamParams.cstSafeBeam; //Assertion required during transition (always safer than anything inbetween)
@@ -15,21 +20,19 @@ VAR_INPUT
 	i_xMoving	:	BOOL := FALSE; //Provide rising edge when device begins moving
 	i_xDoneMoving	:	BOOL := FALSE; //Provide rising edge when device is done with a move
 	
+	stCurrentBeamParameters	:	ST_BeamParams := PMPS_GVL_BeamParams.cstFullBeam; //Connect to current beam parameters
+	
 END_VAR
 VAR_OUTPUT
-	
-	q_stFinalAssertion : ST_BeamParams := PMPS_GVL_BeamParams.cstSafeBeam;
-	q_stTransitionAssertion	:  ST_BeamParams := PMPS_GVL_BeamParams.cstSafeBeam;
-	
+
 	q_xTransitionAuthorized	:	BOOL := FALSE; //Rising edge indicating the device is safe to move, use as input to move execute (which requires a rising edge)
-	
-	
+
 END_VAR
+
 VAR
 	nTargetAssertionID	:	UDINT := 0;
 	stTargetAssertion	:	ST_BeamParams; //Current target assertion
 	nCurrentAssertionID	:	UDINT := 0;
-	thing	:	BOOL;
 	
 	xNewBP	:	BOOL;
 	xTranBP	:	BOOL;
@@ -286,9 +289,9 @@ WaitingForTransitionAssertion:INT:=9;"</v>
                     <v n="IsElementVisible">true</v>
                     <v n="TopPosition">400</v>
                     <v n="LeftPosition">620</v>
-                    <v n="WidthValue">167</v>
+                    <v n="WidthValue">239</v>
                     <v n="MinWidthValue">0</v>
-                    <v n="Height">66</v>
+                    <v n="Height">87</v>
                     <v n="MinHeight">0</v>
                     <v n="AutomaticLayout">false</v>
                     <d n="DockingPoints" t="Hashtable" />
@@ -354,9 +357,9 @@ WaitingForTransitionAssertion:INT:=9;"</v>
                     <v n="IsElementVisible">true</v>
                     <v n="TopPosition">270</v>
                     <v n="LeftPosition">610</v>
-                    <v n="WidthValue">213</v>
+                    <v n="WidthValue">308</v>
                     <v n="MinWidthValue">0</v>
-                    <v n="Height">83</v>
+                    <v n="Height">111</v>
                     <v n="MinHeight">0</v>
                     <v n="AutomaticLayout">false</v>
                     <d n="DockingPoints" t="Hashtable" />
@@ -422,9 +425,9 @@ WaitingForTransitionAssertion:INT:=9;"</v>
                     <v n="IsElementVisible">true</v>
                     <v n="TopPosition">230</v>
                     <v n="LeftPosition">310</v>
-                    <v n="WidthValue">142</v>
+                    <v n="WidthValue">201</v>
                     <v n="MinWidthValue">0</v>
-                    <v n="Height">49</v>
+                    <v n="Height">63</v>
                     <v n="MinHeight">0</v>
                     <v n="AutomaticLayout">false</v>
                     <d n="DockingPoints" t="Hashtable" />
@@ -490,9 +493,9 @@ WaitingForTransitionAssertion:INT:=9;"</v>
                     <v n="IsElementVisible">true</v>
                     <v n="TopPosition">510</v>
                     <v n="LeftPosition">620</v>
-                    <v n="WidthValue">208</v>
+                    <v n="WidthValue">300</v>
                     <v n="MinWidthValue">0</v>
-                    <v n="Height">66</v>
+                    <v n="Height">87</v>
                     <v n="MinHeight">0</v>
                     <v n="AutomaticLayout">false</v>
                     <d n="DockingPoints" t="Hashtable" />
@@ -535,9 +538,9 @@ WaitingForTransitionAssertion:INT:=9;"</v>
                     <v n="IsElementVisible">true</v>
                     <v n="TopPosition">10</v>
                     <v n="LeftPosition">550</v>
-                    <v n="WidthValue">305</v>
+                    <v n="WidthValue">410</v>
                     <v n="MinWidthValue">0</v>
-                    <v n="Height">581</v>
+                    <v n="Height">594</v>
                     <v n="MinHeight">0</v>
                     <v n="AutomaticLayout">false</v>
                     <d n="DockingPoints" t="Hashtable" />
@@ -635,9 +638,9 @@ WaitingForTransitionAssertion:INT:=9;"</v>
                     <v n="IsElementVisible">true</v>
                     <v n="TopPosition">140</v>
                     <v n="LeftPosition">600</v>
-                    <v n="WidthValue">237</v>
+                    <v n="WidthValue">344</v>
                     <v n="MinWidthValue">0</v>
-                    <v n="Height">83</v>
+                    <v n="Height">111</v>
                     <v n="MinHeight">0</v>
                     <v n="AutomaticLayout">false</v>
                     <d n="DockingPoints" t="Hashtable" />
@@ -941,7 +944,7 @@ WaitingForTransitionAssertion:INT:=9;"</v>
                     <o n="StartAnchor" t="UMLAnchorPoint">
                       <v n="AnchorID">0</v>
                       <v n="AnchorLeftPosition">665</v>
-                      <v n="AnchorTopPosition">218</v>
+                      <v n="AnchorTopPosition">246</v>
                       <v n="AnchorRelationID">{002c3585-6619-483d-a4ad-24e3c5556da1}</v>
                       <v n="StartAnchor">true</v>
                       <v n="EndAnchor">false</v>
@@ -1013,7 +1016,7 @@ WaitingForTransitionAssertion:INT:=9;"</v>
                     <d n="flagsY" t="Hashtable" />
                     <o n="StartAnchor" t="UMLAnchorPoint">
                       <v n="AnchorID">0</v>
-                      <v n="AnchorLeftPosition">447</v>
+                      <v n="AnchorLeftPosition">506</v>
                       <v n="AnchorTopPosition">245</v>
                       <v n="AnchorRelationID">{c69b9e26-460f-49f6-a4c8-f415f63e2679}</v>
                       <v n="StartAnchor">true</v>
@@ -1093,7 +1096,7 @@ WaitingForTransitionAssertion:INT:=9;"</v>
                     <o n="StartAnchor" t="UMLAnchorPoint">
                       <v n="AnchorID">0</v>
                       <v n="AnchorLeftPosition">682</v>
-                      <v n="AnchorTopPosition">461</v>
+                      <v n="AnchorTopPosition">482</v>
                       <v n="AnchorRelationID">{9029f252-54cc-4dd0-a293-39c809826399}</v>
                       <v n="StartAnchor">true</v>
                       <v n="EndAnchor">false</v>
@@ -1172,7 +1175,7 @@ WaitingForTransitionAssertion:INT:=9;"</v>
                     <o n="StartAnchor" t="UMLAnchorPoint">
                       <v n="AnchorID">0</v>
                       <v n="AnchorLeftPosition">665</v>
-                      <v n="AnchorTopPosition">348</v>
+                      <v n="AnchorTopPosition">376</v>
                       <v n="AnchorRelationID">{21afc9f0-b07d-446b-b648-e3f8868ba4c8}</v>
                       <v n="StartAnchor">true</v>
                       <v n="EndAnchor">false</v>
@@ -1347,12 +1350,12 @@ WaitingForTransitionAssertion:INT:=9;"</v>
 state beam parameters should always be safer than the
 current or target state beam parameters
 *)
-fbArbiter.A_RemoveAssertion( i_nStateID := nCurrentAssertionID );
+fbArbiter.RemoveRequest( nCurrentAssertionID );
 
 //Asserting target parameters
-fbArbiter.A_AssertBP(
-	i_nStateID := nTargetAssertionID,
-	i_stAssertBeamParams := stTargetAssertion
+fbArbiter.AddRequest(
+	nTargetAssertionID,
+	stTargetAssertion
 );
 
 //Remembering final assertionID for removal later
@@ -1362,9 +1365,9 @@ nCurrentAssertionID := nTargetAssertionID;]]></ST>
     <Action Name="AssertTransitionBP" Id="{09eb738b-7411-0821-2e23-c9281e93e49d}">
       <Implementation>
         <ST><![CDATA[
-fbArbiter.A_AssertBP(
-	i_nStateID := i_TransitionAssertionID,
-	i_stAssertBeamParams := i_stTransitionAssertion
+fbArbiter.AddRequest(
+	i_TransitionAssertionID,
+	i_stTransitionAssertion
 );
 	]]></ST>
       </Implementation>
@@ -1389,7 +1392,7 @@ fbArbiter.A_AssertBP(
         <ST><![CDATA[//q_stTransitionAssertion := PMPS_GVL_BeamParams.cstFullBeam;
 
 //Removing transition assertion
-fbArbiter.A_RemoveAssertion( i_nStateID := i_TransitionAssertionID);
+fbArbiter.RemoveRequest( i_TransitionAssertionID );
 
 
 
@@ -1411,8 +1414,8 @@ nTargetAssertionID := i_nRequestedAssertionID;]]></ST>
     <Action Name="WaitingForFinalAssertion_DO" Id="{321877ce-1716-0d60-0edb-45fda6425ee5}">
       <Implementation>
         <ST><![CDATA[//Final Assertion Verification
-fbArbiter.A_VerifyAssertion( i_nStateID := i_nRequestedAssertionID);
-xFinalBP := F_SafeBPCompare(PMPS_GVL_BeamParams.stCurrentBeamParameters, stTargetAssertion) AND
+fbArbiter.CheckRequest( i_nRequestedAssertionID);
+xFinalBP := F_SafeBPCompare(stCurrentBeamParameters, stTargetAssertion) AND
 	fbArbiter.q_xStateIDFound;]]></ST>
       </Implementation>
     </Action>
@@ -1425,9 +1428,8 @@ xFinalBP := FALSE;]]></ST>
     <Action Name="WaitingForTransitionAssertion_DO" Id="{b28d9b59-2c93-0121-2340-e3e699a9fa4a}">
       <Implementation>
         <ST><![CDATA[//Transition Assertion Verification
-fbArbiter.A_VerifyAssertion( i_nStateID := i_TransitionAssertionID); //TODO this may be an expensive operation as it's constantly checking the hashtable, could move it to be checked only when waitingfortransitionassertion
-xTranBP	:= F_SafeBPCompare(PMPS_GVL_BeamParams.stCurrentBeamParameters, i_stTransitionAssertion) AND
-	fbArbiter.q_xStateIDFound;]]></ST>
+xTranBP	:= F_SafeBPCompare(stCurrentBeamParameters, i_stTransitionAssertion) AND
+	fbArbiter.CheckRequest(i_TransitionAssertionID);]]></ST>
       </Implementation>
     </Action>
     <Action Name="WaitingForTransitionAssertion_EXIT" Id="{07d13c2b-9514-064a-3d0d-409feea20c70}">
@@ -1492,7 +1494,8 @@ xTranBP	:= F_SafeBPCompare(PMPS_GVL_BeamParams.stCurrentBeamParameters, i_stTran
       <LineId Id="1" Count="0" />
     </LineIds>
     <LineIds Name="BeamParameterTransitionManager.WaitingForTransitionAssertion_DO">
-      <LineId Id="2" Count="2" />
+      <LineId Id="2" Count="0" />
+      <LineId Id="4" Count="0" />
       <LineId Id="1" Count="0" />
     </LineIds>
     <LineIds Name="BeamParameterTransitionManager.WaitingForTransitionAssertion_EXIT">

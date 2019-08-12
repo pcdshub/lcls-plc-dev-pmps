@@ -24,6 +24,14 @@
     <Compile Include="DUTs\ST_BeamParams.TcDUT">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DUTs\ST_BeamParamsReadback.TcDUT">
+      <SubType>Code</SubType>
+      <ExcludeFromBuild>true</ExcludeFromBuild>
+    </Compile>
+    <Compile Include="DUTs\ST_ReqBeamParams.TcDUT">
+      <SubType>Code</SubType>
+      <ExcludeFromBuild>true</ExcludeFromBuild>
+    </Compile>
     <Compile Include="DUTs\ST_BinarySolidAttenuator.TcDUT">
       <SubType>Code</SubType>
     </Compile>
@@ -65,10 +73,22 @@
     <Compile Include="POUs\DeviceImplementationEx2\FB_ExampleDeviceSM_All.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\Fast_Faults.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Fast_Faults_Evaluate.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\FlatMirrorEx\FB_FlatMirrorPMPS.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="POUs\HelperFunctions\F_DeviceState_To_DeviceStateExt.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\HelperFunctions\F_DifferentBeamParams.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\HelperFunctions\F_eVWithinSpec.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\HelperFunctions\F_SafeBPCompare.TcPOU">
@@ -80,13 +100,31 @@
     <Compile Include="POUs\HelperFunctions\F_SetStateParams.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\MachineSimulation.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="POUs\MAIN.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\MajorComponents\FB_BeamClassOutputs.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\MajorComponents\FB_BeamParamEx.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\MajorComponents\FB_FastFault.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\MajorComponents\FB_HardwareFFOutput.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="POUs\MajorComponents\FB_LinearGovernor.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\MajorComponents\FB_PhotonEnergyWatcher.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\MajorComponents\FB_UsualSuspects.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\PMPS_Arbiter.TcPOU">
@@ -107,16 +145,49 @@
     <Compile Include="POUs\TestComponents\FB_AttenuatorSimulator.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\TestComponents\FB_BPTM_Test.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\TestComponents\FB_Arbiter_Test.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\TestComponents\FB_PhotonEnergyWatcher_Test.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\TestComponents\FB_eVWithinSpec_Test.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\TestComponents\FB_FastFault_Test.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\TestComponents\FB_SafeBPCompare_Test.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="POUs\TestComponents\FB_MachineSimulator.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\TestComponents\FB_SolidAttenuator.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\TestSetups.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Visualization Manager.TcVMO">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="VISUs\ArbiterStats.TcVIS">
+      <SubType>Code</SubType>
+      <DependentUpon>Visualization Manager.TcVMO</DependentUpon>
+    </Compile>
+    <Compile Include="VISUs\FastFaultGUI.TcVIS">
+      <SubType>Code</SubType>
+      <DependentUpon>Visualization Manager.TcVMO</DependentUpon>
+    </Compile>
     <Compile Include="VISUs\ImagerGUI.TcVIS">
+      <SubType>Code</SubType>
+      <DependentUpon>Visualization Manager.TcVMO</DependentUpon>
+    </Compile>
+    <Compile Include="VISUs\PhotonEnergyWatcher.TcVIS">
       <SubType>Code</SubType>
       <DependentUpon>Visualization Manager.TcVMO</DependentUpon>
     </Compile>
@@ -132,6 +203,7 @@
     <Folder Include="POUs\DeviceImplementationEx2" />
     <Folder Include="POUs\HelperFunctions" />
     <Folder Include="POUs\MajorComponents" />
+    <Folder Include="POUs\FlatMirrorEx" />
     <Folder Include="POUs\TestComponents" />
     <Folder Include="VISUs" />
     <Folder Include="POUs" />
@@ -203,6 +275,10 @@
       <DefaultResolution>Tc3_Module, * (Beckhoff Automation GmbH)</DefaultResolution>
       <Namespace>Tc3_Module</Namespace>
     </PlaceholderReference>
+    <PlaceholderReference Include="TcUnit">
+      <DefaultResolution>TcUnit, * (www.tcunit.org)</DefaultResolution>
+      <Namespace>TcUnit</Namespace>
+    </PlaceholderReference>
     <PlaceholderReference Include="UML State Chart Types">
       <DefaultResolution>UML Statechart Types, 4.0.2.1 (3S - Smart Software Solutions GmbH)</DefaultResolution>
       <Namespace>UML_SC</Namespace>
@@ -227,6 +303,9 @@
   <ItemGroup>
     <PlaceholderResolution Include="LCLS General">
       <Resolution>LCLS General, * (SLAC)</Resolution>
+    </PlaceholderResolution>
+    <PlaceholderResolution Include="TcUnit">
+      <Resolution>TcUnit, * (www.tcunit.org)</Resolution>
     </PlaceholderResolution>
   </ItemGroup>
   <ItemGroup>

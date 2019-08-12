@@ -7,3 +7,5 @@ _Libraries
 *.tpy
 *.bak
 *.~u
+*.tmc
+*.sln

@@ -1,22 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.12">
-  <DUT Name="ST_BeamParams" Id="{1cfc4571-cdd9-4483-b0d1-cbcb7d03cd4c}">
-    <Declaration><![CDATA[TYPE ST_BeamParams :
+  <DUT Name="ST_ReqBeamParams" Id="{14e735f9-8011-0161-1404-85d973685470}">
+    <Declaration><![CDATA[TYPE ST_ReqBeamParams :
 STRUCT
 	// Beam parameters
-	// These must be filled in by the caller.
 	
 	//Note: fAtt is a local parameter, meaning it is distributed to the nearest
 	// upstream attenuator component.
 	fAtt : REAL := 100; //Requested attenuation %
 	
-	
-	
 	//Machine parameters
 	nBeamClass	:	BYTE := 16#F;
 	nRate	:	UDINT	:= 10; //Pulse-rate
 	fPP_mJ : REAL := 20; //Per pulse max energy (mJ)
-	//1.5-0keV subdivided per bit
+	
+	{attribute 'displaymode':='binary'}
+	neVPermRange	:	WORD	:= 2#1111_1111_1111_1111; //Valid photon energy ranges
+		//1.5-0keV subdivided per bit
 	(*
 	0.0-0.2 - 0 (lsb)
 	0.2-0.3 - 1
@@ -35,11 +35,6 @@ STRUCT
 	na - 14
 	na - 15
 	*)
-	
-	{attribute 'displaymode':='binary'}
-	neVReqRange	:	WORD	:= 2#1111_1111_1111_1111; //Valid photon energy ranges
-	
-	reV	:	REAL	:=0; //Photon energy (calculated by undulator gap)
 
 END_STRUCT
 END_TYPE

@@ -15,20 +15,22 @@ VAR
 	xPPmjOK: BOOL := FALSE;
 	// Internal photon energy OK boolean
 	xEvOK: BOOL := FALSE;
+	xRateOK: BOOL;
 END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[xAttOK := BeamParam1.fAtt <> BeamParam2.fAtt;
 xPPmjOK := BeamParam1.fPP_mJ <> BeamParam2.fPP_mJ;
-xEvOK := BeamParam1.fUpper_eV <> BeamParam2.fUpper_eV AND
-	BeamParam1.fLower_eV <> BeamParam2.fLower_eV;
+xEvOK := BeamParam1.neVReqRange <> BeamParam2.neVReqRange;
+xRateOK	 := BeamParam1.nRate <> BeamParam2.nRate;
 
 
-F_DifferentBeamParams := xAttOK OR xPPmjOK OR xEvOK;]]></ST>
+F_DifferentBeamParams := xAttOK OR xPPmjOK OR xEvOK OR xRateOK;]]></ST>
     </Implementation>
     <LineIds Name="F_DifferentBeamParams">
       <LineId Id="8" Count="0" />
-      <LineId Id="21" Count="2" />
+      <LineId Id="21" Count="1" />
+      <LineId Id="39" Count="0" />
       <LineId Id="9" Count="1" />
       <LineId Id="7" Count="0" />
     </LineIds>

@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.12">
+  <POU Name="FB_FastFault" Id="{a7225e03-a5d8-094a-35f2-8e6e41471d21}" SpecialFunc="None">
+    <Declaration><![CDATA[{attribute 'reflection'}
+FUNCTION_BLOCK FB_FastFault
+VAR_INPUT
+	i_xOK		:	BOOL;
+	i_xReset	:	BOOL; //resets when i_xOK is true and this is true
+END_VAR
+VAR_OUTPUT
+	o_xFFLine	:	BOOL; //Connect to HW output or another FF input if you like
+END_VAR
+VAR_IN_OUT
+	io_fbFFHWO		:	FB_HardwareFFOutput;
+END_VAR
+VAR
+	{attribute 'instance-path'}
+	{attribute 'noinit'}
+	sPath	:	T_MaxString;
+	
+	xInit	:	BOOL :=TRUE;
+	bsFF	:	RS;
+	rtReset	:	R_TRIG;
+	
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF xInit	THEN
+	io_fbFFHWO.Register(i_sFFName:=sPath);
+	//<TODO> if registration doesn't succeed, send warning to diagnostic
+	xInit := FALSE;
+END_IF
+
+
+rtReset(CLK:=i_xReset);
+bsFF(SET := rtReset.Q, RESET1:= NOT i_xOK);
+o_xFFLine := bsFF.Q1;
+io_fbFFHWO.CheckIn(bsFF.Q1);
+]]></ST>
+    </Implementation>
+    <LineIds Name="FB_FastFault">
+      <LineId Id="30" Count="0" />
+      <LineId Id="35" Count="0" />
+      <LineId Id="59" Count="0" />
+      <LineId Id="37" Count="0" />
+      <LineId Id="36" Count="0" />
+      <LineId Id="85" Count="1" />
+      <LineId Id="31" Count="0" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="83" Count="0" />
+      <LineId Id="32" Count="1" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,186 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.12">
+  <POU Name="FB_FastFault_Test" Id="{c6666cf6-8125-0d8d-3cf9-a2348e99781e}" SpecialFunc="None">
+    <Declaration><![CDATA[{attribute 'call_after_init'}
+FUNCTION_BLOCK FB_FastFault_Test EXTENDS FB_TestSuite IMPLEMENTS I_RunnableTestSuite
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	fbAssert : TcUnit.FB_Assert;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="FB_init" Id="{5f9d2961-e7ce-0517-3997-b1e4da2665e7}">
+      <Declaration><![CDATA[METHOD FB_init : BOOL
+VAR_INPUT
+	bInitRetains : BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
+	bInCopyCode : BOOL;  // if TRUE, the instance afterwards gets moved into the copy code (online change)
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[SUPER^.RegisterTestSuite(THIS^);
+
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="FFCombinedFunctionality" Id="{40db6f61-8d2d-068a-122d-5b98f2f3d16e}">
+      <Declaration><![CDATA[METHOD PRIVATE FFCombinedFunctionality
+VAR_INPUT
+END_VAR
+VAR
+	fbFF	:	FB_FastFault;
+	fbFFO	:	FB_HardwareFFOutput;
+	
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TEST('FFCombinedFunctionality');
+
+//Clear initial faults
+fbFFO(i_xReset:=TRUE); //Reset requested at start of cycle
+
+fbFF(io_fbFFHWO := fbFFO, //FF reset somehwere in code
+	i_xOK := TRUE,
+	i_xReset := TRUE);
+
+fbFFO.EvaluateOutput(); //FFO eval called at end of cycle
+	
+fbAssert.AssertTrue(fbFFO.q_xFastFaultOut,
+	'Fast fault did not clear');
+
+
+//Induce fault with FF
+
+fbFFO(i_xReset := FALSE); //Reset released at start of cycle
+
+fbFF(io_fbFFHWO := fbFFO, //FF faulted
+	i_xOK := FALSE); //Reset is still set true from last call.
+	
+fbFFO.EvaluateOutput(); //FFO eval called at end of cycle
+
+fbAssert.AssertFalse(fbFFO.q_xFastFaultOut,
+	'Fast fault did not trip the beam');
+	
+	
+//FFO remains faulted until local (FF) and FFO receieve fresh reset request, and faults
+//are actually cleared
+
+//Attempt to clear FFO fails because FF still faulted
+fbFFO(i_xReset := TRUE); //Reset requested
+
+fbFF(io_fbFFHWO := fbFFO, //FF faulted
+	i_xOK := FALSE,
+	i_xReset := FALSE);
+	
+fbFFO.EvaluateOutput(); //FFO eval called at end of cycle
+
+fbAssert.AssertFalse(fbFFO.q_xFastFaultOut,
+	'Fast fault output cleared while fault remains, very bad');
+	
+//Attempt to clear FF while fault remains fails
+fbFFO(i_xReset := FALSE);
+fbFFO(i_xReset := TRUE); //Reset requested
+
+fbFF(io_fbFFHWO := fbFFO, //FF faulted
+	i_xOK := FALSE,
+	i_xReset := TRUE); //This reset should fail.
+	
+fbFFO.EvaluateOutput(); //FFO eval called at end of cycle
+
+fbAssert.AssertFalse(fbFFO.q_xFastFaultOut,
+	'Fast fault cleared while fault remains, very bad');]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="FFRegistration" Id="{d751f466-f83a-0e08-0ef0-631e8f42af98}">
+      <Declaration><![CDATA[METHOD PRIVATE FFRegistration
+VAR_INPUT
+END_VAR
+VAR
+	fbFF	:	FB_FastFault;
+	fbFFO	:	FB_HardwareFFOutput;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TEST('FFRegistration');
+
+fbFF(io_fbFFHWO := fbFFO);
+
+fbAssert.AssertEquals_STRING(fbFF.sPath, fbFFO.asList[fbFFO.nIndex-1],
+	'FF registration with FFO did not succeed');
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="RunTests" Id="{3158200a-ee05-08d4-1733-91ad4f5dd262}">
+      <Declaration><![CDATA[METHOD RunTests : TCUNIT.E_TestSuiteRunState
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[FFRegistration();
+FFCombinedFunctionality();
+
+RunTests := TcUnit.E_TestSuiteRunState.FINISHED;]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_FastFault_Test">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_FastFault_Test.FB_init">
+      <LineId Id="7" Count="0" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="8" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_FastFault_Test.FFCombinedFunctionality">
+      <LineId Id="101" Count="0" />
+      <LineId Id="149" Count="0" />
+      <LineId Id="103" Count="0" />
+      <LineId Id="172" Count="0" />
+      <LineId Id="171" Count="0" />
+      <LineId Id="135" Count="0" />
+      <LineId Id="147" Count="1" />
+      <LineId Id="173" Count="0" />
+      <LineId Id="138" Count="0" />
+      <LineId Id="174" Count="0" />
+      <LineId Id="137" Count="0" />
+      <LineId Id="139" Count="0" />
+      <LineId Id="175" Count="1" />
+      <LineId Id="136" Count="0" />
+      <LineId Id="178" Count="0" />
+      <LineId Id="177" Count="0" />
+      <LineId Id="180" Count="4" />
+      <LineId Id="186" Count="0" />
+      <LineId Id="185" Count="0" />
+      <LineId Id="187" Count="1" />
+      <LineId Id="202" Count="0" />
+      <LineId Id="189" Count="0" />
+      <LineId Id="192" Count="0" />
+      <LineId Id="191" Count="0" />
+      <LineId Id="190" Count="0" />
+      <LineId Id="194" Count="3" />
+      <LineId Id="215" Count="0" />
+      <LineId Id="198" Count="3" />
+      <LineId Id="193" Count="0" />
+      <LineId Id="203" Count="1" />
+      <LineId Id="216" Count="0" />
+      <LineId Id="206" Count="3" />
+      <LineId Id="214" Count="0" />
+      <LineId Id="210" Count="3" />
+      <LineId Id="205" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_FastFault_Test.FFRegistration">
+      <LineId Id="101" Count="0" />
+      <LineId Id="103" Count="0" />
+      <LineId Id="135" Count="0" />
+      <LineId Id="138" Count="0" />
+      <LineId Id="137" Count="0" />
+      <LineId Id="139" Count="0" />
+      <LineId Id="136" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_FastFault_Test.RunTests">
+      <LineId Id="4" Count="0" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="6" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

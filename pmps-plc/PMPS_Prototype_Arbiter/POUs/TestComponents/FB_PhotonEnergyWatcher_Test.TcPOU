@@ -1,0 +1,228 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.12">
+  <POU Name="FB_PhotonEnergyWatcher_Test" Id="{0fcbd199-c111-05e5-208f-efd836b137da}" SpecialFunc="None">
+    <Declaration><![CDATA[{attribute 'call_after_init'}
+FUNCTION_BLOCK FB_PhotonEnergyWatcher_Test EXTENDS FB_TestSuite IMPLEMENTS I_RunnableTestSuite
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	fbAssert : TcUnit.FB_Assert;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="FB_init" Id="{abd746e0-90e2-04be-08b3-63a259c2c23d}">
+      <Declaration><![CDATA[METHOD FB_init : BOOL
+VAR_INPUT
+	bInitRetains : BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
+	bInCopyCode : BOOL;  // if TRUE, the instance afterwards gets moved into the copy code (online change)
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[SUPER^.RegisterTestSuite(THIS^);
+
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="PEWatcherBasicFunction" Id="{70274a01-fe93-0062-336d-e1158923f781}">
+      <Declaration><![CDATA[METHOD PRIVATE PEWatcherBasicFunction
+VAR_INPUT
+END_VAR
+VAR
+	fbPEW	:	FB_PhotonEnergyWatcher;
+	fbFFO	:	FB_HardwareFFOutput;
+	q_Output	:	BOOL;
+	
+	stCurBeamParams	:	ST_BeamParams;
+	stMachineTargetBeamParams	:	ST_BeamParams;
+	stReqBeamParams	:	ST_BeamParams;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[TEST('PEWatcherBasicFunction');
+
+//Clear FFO fault to start
+fbFFO(i_xReset:=TRUE);
+
+//All eV OK
+stCurBeamParams.reV := 800;
+	
+stMachineTargetBeamParams.reV := 800;
+
+stReqBeamParams.neVReqRange := 2#1111_1111_1111_1111;	
+
+fbFFO(i_xReset:=FALSE); //Reset request released
+	
+fbPEW(i_stCurrentBeamParams := stCurBeamParams,
+	i_stMachineTargetBeamParams := stMachineTargetBeamParams,
+	i_stRequestedBeamParams := stReqBeamParams,
+	io_fbFFHWO := fbFFO,
+	i_xReset := TRUE); //Clear local FF within PEW
+	
+fbFFO.EvaluateOutput(q_xFastFaultOut=>q_Output); //This simulates a completed PLC cycle
+//Evaluate output should be called once at the end of a PLC cycle.
+
+fbAssert.AssertTrue(q_Output,
+	'Beam within limits, FFO should be true');
+	
+	
+//Req eV moved out of range
+stCurBeamParams.reV := 800;
+	
+stMachineTargetBeamParams.reV := 800;
+
+stReqBeamParams.neVReqRange := 2#0000_1111_0011_1111;
+
+fbPEW.i_xReset := FALSE; //release local FF reset req	
+fbPEW(i_stCurrentBeamParams := stCurBeamParams,
+	i_stMachineTargetBeamParams := stMachineTargetBeamParams,
+	i_stRequestedBeamParams := stReqBeamParams,
+	io_fbFFHWO := fbFFO);
+	
+fbFFO.EvaluateOutput(q_xFastFaultOut=>q_Output);
+
+fbAssert.AssertFalse(q_Output,
+	'Limits moved beyond current and target beam, should produce a fault.');
+
+//Beam and target eV moved back within permitted ranges, reset clears fault
+stCurBeamParams.reV := 300;
+	
+stMachineTargetBeamParams.reV := 300;
+
+stReqBeamParams.neVReqRange := 2#0000_1111_0011_1111;
+
+fbFFO(i_xReset:=TRUE); //New reset request
+
+fbPEW.i_xReset := TRUE; //New reset request
+
+fbPEW(i_stCurrentBeamParams := stCurBeamParams, //Beam params are now within spec
+	i_stMachineTargetBeamParams := stMachineTargetBeamParams,
+	i_stRequestedBeamParams := stReqBeamParams,
+	io_fbFFHWO := fbFFO);
+	
+fbFFO.EvaluateOutput(q_xFastFaultOut=>q_Output);
+
+fbAssert.AssertTrue(q_Output,
+	'Beam within limits after reset, FFO should be true');
+	
+//At this point, the fast fault would be cleared
+
+//Current beam eV moved out of range
+stCurBeamParams.reV := 800; //Moved out of range
+	
+stMachineTargetBeamParams.reV := 300; //Still within range
+
+stReqBeamParams.neVReqRange := 2#0000_1111_0011_1111;
+
+fbPEW(i_stCurrentBeamParams := stCurBeamParams,
+	i_stMachineTargetBeamParams := stMachineTargetBeamParams,
+	i_stRequestedBeamParams := stReqBeamParams,
+	io_fbFFHWO := fbFFO);
+	
+fbFFO.EvaluateOutput(q_xFastFaultOut=>q_Output);
+
+fbAssert.AssertFalse(q_Output,
+	'Current beam moved beyond set limits, should produce a fault');
+
+//Target beam eV moved out of range
+fbFFO(i_xReset:=FALSE); //Reset released
+fbFFO(i_xReset:=TRUE); //New reset request comes in at the top of a cycle, but will be overridden
+
+stCurBeamParams.reV := 300; //Now within range
+	
+stMachineTargetBeamParams.reV := 800; //Moved out of range
+
+stReqBeamParams.neVReqRange := 2#0000_1111_0011_1111;
+
+fbPEW.i_xReset := TRUE; //Attempt to reset local FF will fail
+fbPEW(i_stCurrentBeamParams := stCurBeamParams,
+	i_stMachineTargetBeamParams := stMachineTargetBeamParams,
+	i_stRequestedBeamParams := stReqBeamParams,
+	io_fbFFHWO := fbFFO);
+	
+fbFFO.EvaluateOutput(q_xFastFaultOut=>q_Output);
+
+fbAssert.AssertFalse(q_Output,
+	'Target beam moved beyond set limits, should produce a fault');]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="RunTests" Id="{976dac7f-a350-02ab-3863-62d5a7981b89}">
+      <Declaration><![CDATA[METHOD RunTests : TCUNIT.E_TestSuiteRunState
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[PEWatcherBasicFunction();
+
+RunTests := TcUnit.E_TestSuiteRunState.FINISHED;]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_PhotonEnergyWatcher_Test">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_PhotonEnergyWatcher_Test.FB_init">
+      <LineId Id="7" Count="0" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="8" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_PhotonEnergyWatcher_Test.PEWatcherBasicFunction">
+      <LineId Id="144" Count="0" />
+      <LineId Id="176" Count="2" />
+      <LineId Id="145" Count="5" />
+      <LineId Id="155" Count="0" />
+      <LineId Id="204" Count="0" />
+      <LineId Id="203" Count="0" />
+      <LineId Id="175" Count="0" />
+      <LineId Id="157" Count="2" />
+      <LineId Id="132" Count="0" />
+      <LineId Id="265" Count="0" />
+      <LineId Id="160" Count="1" />
+      <LineId Id="198" Count="0" />
+      <LineId Id="163" Count="0" />
+      <LineId Id="162" Count="0" />
+      <LineId Id="164" Count="3" />
+      <LineId Id="214" Count="1" />
+      <LineId Id="213" Count="0" />
+      <LineId Id="183" Count="0" />
+      <LineId Id="186" Count="0" />
+      <LineId Id="269" Count="0" />
+      <LineId Id="189" Count="8" />
+      <LineId Id="169" Count="0" />
+      <LineId Id="173" Count="0" />
+      <LineId Id="171" Count="0" />
+      <LineId Id="199" Count="1" />
+      <LineId Id="172" Count="0" />
+      <LineId Id="217" Count="0" />
+      <LineId Id="216" Count="0" />
+      <LineId Id="206" Count="0" />
+      <LineId Id="205" Count="0" />
+      <LineId Id="268" Count="0" />
+      <LineId Id="267" Count="0" />
+      <LineId Id="207" Count="5" />
+      <LineId Id="202" Count="0" />
+      <LineId Id="218" Count="0" />
+      <LineId Id="220" Count="0" />
+      <LineId Id="219" Count="0" />
+      <LineId Id="243" Count="1" />
+      <LineId Id="170" Count="0" />
+      <LineId Id="168" Count="0" />
+      <LineId Id="223" Count="3" />
+      <LineId Id="240" Count="0" />
+      <LineId Id="230" Count="8" />
+      <LineId Id="222" Count="0" />
+      <LineId Id="242" Count="0" />
+      <LineId Id="245" Count="0" />
+      <LineId Id="263" Count="1" />
+      <LineId Id="262" Count="0" />
+      <LineId Id="246" Count="4" />
+      <LineId Id="270" Count="0" />
+      <LineId Id="253" Count="8" />
+      <LineId Id="221" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_PhotonEnergyWatcher_Test.RunTests">
+      <LineId Id="4" Count="0" />
+      <LineId Id="6" Count="0" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
