@@ -2,7 +2,7 @@
 <TcSmProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4023.119">
 	<DataTypes>
 		<DataType>
-			<Name GUID="{18071995-0000-0000-0000-002000000006}" IecBaseType="true" AutoDeleteType="true" HideSubItems="true">ARRAY [0..5] OF BIT</Name>
+			<Name GUID="{18071995-0000-0000-0000-002000000006}" IecBaseType="true" BitType="true" AutoDeleteType="true" HideSubItems="true">ARRAY [0..5] OF BIT</Name>
 			<BitSize>6</BitSize>
 			<BaseType GUID="{18071995-0000-0000-0000-000000000010}">BIT</BaseType>
 			<ArrayInfo>
@@ -91,6 +91,122 @@
 			<Hides>
 				<Hide GUID="{78C36F1F-49D4-4A98-A984-C1A1FB958C5C}"/>
 				<Hide GUID="{F6431806-B627-497C-BADD-DBF4AE61DDAD}"/>
+			</Hides>
+		</DataType>
+		<DataType>
+			<Name GUID="{368B451D-5F22-418E-BC16-2D5D4795EA17}" PersistentType="true">ST_PMPS_Attenuator</Name>
+			<BitSize>48</BitSize>
+			<SubItem>
+				<Name>nReqAtt</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000005}">UINT</Type>
+				<BitSize>16</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>nAttCur</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000005}">UINT</Type>
+				<BitSize>16</BitSize>
+				<BitOffs>16</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>xAttOK</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000005}">UINT</Type>
+				<BitSize>16</BitSize>
+				<BitOffs>32</BitOffs>
+			</SubItem>
+		</DataType>
+		<DataType>
+			<Name GUID="{1A16E08A-0722-4B0A-BA3C-4DE06882AA20}" PersistentType="true">ST_BeamParams</Name>
+			<BitSize>1736</BitSize>
+			<SubItem>
+				<Name>fAtt</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<Comment><![CDATA[Requested attenuation %]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>0</BitOffs>
+				<Default>
+					<Value>100</Value>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>nBeamClass</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000001}">BYTE</Type>
+				<Comment><![CDATA[Machine parameters]]></Comment>
+				<BitSize>8</BitSize>
+				<BitOffs>32</BitOffs>
+				<Default>
+					<Value>15</Value>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>nRate</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<Comment><![CDATA[Pulse-rate]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>64</BitOffs>
+				<Default>
+					<Value>10</Value>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>fPP_mJ</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<Comment><![CDATA[Per pulse max energy (mJ)]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>96</BitOffs>
+				<Default>
+					<Value>20</Value>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>neVRange</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000004}">WORD</Type>
+				<Comment><![CDATA[Valid photon energy ranges]]></Comment>
+				<BitSize>16</BitSize>
+				<BitOffs>128</BitOffs>
+				<Default>
+					<Value>65535</Value>
+				</Default>
+				<Properties>
+					<Property>
+						<Name>plcAttribute_displaymode</Name>
+						<Value>binary</Value>
+					</Property>
+				</Properties>
+			</SubItem>
+			<SubItem>
+				<Name>reV</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<Comment><![CDATA[Photon energy (calculated by undulator gap)]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>160</BitOffs>
+				<Default>
+					<Value>0</Value>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>astAttenuators</Name>
+				<Type GUID="{368B451D-5F22-418E-BC16-2D5D4795EA17}">ST_PMPS_Attenuator</Type>
+				<ArrayInfo>
+					<LBound>0</LBound>
+					<Elements>32</Elements>
+				</ArrayInfo>
+				<BitSize>1536</BitSize>
+				<BitOffs>192</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>xValidToggle</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>1728</BitOffs>
+			</SubItem>
+			<Hides>
+				<Hide GUID="{78C36F1F-49D4-4A98-A984-C1A1FB958C5C}"/>
+				<Hide GUID="{F6431806-B627-497C-BADD-DBF4AE61DDAD}"/>
+				<Hide GUID="{F459ABEA-ABDF-06BD-2225-D43275F86912}"/>
+				<Hide GUID="{7316A6E2-CEF5-4B8C-B1CE-749A85F85FDA}"/>
+				<Hide GUID="{53E4DC6C-4730-4D87-8557-C1B671BE0662}"/>
+				<Hide GUID="{A8B44F63-3E95-482F-9E25-C46EB6DEF06A}"/>
 			</Hides>
 		</DataType>
 		<DataType>
@@ -235,122 +351,6 @@
 				<Hide GUID="{78C36F1F-49D4-4A98-A984-C1A1FB958C5C}"/>
 				<Hide GUID="{F6431806-B627-497C-BADD-DBF4AE61DDAD}"/>
 				<Hide GUID="{F459ABEA-ABDF-06BD-2225-D43275F86912}"/>
-			</Hides>
-		</DataType>
-		<DataType>
-			<Name GUID="{368B451D-5F22-418E-BC16-2D5D4795EA17}" PersistentType="true">ST_PMPS_Attenuator</Name>
-			<BitSize>48</BitSize>
-			<SubItem>
-				<Name>nReqAtt</Name>
-				<Type GUID="{18071995-0000-0000-0000-000000000005}">UINT</Type>
-				<BitSize>16</BitSize>
-				<BitOffs>0</BitOffs>
-			</SubItem>
-			<SubItem>
-				<Name>nAttCur</Name>
-				<Type GUID="{18071995-0000-0000-0000-000000000005}">UINT</Type>
-				<BitSize>16</BitSize>
-				<BitOffs>16</BitOffs>
-			</SubItem>
-			<SubItem>
-				<Name>xAttOK</Name>
-				<Type GUID="{18071995-0000-0000-0000-000000000005}">UINT</Type>
-				<BitSize>16</BitSize>
-				<BitOffs>32</BitOffs>
-			</SubItem>
-		</DataType>
-		<DataType>
-			<Name GUID="{1A16E08A-0722-4B0A-BA3C-4DE06882AA20}" PersistentType="true">ST_BeamParams</Name>
-			<BitSize>1736</BitSize>
-			<SubItem>
-				<Name>fAtt</Name>
-				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
-				<Comment><![CDATA[Requested attenuation %]]></Comment>
-				<BitSize>32</BitSize>
-				<BitOffs>0</BitOffs>
-				<Default>
-					<Value>100</Value>
-				</Default>
-			</SubItem>
-			<SubItem>
-				<Name>nBeamClass</Name>
-				<Type GUID="{18071995-0000-0000-0000-000000000001}">BYTE</Type>
-				<Comment><![CDATA[Machine parameters]]></Comment>
-				<BitSize>8</BitSize>
-				<BitOffs>32</BitOffs>
-				<Default>
-					<Value>15</Value>
-				</Default>
-			</SubItem>
-			<SubItem>
-				<Name>nRate</Name>
-				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
-				<Comment><![CDATA[Pulse-rate]]></Comment>
-				<BitSize>32</BitSize>
-				<BitOffs>64</BitOffs>
-				<Default>
-					<Value>10</Value>
-				</Default>
-			</SubItem>
-			<SubItem>
-				<Name>fPP_mJ</Name>
-				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
-				<Comment><![CDATA[Per pulse max energy (mJ)]]></Comment>
-				<BitSize>32</BitSize>
-				<BitOffs>96</BitOffs>
-				<Default>
-					<Value>20</Value>
-				</Default>
-			</SubItem>
-			<SubItem>
-				<Name>neVRange</Name>
-				<Type GUID="{18071995-0000-0000-0000-000000000004}">WORD</Type>
-				<Comment><![CDATA[Valid photon energy ranges]]></Comment>
-				<BitSize>16</BitSize>
-				<BitOffs>128</BitOffs>
-				<Default>
-					<Value>65535</Value>
-				</Default>
-				<Properties>
-					<Property>
-						<Name>plcAttribute_displaymode</Name>
-						<Value>binary</Value>
-					</Property>
-				</Properties>
-			</SubItem>
-			<SubItem>
-				<Name>reV</Name>
-				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
-				<Comment><![CDATA[Photon energy (calculated by undulator gap)]]></Comment>
-				<BitSize>32</BitSize>
-				<BitOffs>160</BitOffs>
-				<Default>
-					<Value>0</Value>
-				</Default>
-			</SubItem>
-			<SubItem>
-				<Name>astAttenuators</Name>
-				<Type GUID="{368B451D-5F22-418E-BC16-2D5D4795EA17}">ST_PMPS_Attenuator</Type>
-				<ArrayInfo>
-					<LBound>0</LBound>
-					<Elements>32</Elements>
-				</ArrayInfo>
-				<BitSize>1536</BitSize>
-				<BitOffs>192</BitOffs>
-			</SubItem>
-			<SubItem>
-				<Name>xValidToggle</Name>
-				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
-				<BitSize>8</BitSize>
-				<BitOffs>1728</BitOffs>
-			</SubItem>
-			<Hides>
-				<Hide GUID="{78C36F1F-49D4-4A98-A984-C1A1FB958C5C}"/>
-				<Hide GUID="{F6431806-B627-497C-BADD-DBF4AE61DDAD}"/>
-				<Hide GUID="{F459ABEA-ABDF-06BD-2225-D43275F86912}"/>
-				<Hide GUID="{7316A6E2-CEF5-4B8C-B1CE-749A85F85FDA}"/>
-				<Hide GUID="{53E4DC6C-4730-4D87-8557-C1B671BE0662}"/>
-				<Hide GUID="{A8B44F63-3E95-482F-9E25-C46EB6DEF06A}"/>
 			</Hides>
 		</DataType>
 	</DataTypes>
