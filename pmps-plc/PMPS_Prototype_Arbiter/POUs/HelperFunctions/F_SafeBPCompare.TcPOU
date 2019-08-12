@@ -28,17 +28,11 @@ END_VAR
 
 xAttOK := BeamParam1.fAtt >= BeamParam2.fAtt;
 xPPmjOK := BeamParam1.fPP_mJ <= BeamParam2.fPP_mJ;
-xEvOK := (BeamParam1.neVRange AND BeamParam2.neVRange) = BeamParam2.neVRange;
+xEvOK := (BeamParam1.neVRange AND BeamParam2.neVRange) = BeamParam1.neVRange;
 xZeroRate	:= BeamParam1.nRate = 0;
 xRateOK	:= BeamParam1.nRate <= BeamParam2.nRate;
 
 F_SafeBPCompare := xZeroRate OR (xAttOK AND xPPmjOK AND xEvOK AND xRateOK);]]></ST>
     </Implementation>
-    <LineIds Name="F_SafeBPCompare">
-      <LineId Id="96" Count="0" />
-      <LineId Id="92" Count="0" />
-      <LineId Id="60" Count="5" />
-      <LineId Id="7" Count="0" />
-    </LineIds>
   </POU>
 </TcPlcObject>
