@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
+  <POU Name="FB_LinearDeviceStateTable" Id="{27c19888-f176-0454-0fcd-90ee0c261f14}" SpecialFunc="None">
+    <Declaration><![CDATA[(* This function block implements simple database. Data element values are stored in the hash table.  *)
+FUNCTION_BLOCK FB_LinearDeviceStateTable
+VAR_INPUT
+	key 		: DWORD := 0;(* Entry key: used by A_Lookup, A_Remove method, the key variable is also used by A_Add method *)
+	putPosPtr	: POINTER TO T_HashTableEntry := 0;(* Hash table entry position pointer (used by A_Find, A_GetNext, A_GetPrev) *)
+	putValue 	: ST_DeviceState;(* Hash table entry value (used by A_AddHead, A_AddTail, A_Find )*)
+END_VAR
+VAR_OUTPUT
+	bOk			: BOOL := FALSE;(* TRUE = Success, FALSE = Failed *)
+	getPosPtr	: POINTER TO T_HashTableEntry := 0;(* Returned hash table entry position pointer *)
+	getValue 	: ST_DeviceState;(* Returned hash table entry value *)
+	nCount		: UDINT := 0;(* Hash table size (number of used entries, used by A_Count) *)
+END_VAR
+VAR
+	dataPool	: ARRAY[0..MAX_DEVICE_STATES] OF ST_DeviceState;(* Structured data element pool *)
+	entries		: ARRAY[0..MAX_DEVICE_STATES] OF T_HashTableEntry;(* Max. number of hash table entries. The value of table entry = 32 bit integer (pointer to dataPool-array-entry) *)
+	fbTable 	: FB_HashTableCtrl;(* basic hash table control function block *)
+	hTable 		: T_HHASHTABLE;(* hash table handle *)
+	pRefPtr		: POINTER TO ST_DeviceState := 0;
+	indexOfElem	: ULINT;(* Integer value (max. size: x86=>32bit, x64=>64bit)*)
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[;]]></ST>
+    </Implementation>
+    <Action Name="A_Add" Id="{6b4ec745-9023-017c-1360-d0aa57b57b67}">
+      <Implementation>
+        <ST><![CDATA[(* Adds entry to the table *)
+MEMSET( ADR( getValue ), 0, SIZEOF( getValue ) );
+getPosPtr := 0;
+
+fbTable.A_Add( hTable := hTable, key := key, putValue := ADR(PMPS_GVL_BeamParams.cstSafeBeam)(* we will set this value later *), getPosPtr=>getPosPtr, bOk=>bOk );(* Add new element to the table, getPosPtr points to the new entry *)
+IF fbTable.bOk THEN(* Success *)
+	fbTable.A_GetIndexAtPosPtr( hTable := hTable, putPosPtr := getPosPtr, getValue =>indexOfElem, bOk=>bOk );(* Get array index of getPosPtr entry *)
+	IF fbTable.bOk THEN(* Success *)
+		pRefPtr 	:= ADR( dataPool[indexOfElem] );(* Get pointer to the data element *)
+
+		pRefPtr^ := putValue;(* copy application value *)
+
+		fbTable.A_Add( hTable := hTable, key := key, putValue := pRefPtr, bOk=>bOk );(* Assign the entry value = pointer to the data element *)
+		IF fbTable.bOk THEN(* Success *)
+			getValue := putValue;
+		END_IF
+	END_IF
+END_IF]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="A_Count" Id="{54d1d983-cf0d-0f8a-048e-b34bb0da3eb7}">
+      <Implementation>
+        <ST><![CDATA[(* Count number of used entries *)
+nCount := hTable.nCount;
+bOk := TRUE;]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="A_GetFirst" Id="{d9693e70-ea47-00f2-1f39-1e5222315dd5}">
+      <Implementation>
+        <ST><![CDATA[(* Get first entry position pointer and value *)
+MEMSET( ADR( getValue ), 0, SIZEOF( getValue ) );
+getPosPtr := 0;
+
+fbTable.A_GetFirst( hTable := hTable, putPosPtr := putPosPtr, getValue=>pRefPtr, getPosPtr=>getPosPtr, bOk=>bOk );
+IF fbTable.bOk THEN
+	getValue := pRefPtr^;
+END_IF]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="A_GetNext" Id="{afae4003-2345-0da4-3230-4d4c8e8622fc}">
+      <Implementation>
+        <ST><![CDATA[(* Get next entry position pointer and value *)
+MEMSET( ADR( getValue ), 0, SIZEOF( getValue ) );
+getPosPtr := 0;
+bOk := FALSE;
+
+IF putPosPtr = 0 THEN
+	RETURN;
+END_IF
+
+fbTable.A_GetNext( hTable := hTable, putPosPtr := putPosPtr, getValue=>pRefPtr, getPosPtr=>getPosPtr, bOk=>bOk );
+IF fbTable.bOk THEN
+	getValue := pRefPtr^;
+END_IF]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="A_Lookup" Id="{95d84734-cb3b-031b-2461-9aa2c22af60b}">
+      <Implementation>
+        <ST><![CDATA[(* Lookup for entry by key  *)
+MEMSET( ADR( getValue ), 0, SIZEOF( getValue ) );
+getPosPtr := 0;
+
+fbTable.A_Lookup( key := key, hTable := hTable, putPosPtr := putPosPtr, getValue=>pRefPtr, getPosPtr=>getPosPtr, bOk=>bOk );
+IF fbTable.bOk THEN
+	getValue := pRefPtr^;
+END_IF]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="A_Remove" Id="{fc063e88-c4bd-00d1-2504-87f89e313148}">
+      <Implementation>
+        <ST><![CDATA[(* Search for entry and remove it *)
+MEMSET( ADR( getValue ), 0, SIZEOF( getValue ) );
+getPosPtr := 0;
+
+fbTable.A_Remove( key := key, hTable := hTable, putPosPtr := putPosPtr, getValue=>pRefPtr, getPosPtr=>getPosPtr, bOk=>bOk );
+IF fbTable.bOk THEN
+	getValue := pRefPtr^;
+END_IF]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="A_Reset" Id="{6a3692ec-2bf5-044f-04dc-5121a01028cf}">
+      <Implementation>
+        <ST><![CDATA[(* Reset/initialize linked list *)
+MEMSET( ADR( getValue ), 0, SIZEOF( getValue ) );
+getPosPtr := 0;
+bOk := F_CreateHashTableHnd( ADR( entries ), SIZEOF( entries ), hTable );(* Intialize table handle *)
+fbTable.A_Reset( hTable := hTable, bOk=>bOk );
+nCount := 0;]]></ST>
+      </Implementation>
+    </Action>
+  </POU>
+</TcPlcObject>

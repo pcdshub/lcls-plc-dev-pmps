@@ -71,6 +71,110 @@
     <Compile Include="PlcTask.TcTTO">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="pmps-lib\HelperFunctions\F_DeviceState_To_DeviceStateExt.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="pmps-lib\HelperFunctions\F_DiffBeamParamsRB.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="pmps-lib\HelperFunctions\F_DifferentBeamParams.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="pmps-lib\HelperFunctions\F_DiffReqBeamParams.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="pmps-lib\HelperFunctions\F_eVRangeCalculator.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="pmps-lib\HelperFunctions\F_eVWithinSpec.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="pmps-lib\HelperFunctions\F_SafeBPCompare.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="pmps-lib\HelperFunctions\F_SetBeamParams.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="pmps-lib\HelperFunctions\F_SetStateParams.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="pmps-lib\MajorComponents\BeamParameterTransitionManager.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="pmps-lib\MajorComponents\FB_Arbiter.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="pmps-lib\MajorComponents\FB_BeamClassOutputs.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="pmps-lib\MajorComponents\FB_BeamParamAssertionPool.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="pmps-lib\MajorComponents\FB_BeamParamFanout.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="pmps-lib\MajorComponents\FB_BPRequestor.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="pmps-lib\MajorComponents\FB_FastFault.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="pmps-lib\MajorComponents\FB_HardwareFFOutput.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="pmps-lib\MajorComponents\FB_LinearDeviceStateTable.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="pmps-lib\MajorComponents\FB_LinearGovernor.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="pmps-lib\MajorComponents\FB_PhotonEnergyWatcher.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="pmps-lib\MajorComponents\FB_UsualSuspects.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="pmps-lib\TestComponents\eBPTMTestStates.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="pmps-lib\TestComponents\FB_Arbiter_Test.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="pmps-lib\TestComponents\FB_AttenuatorSimulator.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="pmps-lib\TestComponents\FB_BeamParamFanout_Test.TcPOU">
+      <SubType>Code</SubType>
+      <ExcludeFromBuild>true</ExcludeFromBuild>
+    </Compile>
+    <Compile Include="pmps-lib\TestComponents\FB_BPRequestor_Test.TcPOU">
+      <SubType>Code</SubType>
+      <ExcludeFromBuild>true</ExcludeFromBuild>
+    </Compile>
+    <Compile Include="pmps-lib\TestComponents\FB_BPTM_Test.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="pmps-lib\TestComponents\FB_evRangeCalculator_Test.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="pmps-lib\TestComponents\FB_eVWithinSpec_Test.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="pmps-lib\TestComponents\FB_FastFault_Test.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="pmps-lib\TestComponents\FB_MachineSimulator.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="pmps-lib\TestComponents\FB_PhotonEnergyWatcher_Test.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="pmps-lib\TestComponents\FB_SafeBPCompare_Test.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="pmps-lib\TestComponents\FB_SolidAttenuator.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="POUs\DatabaseComponents\FB_ExampleDeviceSM_DB.TcPOU">
       <SubType>Code</SubType>
     </Compile>
@@ -95,117 +199,13 @@
     <Compile Include="POUs\Fast_Faults_Evaluate.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\HelperFunctions\F_DeviceState_To_DeviceStateExt.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\HelperFunctions\F_DifferentBeamParams.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\HelperFunctions\F_DiffBeamParamsRB.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\HelperFunctions\F_DiffReqBeamParams.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\HelperFunctions\F_eVRangeCalculator.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\HelperFunctions\F_eVWithinSpec.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\HelperFunctions\F_SafeBPCompare.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\HelperFunctions\F_SetBeamParams.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\HelperFunctions\F_SetStateParams.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="POUs\MachineSimulation.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\MAIN.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\MajorComponents\FB_BeamClassOutputs.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\MajorComponents\FB_BeamParamFanout.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\MajorComponents\FB_BPRequestor.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\MajorComponents\FB_FastFault.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\MajorComponents\FB_HardwareFFOutput.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\MajorComponents\FB_LinearGovernor.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\MajorComponents\FB_PhotonEnergyWatcher.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\MajorComponents\FB_UsualSuspects.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="POUs\PMPS_Arbiter.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\MajorComponents\BeamParameterTransitionManager.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\MajorComponents\FB_Arbiter.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\MajorComponents\FB_BeamParamAssertionPool.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\MajorComponents\FB_LinearDeviceStateTable.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\TestComponents\eBPTMTestStates.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\TestComponents\FB_AttenuatorSimulator.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\TestComponents\FB_BPRequestor_Test.TcPOU">
-      <SubType>Code</SubType>
-      <ExcludeFromBuild>true</ExcludeFromBuild>
-    </Compile>
-    <Compile Include="POUs\TestComponents\FB_BeamParamFanout_Test.TcPOU">
-      <SubType>Code</SubType>
-      <ExcludeFromBuild>true</ExcludeFromBuild>
-    </Compile>
-    <Compile Include="POUs\TestComponents\FB_BPTM_Test.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\TestComponents\FB_Arbiter_Test.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\TestComponents\FB_evRangeCalculator_Test.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\TestComponents\FB_PhotonEnergyWatcher_Test.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\TestComponents\FB_eVWithinSpec_Test.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\TestComponents\FB_FastFault_Test.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\TestComponents\FB_SafeBPCompare_Test.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\TestComponents\FB_MachineSimulator.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\TestComponents\FB_SolidAttenuator.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\TestSetups.TcPOU">
@@ -252,12 +252,13 @@
   <ItemGroup>
     <Folder Include="DUTs" />
     <Folder Include="GVLs" />
+    <Folder Include="pmps-lib" />
+    <Folder Include="pmps-lib\HelperFunctions" />
+    <Folder Include="pmps-lib\MajorComponents" />
+    <Folder Include="pmps-lib\TestComponents" />
     <Folder Include="POUs\DeviceImplementationEx1" />
     <Folder Include="POUs\DeviceImplementationEx2" />
-    <Folder Include="POUs\HelperFunctions" />
-    <Folder Include="POUs\MajorComponents" />
     <Folder Include="POUs\DatabaseComponents" />
-    <Folder Include="POUs\TestComponents" />
     <Folder Include="Version" />
     <Folder Include="VISUs" />
     <Folder Include="POUs" />
@@ -384,8 +385,8 @@
   <ProjectExtensions>
     <PlcProjectOptions>
       <XmlArchive>
-  <Data>
-    <o xml:space="preserve" t="OptionKey">
+        <Data>
+          <o xml:space="preserve" t="OptionKey">
       <v n="Name">"&lt;ProjectRoot&gt;"</v>
       <d n="SubKeys" t="Hashtable" ckt="String" cvt="OptionKey">
         <v>{192FAD59-8248-4824-A8DE-9177C94C195A}</v>
@@ -469,16 +470,16 @@
       </d>
       <d n="Values" t="Hashtable" />
     </o>
-  </Data>
-  <TypeList>
-    <Type n="Boolean">System.Boolean</Type>
-    <Type n="Hashtable">System.Collections.Hashtable</Type>
-    <Type n="Int32">System.Int32</Type>
-    <Type n="NewestVersionConstraintToSave">{af9bafe2-ba31-4b15-a2b9-48a0f2cd09fb}</Type>
-    <Type n="OptionKey">{54dd0eac-a6d8-46f2-8c27-2f43c7e49861}</Type>
-    <Type n="String">System.String</Type>
-  </TypeList>
-</XmlArchive>
+        </Data>
+        <TypeList>
+          <Type n="Boolean">System.Boolean</Type>
+          <Type n="Hashtable">System.Collections.Hashtable</Type>
+          <Type n="Int32">System.Int32</Type>
+          <Type n="NewestVersionConstraintToSave">{af9bafe2-ba31-4b15-a2b9-48a0f2cd09fb}</Type>
+          <Type n="OptionKey">{54dd0eac-a6d8-46f2-8c27-2f43c7e49861}</Type>
+          <Type n="String">System.String</Type>
+        </TypeList>
+      </XmlArchive>
     </PlcProjectOptions>
   </ProjectExtensions>
 </Project>
