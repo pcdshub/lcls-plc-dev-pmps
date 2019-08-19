@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
   <POU Name="MachineSimulation" Id="{215532fb-b2c1-07b9-12dd-bf8b9df2fcb5}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM MachineSimulation
 VAR
@@ -18,7 +18,7 @@ fbMachine(
 	);
 	
 q_SimCurrBP	:= fbMachine.q_stMachineParams;
-q_SimCurrBP.neVReqRange := i_SimReqBP.neVReqRange;]]></ST>
+q_SimCurrBP.neVRange := i_SimReqBP.neVRange;]]></ST>
     </Implementation>
     <LineIds Name="MachineSimulation">
       <LineId Id="6" Count="4" />
