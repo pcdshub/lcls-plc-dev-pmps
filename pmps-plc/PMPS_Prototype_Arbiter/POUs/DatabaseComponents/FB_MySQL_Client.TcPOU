@@ -1,0 +1,156 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.12">
+  <POU Name="FB_MySQL_Client" Id="{aaebf537-2c53-07c7-13aa-9cbdcf448171}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_MySQL_Client
+VAR_INPUT
+	sDeviceID: STRING;
+	iDBID:UDINT;
+	sDBNetId: STRING ;
+	bGetData:BOOL;
+END_VAR
+VAR_OUTPUT
+	StateTable : FB_LinearDeviceStateTable;
+END_VAR
+VAR CONSTANT
+	sSQLCommand :STRING:='SELECT * FROM device_states  WHERE device_id =';
+END_VAR
+VAR
+	nState: INT:=0; // used as a start signal
+	nRecordCount: UDINT:=MAX_DEVICE_STATES;
+	aDeviceStateTable : ARRAY[1..MAX_DEVICE_STATES] OF ST_DeviceStateTable;
+	fbMySQLDB:  FB_SQLDatabase(sNetId := '', tTimeout:=T#5S);
+	fbSQLCmd:  FB_SQLCommand(sNetId := '', tTimeout:=T#5S);
+	fbSQLResult: FB_SQLResult(sNetId := '', tTimeout:=T#5S);
+	sSQLCmd :STRING;
+	ipResultEvent : Tc3_Eventlogger.I_TcResultEvent;
+	
+	
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+IF (bGetData) THEN
+	bGetData:= FALSE;
+	nState := 100;
+END_IF
+
+CASE nState OF
+	0:
+100:// Initialize Database function blocks
+	fbMySQLDB.sNetID := sDBNetId;
+	fbSQLCmd.sNetID := sDBNetId;
+	fbSQLResult.sNetID := sDBNetId; 
+	IF fbMySQLDB.Connect(iDBID) THEN
+		IF fbMySQLDB.bError THEN
+			nState := 9000+nState; 
+		ELSE
+			nState := nState+1; 
+		END_IF
+	END_IF
+ 
+101:	
+	 IF(fbMySQLDB.bConnected ) THEN
+		fbMySQLDB.CreateCmd(pSQLCommand := ADR(fbSQLCmd));
+		IF fbMySQLDB.bError THEN
+			nState := 9000+nState; 
+		ELSE
+			nState := 1+nState; 
+		END_IF
+	 END_IF
+102:	 
+  (*Execute SQL Comnmand*)
+	//sSQLCmd :=sSQLCommand;
+	sSQLCmd := CONCAT(sSQLCommand, sDeviceID) ;		
+   IF fbSQLCmd.ExecuteDataReturn(pSQLCmd:=ADR(sSQLCmd),cbSQLCmd:=SIZEOF(sSQLCmd),pSQLDBResult:=ADR(fbSQLResult)) THEN
+   	IF( fbSQLCmd.bError) THEN
+	    nState := 9000+nState; 
+    ELSE
+        nState := 1+nState; 
+		MEMSET(ADR(aDeviceStateTable),0,SIZEOF(aDeviceStateTable));
+
+    END_IF
+  END_IF
+ 
+103: 
+	(*Read data FROM the database*)
+  IF (fbSQLResult.Read(nStartIndex:=0, nRecordCount:=nRecordCount,pData:=ADR(aDeviceStateTable),cbData:=SIZEOF(aDeviceStateTable),bWithVerifying:=TRUE,bDataRelease:=TRUE) )THEN
+	 ipResultEvent := fbSQLResult.ipTcResultEvent;
+	IF fbSQLResult.bError THEN
+         nState := 9000+nState; 
+    ELSE
+        nState := 500;// 1+nState; 
+    END_IF
+END_IF	
+
+500:
+	//Device State Table Instantiation
+	IF F_DB_To_hTable( aStatesParamsTable:= aDeviceStateTable, nRecordCount:=nRecordCount, Table := StateTable)THEN
+         nState := 9000+nState; 
+    ELSE
+        nState :=800;// 1+nState; 
+    END_IF
+
+
+
+600: //Reload DATA
+//Reset all hash table entries
+// re instantiate device state table	
+	;
+9500:
+800: //Release and Disconnect
+	
+	IF (fbSQLResult.Release() AND fbMySQLDB.Disconnect()) THEN
+		nState:=-1;
+		ELSE
+			 nState := 9000+nState; 
+	END_IF
+
+
+		;
+END_CASE]]></ST>
+    </Implementation>
+    <LineIds Name="FB_MySQL_Client">
+      <LineId Id="226" Count="0" />
+      <LineId Id="215" Count="0" />
+      <LineId Id="217" Count="0" />
+      <LineId Id="219" Count="0" />
+      <LineId Id="218" Count="0" />
+      <LineId Id="216" Count="0" />
+      <LineId Id="24" Count="1" />
+      <LineId Id="187" Count="0" />
+      <LineId Id="135" Count="0" />
+      <LineId Id="26" Count="0" />
+      <LineId Id="136" Count="0" />
+      <LineId Id="28" Count="6" />
+      <LineId Id="83" Count="0" />
+      <LineId Id="127" Count="0" />
+      <LineId Id="86" Count="9" />
+      <LineId Id="186" Count="0" />
+      <LineId Id="185" Count="0" />
+      <LineId Id="98" Count="9" />
+      <LineId Id="220" Count="0" />
+      <LineId Id="227" Count="0" />
+      <LineId Id="108" Count="1" />
+      <LineId Id="111" Count="5" />
+      <LineId Id="158" Count="0" />
+      <LineId Id="157" Count="0" />
+      <LineId Id="170" Count="0" />
+      <LineId Id="181" Count="0" />
+      <LineId Id="178" Count="2" />
+      <LineId Id="176" Count="0" />
+      <LineId Id="161" Count="0" />
+      <LineId Id="233" Count="0" />
+      <LineId Id="228" Count="0" />
+      <LineId Id="120" Count="0" />
+      <LineId Id="230" Count="1" />
+      <LineId Id="229" Count="0" />
+      <LineId Id="235" Count="0" />
+      <LineId Id="122" Count="0" />
+      <LineId Id="234" Count="0" />
+      <LineId Id="123" Count="3" />
+      <LineId Id="121" Count="0" />
+      <LineId Id="117" Count="2" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

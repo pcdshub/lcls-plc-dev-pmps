@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<TcSmItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmItem" TcSmVersion="1.0" TcVersion="3.1.4022.22" ClassName="CNestedPlcProjDef">
+<TcSmItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmItem" TcSmVersion="1.0" TcVersion="3.1.4022.30" ClassName="CNestedPlcProjDef">
 	<DataTypes>
 		<DataType>
 			<Name GUID="{18071995-0000-0000-0000-000000000041}" TcBaseType="true" HideSubItems="true" CName="AmsNetId">AMSNETID</Name>
@@ -719,13 +719,166 @@ External Setpoint Generation:
 			</Relations>
 		</DataType>
 		<DataType>
-			<Name GUID="{0B37E936-53FE-6A1D-9723-D7016BFD8546}" IecBaseType="true" AutoDeleteType="true">ARRAY [1..16] OF BOOL</Name>
-			<BitSize>128</BitSize>
-			<BaseType GUID="{18071995-0000-0000-0000-000000000030}">BOOL</BaseType>
-			<ArrayInfo>
-				<LBound>1</LBound>
-				<Elements>16</Elements>
-			</ArrayInfo>
+			<Name GUID="{F459ABEA-ABDF-06BD-2225-D43275F86912}" PersistentType="true">ST_BeamParams</Name>
+			<BitSize>192</BitSize>
+			<SubItem>
+				<Name>fAtt</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<Comment>
+					<![CDATA[Requested attenuation %]]>
+				</Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>0</BitOffs>
+				<Default>
+					<Value>100</Value>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>nBeamClass</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000001}">BYTE</Type>
+				<Comment>
+					<![CDATA[Machine parameters]]>
+				</Comment>
+				<BitSize>8</BitSize>
+				<BitOffs>32</BitOffs>
+				<Default>
+					<Value>15</Value>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>nRate</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<Comment>
+					<![CDATA[Pulse-rate]]>
+				</Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>64</BitOffs>
+				<Default>
+					<Value>10</Value>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>fPP_mJ</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<Comment>
+					<![CDATA[Per pulse max energy (mJ)]]>
+				</Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>96</BitOffs>
+				<Default>
+					<Value>20</Value>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>neVReqRange</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000004}">WORD</Type>
+				<Comment>
+					<![CDATA[Valid photon energy ranges]]>
+				</Comment>
+				<BitSize>16</BitSize>
+				<BitOffs>128</BitOffs>
+				<Default>
+					<Value>65535</Value>
+				</Default>
+				<Properties>
+					<Property>
+						<Name>plcAttribute_displaymode</Name>
+						<Value>binary</Value>
+					</Property>
+				</Properties>
+			</SubItem>
+			<SubItem>
+				<Name>reV</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<Comment>
+					<![CDATA[Photon energy (calculated by undulator gap)]]>
+				</Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>160</BitOffs>
+				<Default>
+					<Value>0</Value>
+				</Default>
+			</SubItem>
+			<Hides>
+				<Hide GUID="{78C36F1F-49D4-4A98-A984-C1A1FB958C5C}"/>
+				<Hide GUID="{F6431806-B627-497C-BADD-DBF4AE61DDAD}"/>
+			</Hides>
+		</DataType>
+		<DataType>
+			<Name GUID="{04FEFAB6-B388-4860-9DCB-790A6EAE4A6D}" PersistentType="true">ST_BeamParamsReadback</Name>
+			<BitSize>192</BitSize>
+			<SubItem>
+				<Name>fAtt</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<Comment>
+					<![CDATA[Current local attenuation]]>
+				</Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>0</BitOffs>
+				<Default>
+					<Value>100</Value>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>nBeamClass</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000001}">BYTE</Type>
+				<Comment>
+					<![CDATA[Machine parameters]]>
+				</Comment>
+				<BitSize>8</BitSize>
+				<BitOffs>32</BitOffs>
+				<Default>
+					<Value>15</Value>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>nRate</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<Comment>
+					<![CDATA[Pulse-rate]]>
+				</Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>64</BitOffs>
+				<Default>
+					<Value>10</Value>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>fPP_mJ</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<Comment>
+					<![CDATA[Per pulse max energy (mJ)]]>
+				</Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>96</BitOffs>
+				<Default>
+					<Value>20</Value>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>reV</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<Comment>
+					<![CDATA[Photon energy (calculated by undulator gap)]]>
+				</Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>128</BitOffs>
+				<Default>
+					<Value>0</Value>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>xValidToggle</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
+				<Comment>
+					<![CDATA[Toggles when updated]]>
+				</Comment>
+				<BitSize>8</BitSize>
+				<BitOffs>160</BitOffs>
+				<Default>
+					<Value>0</Value>
+				</Default>
+			</SubItem>
 		</DataType>
 		<DataType>
 			<Name GUID="{875D2B22-B7EB-497E-B933-0C004593CCF3}" Namespace="MC" TcBaseType="true" HideType="true" IecDeclaration="DWORD;">PLCTONC_AXIS_REF_CTRL</Name>
@@ -905,8 +1058,96 @@ External Setpoint Generation:
 				</Relation>
 			</Relations>
 		</DataType>
+		<DataType>
+			<Name GUID="{0B37E936-53FE-6A1D-9723-D7016BFD8546}" IecBaseType="true" AutoDeleteType="true">ARRAY [1..16] OF BOOL</Name>
+			<BitSize>128</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000000000030}">BOOL</BaseType>
+			<ArrayInfo>
+				<LBound>1</LBound>
+				<Elements>16</Elements>
+			</ArrayInfo>
+		</DataType>
+		<DataType>
+			<Name GUID="{183E930A-4C64-4DC2-95B5-28EADAFA45EE}" PersistentType="true">ST_ReqBeamParams</Name>
+			<BitSize>160</BitSize>
+			<SubItem>
+				<Name>fAtt</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<Comment>
+					<![CDATA[Requested attenuation %]]>
+				</Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>0</BitOffs>
+				<Default>
+					<Value>100</Value>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>nBeamClass</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000001}">BYTE</Type>
+				<Comment>
+					<![CDATA[Machine parameters]]>
+				</Comment>
+				<BitSize>8</BitSize>
+				<BitOffs>32</BitOffs>
+				<Default>
+					<Value>15</Value>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>nRate</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<Comment>
+					<![CDATA[Pulse-rate]]>
+				</Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>64</BitOffs>
+				<Default>
+					<Value>10</Value>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>fPP_mJ</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<Comment>
+					<![CDATA[Per pulse max energy (mJ)]]>
+				</Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>96</BitOffs>
+				<Default>
+					<Value>20</Value>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>neVPermRange</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000004}">WORD</Type>
+				<Comment>
+					<![CDATA[Valid photon energy ranges]]>
+				</Comment>
+				<BitSize>16</BitSize>
+				<BitOffs>128</BitOffs>
+				<Default>
+					<Value>65535</Value>
+				</Default>
+				<Properties>
+					<Property>
+						<Name>plcAttribute_displaymode</Name>
+						<Value>binary</Value>
+					</Property>
+				</Properties>
+			</SubItem>
+			<SubItem>
+				<Name>xValidToggle</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>144</BitOffs>
+			</SubItem>
+			<Hides>
+				<Hide GUID="{FC42DB62-E617-435F-86F0-9A207B93F02E}"/>
+			</Hides>
+		</DataType>
 	</DataTypes>
-	<Project GUID="{E8A5EE9B-6606-423E-92F4-1FF908FBA45E}" Name="PMPS_Prototype_Arbiter" PrjFilePath="..\..\PMPS_Prototype_Arbiter\PMPS_Prototype_Arbiter.plcproj" TmcFilePath="..\..\PMPS_Prototype_Arbiter\PMPS_Prototype_Arbiter.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e">
+	<Project GUID="{E8A5EE9B-6606-423E-92F4-1FF908FBA45E}" Name="PMPS_Prototype_Arbiter" PrjFilePath="..\..\PMPS_Prototype_Arbiter\PMPS_Prototype_Arbiter.plcproj" TmcFilePath="..\..\PMPS_Prototype_Arbiter\PMPS_Prototype_Arbiter.tmc" ReloadTmc="true" AmsPort="851" TargetArchiveSettings="#x0001" FileArchiveSettings="#x000e">
 		<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="PMPS_Prototype_Arbiter\PMPS_Prototype_Arbiter.tmc">
 			<Name>PMPS_Prototype_Arbiter Instance</Name>
 			<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
@@ -1045,21 +1286,97 @@ External Setpoint Generation:
 					</Comment>
 					<Type>BOOL</Type>
 				</Var>
+				<Var>
+					<Name>MachineSimulation.i_SimReqBP</Name>
+					<Type GUID="{F459ABEA-ABDF-06BD-2225-D43275F86912}">ST_BeamParams</Type>
+					<SubVar>
+						<Name>fAtt</Name>
+						<Comment>
+							<![CDATA[Requested attenuation %]]>
+						</Comment>
+					</SubVar>
+					<SubVar>
+						<Name>nBeamClass</Name>
+						<Comment>
+							<![CDATA[Machine parameters]]>
+						</Comment>
+					</SubVar>
+					<SubVar>
+						<Name>nRate</Name>
+						<Comment>
+							<![CDATA[Pulse-rate]]>
+						</Comment>
+					</SubVar>
+					<SubVar>
+						<Name>fPP_mJ</Name>
+						<Comment>
+							<![CDATA[Per pulse max energy (mJ)]]>
+						</Comment>
+					</SubVar>
+					<SubVar>
+						<Name>neVReqRange</Name>
+						<Comment>
+							<![CDATA[Valid photon energy ranges]]>
+						</Comment>
+					</SubVar>
+					<SubVar>
+						<Name>reV</Name>
+						<Comment>
+							<![CDATA[Photon energy (calculated by undulator gap)]]>
+						</Comment>
+					</SubVar>
+				</Var>
+				<Var>
+					<Name>PMPS_Arbiter.fbBPFanout.i_stBP</Name>
+					<Type GUID="{04FEFAB6-B388-4860-9DCB-790A6EAE4A6D}">ST_BeamParamsReadback</Type>
+					<SubVar>
+						<Name>fAtt</Name>
+						<Comment>
+							<![CDATA[Current local attenuation]]>
+						</Comment>
+					</SubVar>
+					<SubVar>
+						<Name>nBeamClass</Name>
+						<Comment>
+							<![CDATA[Machine parameters]]>
+						</Comment>
+					</SubVar>
+					<SubVar>
+						<Name>nRate</Name>
+						<Comment>
+							<![CDATA[Pulse-rate]]>
+						</Comment>
+					</SubVar>
+					<SubVar>
+						<Name>fPP_mJ</Name>
+						<Comment>
+							<![CDATA[Per pulse max energy (mJ)]]>
+						</Comment>
+					</SubVar>
+					<SubVar>
+						<Name>reV</Name>
+						<Comment>
+							<![CDATA[Photon energy (calculated by undulator gap)]]>
+						</Comment>
+					</SubVar>
+					<SubVar>
+						<Name>xValidToggle</Name>
+						<Comment>
+							<![CDATA[Toggles when updated]]>
+						</Comment>
+					</SubVar>
+				</Var>
+				<Var>
+					<Name>PMPS_Arbiter.fbBPFanout.xTxPDO_toggle</Name>
+					<Type>BIT</Type>
+				</Var>
+				<Var>
+					<Name>PMPS_Arbiter.fbBPFanout.xTxPDO_state</Name>
+					<Type>BIT</Type>
+				</Var>
 			</Vars>
 			<Vars VarGrpType="2">
 				<Name>PlcTask Outputs</Name>
-				<Var>
-					<Name>PMPS_Arbiter.fbMPSInterface.q_BC_ASSERTION_LINES</Name>
-					<Type GUID="{0B37E936-53FE-6A1D-9723-D7016BFD8546}">ARRAY [1..16] OF BOOL</Type>
-				</Var>
-				<Var>
-					<Name>PMPS_Arbiter.ExchangeBeamParams.foo</Name>
-					<Type>BOOL</Type>
-				</Var>
-				<Var>
-					<Name>GVL.g_FastFaultOutput1.q_xFastFaultOut</Name>
-					<Type>BOOL</Type>
-				</Var>
 				<Var>
 					<Name>MAIN.fbDev1.stDevice.stAxis.PlcToNc</Name>
 					<Type GUID="{63A84524-72E3-41C8-BEAB-4CCE44690A13}" Namespace="MC">PLCTONC_AXIS_REF</Type>
@@ -1068,21 +1385,153 @@ External Setpoint Generation:
 					<Name>MAIN.fbDev2.stDevice.stAxis.PlcToNc</Name>
 					<Type GUID="{63A84524-72E3-41C8-BEAB-4CCE44690A13}" Namespace="MC">PLCTONC_AXIS_REF</Type>
 				</Var>
+				<Var>
+					<Name>MachineSimulation.q_SimCurrBP</Name>
+					<Type GUID="{F459ABEA-ABDF-06BD-2225-D43275F86912}">ST_BeamParams</Type>
+					<SubVar>
+						<Name>fAtt</Name>
+						<Comment>
+							<![CDATA[Requested attenuation %]]>
+						</Comment>
+					</SubVar>
+					<SubVar>
+						<Name>nBeamClass</Name>
+						<Comment>
+							<![CDATA[Machine parameters]]>
+						</Comment>
+					</SubVar>
+					<SubVar>
+						<Name>nRate</Name>
+						<Comment>
+							<![CDATA[Pulse-rate]]>
+						</Comment>
+					</SubVar>
+					<SubVar>
+						<Name>fPP_mJ</Name>
+						<Comment>
+							<![CDATA[Per pulse max energy (mJ)]]>
+						</Comment>
+					</SubVar>
+					<SubVar>
+						<Name>neVReqRange</Name>
+						<Comment>
+							<![CDATA[Valid photon energy ranges]]>
+						</Comment>
+					</SubVar>
+					<SubVar>
+						<Name>reV</Name>
+						<Comment>
+							<![CDATA[Photon energy (calculated by undulator gap)]]>
+						</Comment>
+					</SubVar>
+				</Var>
+				<Var>
+					<Name>PMPS_Arbiter.fbMPSInterface.q_BC_ASSERTION_LINES</Name>
+					<Type GUID="{0B37E936-53FE-6A1D-9723-D7016BFD8546}">ARRAY [1..16] OF BOOL</Type>
+				</Var>
+				<Var>
+					<Name>PMPS_Arbiter.fbBPRequestor.q_stReqBP</Name>
+					<Type GUID="{183E930A-4C64-4DC2-95B5-28EADAFA45EE}">ST_ReqBeamParams</Type>
+					<SubVar>
+						<Name>fAtt</Name>
+						<Comment>
+							<![CDATA[Requested attenuation %]]>
+						</Comment>
+					</SubVar>
+					<SubVar>
+						<Name>nBeamClass</Name>
+						<Comment>
+							<![CDATA[Machine parameters]]>
+						</Comment>
+					</SubVar>
+					<SubVar>
+						<Name>nRate</Name>
+						<Comment>
+							<![CDATA[Pulse-rate]]>
+						</Comment>
+					</SubVar>
+					<SubVar>
+						<Name>fPP_mJ</Name>
+						<Comment>
+							<![CDATA[Per pulse max energy (mJ)]]>
+						</Comment>
+					</SubVar>
+					<SubVar>
+						<Name>neVPermRange</Name>
+						<Comment>
+							<![CDATA[Valid photon energy ranges]]>
+						</Comment>
+					</SubVar>
+				</Var>
+				<Var>
+					<Name>PMPS_Arbiter.q_BP</Name>
+					<Type GUID="{F459ABEA-ABDF-06BD-2225-D43275F86912}">ST_BeamParams</Type>
+					<SubVar>
+						<Name>fAtt</Name>
+						<Comment>
+							<![CDATA[Requested attenuation %]]>
+						</Comment>
+					</SubVar>
+					<SubVar>
+						<Name>nBeamClass</Name>
+						<Comment>
+							<![CDATA[Machine parameters]]>
+						</Comment>
+					</SubVar>
+					<SubVar>
+						<Name>nRate</Name>
+						<Comment>
+							<![CDATA[Pulse-rate]]>
+						</Comment>
+					</SubVar>
+					<SubVar>
+						<Name>fPP_mJ</Name>
+						<Comment>
+							<![CDATA[Per pulse max energy (mJ)]]>
+						</Comment>
+					</SubVar>
+					<SubVar>
+						<Name>neVReqRange</Name>
+						<Comment>
+							<![CDATA[Valid photon energy ranges]]>
+						</Comment>
+					</SubVar>
+					<SubVar>
+						<Name>reV</Name>
+						<Comment>
+							<![CDATA[Photon energy (calculated by undulator gap)]]>
+						</Comment>
+					</SubVar>
+				</Var>
+				<Var>
+					<Name>GVL.g_FastFaultOutput1.q_xFastFaultOut</Name>
+					<Type>BOOL</Type>
+				</Var>
 			</Vars>
-			<UnrestoredVarLinks ImportTime="2019-04-30T19:00:10">
+			<UnrestoredVarLinks ImportTime="2019-07-25T13:23:26">
 				<OwnerA Name="OutputSrc" Prefix="TIPC^PMPS_Prototype_Arbiter^PMPS_Prototype_Arbiter Instance" Type="2">
-					<OwnerB Name="TIID^Device 2 (EtherCAT)^Term 6 (EK1100)^Term 2 (EL6692)">
-						<Link VarA="PMPS_Arbiter.q_stReqBeamParam^fAtt" TypeA="REAL" InOutA="1" ParentTypeA="ST_BeamParams" GuidA="{18071995-0000-0000-0000-00000000000D}" VarB="IO Outputs^fAtt" RestoreInfo="ANotFound"/>
+					<OwnerB Name="TINC^NC-Task 1 SAF^Axes^Axis 3">
+						<Link VarA="MAIN.fbDev3.stDevice.stAxis.PlcToNc" TypeA="MC.PLCTONC_AXIS_REF" InOutA="1" GuidA="{63A84524-72E3-41C8-BEAB-4CCE44690A13}" VarB="Inputs^FromPlc" RestoreInfo="ANotFound"/>
+					</OwnerB>
+				</OwnerA>
+				<OwnerA Name="InputDst" Prefix="TIPC^PMPS_Prototype_Arbiter^PMPS_Prototype_Arbiter Instance" Type="1">
+					<OwnerB Name="TINC^NC-Task 1 SAF^Axes^Axis 3">
+						<Link VarA="MAIN.fbDev3.stDevice.stAxis.NcToPlc" TypeA="MC.NCTOPLC_AXIS_REF" InOutA="0" GuidA="{6A65C767-34E5-42BF-AD87-E1A503EAC7BE}" VarB="Outputs^ToPlc" RestoreInfo="ANotFound"/>
 					</OwnerB>
 				</OwnerA>
 			</UnrestoredVarLinks>
 			<TaskPouOids>
+				<TaskPouOid Prio="30" OTCID="#x08502002"/>
 				<TaskPouOid Prio="20" OTCID="#x08502001"/>
 			</TaskPouOids>
 		</Instance>
 	</Project>
 	<Mappings>
 		<OwnerA Name="PMPS_Prototype_Arbiter Instance">
+			<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 1 (EK1200)^Term 3 (EK1122)^Box 8 (EL6692)">
+				<Link VarA="PlcTask Inputs^MachineSimulation.i_SimReqBP" VarB="IO Inputs^RequestBP"/>
+				<Link VarA="PlcTask Outputs^MachineSimulation.q_SimCurrBP" VarB="IO Outputs^CurrentBP"/>
+			</OwnerB>
 			<OwnerB Name="TINC^NC-Task 1 SAF^Axes^Dev 2">
 				<Link VarA="PlcTask Inputs^MAIN.fbDev2.stDevice.stAxis.NcToPlc" VarB="Outputs^ToPlc"/>
 				<Link VarA="PlcTask Outputs^MAIN.fbDev2.stDevice.stAxis.PlcToNc" VarB="Inputs^FromPlc"/>

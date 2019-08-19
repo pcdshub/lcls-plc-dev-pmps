@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
   <GlobalTextList Name="GlobalTextList" Id="{95f283fb-7802-0cd6-2262-927cde0262ca}">
     <XmlArchive>
       <Data>
@@ -33,6 +33,11 @@
             <o>
               <v n="TextID">"632"</v>
               <v n="TextDefault">"%d"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"993"</v>
+              <v n="TextDefault">"%f"</v>
               <l n="LanguageTexts" t="ArrayList" />
             </o>
             <o>
@@ -113,6 +118,16 @@
             <o>
               <v n="TextID">"52"</v>
               <v n="TextDefault">"Clear Faults"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"983"</v>
+              <v n="TextDefault">"Current eV Range"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"992"</v>
+              <v n="TextDefault">"Current eV: %f"</v>
               <l n="LanguageTexts" t="ArrayList" />
             </o>
             <o>
@@ -211,6 +226,11 @@
               <l n="LanguageTexts" t="ArrayList" />
             </o>
             <o>
+              <v n="TextID">"512"</v>
+              <v n="TextDefault">"Photon Energy Adjustment"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
               <v n="TextID">"514"</v>
               <v n="TextDefault">"Photon Energy Ranges: %16b"</v>
               <l n="LanguageTexts" t="ArrayList" />
@@ -248,6 +268,11 @@
             <o>
               <v n="TextID">"479"</v>
               <v n="TextDefault">"Rate"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"710"</v>
+              <v n="TextDefault">"Requested eV Range"</v>
               <l n="LanguageTexts" t="ArrayList" />
             </o>
             <o>
@@ -312,9 +337,9 @@
             </o>
           </l>
           <l n="Languages" t="ArrayList" />
-          <v n="GuidInit">{5461ec2f-753f-4e19-9b95-8ab08e73d16a}</v>
-          <v n="GuidReInit">{46307288-e967-4da0-adaf-ddefa39e3f00}</v>
-          <v n="GuidExitX">{15d655cf-61c0-4b86-acc3-3441808bb375}</v>
+          <v n="GuidInit">{052f7331-d319-47f3-b8d8-b180cbddf469}</v>
+          <v n="GuidReInit">{dff6decf-a860-47c4-9a0c-285ad7ef3c1c}</v>
+          <v n="GuidExitX">{12ab2260-a78b-43a8-928b-5787a4cde1ef}</v>
         </o>
       </Data>
       <TypeList>

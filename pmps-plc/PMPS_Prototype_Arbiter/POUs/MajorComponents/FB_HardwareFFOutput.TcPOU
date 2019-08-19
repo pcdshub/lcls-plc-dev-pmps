@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
   <POU Name="FB_HardwareFFOutput" Id="{a4f6ab67-7f17-0762-312c-0b43d6887886}" SpecialFunc="None">
     <Declaration><![CDATA[
 FUNCTION_BLOCK FB_HardwareFFOutput
@@ -18,7 +18,7 @@ VAR
 	//Fast faults add their name here to indicate they
 	//"check in" to indicate their status with this fast
 	//fault output. ie. They may be a culprit of beam off.
-	asList	:	ARRAY[0..cMaxList] OF T_MaxString;
+	asList	:	ARRAY[0..99] OF T_MaxString;
 	nIndex	:	INT;
 END_VAR
 VAR CONSTANT
@@ -26,7 +26,8 @@ VAR CONSTANT
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[rtReset(CLK:=i_xReset);
-xOK S= rtReset.Q;]]></ST>
+xOK S= rtReset.Q;
+// <TODO> latch off beam if DI card status goes bad]]></ST>
     </Implementation>
     <Method Name="CheckIn" Id="{4e88ce47-4985-059d-1183-302e760496ae}">
       <Declaration><![CDATA[METHOD CheckIn : BOOL
@@ -43,7 +44,8 @@ END_IF
     </Method>
     <Action Name="EvaluateOutput" Id="{feb188c4-34f6-024f-3bca-dc2041e24a05}">
       <Implementation>
-        <ST><![CDATA[q_xFastFaultOut := xOK OR i_xVeto;]]></ST>
+        <ST><![CDATA[//<TODO> add diagnostic for success or failure of reset
+q_xFastFaultOut := xOK OR i_xVeto;]]></ST>
       </Implementation>
     </Action>
     <Method Name="Register" Id="{cb4480cd-cebd-021d-3625-c2443a033226}">
@@ -67,6 +69,7 @@ END_IF]]></ST>
     <LineIds Name="FB_HardwareFFOutput">
       <LineId Id="28" Count="0" />
       <LineId Id="44" Count="0" />
+      <LineId Id="67" Count="0" />
     </LineIds>
     <LineIds Name="FB_HardwareFFOutput.CheckIn">
       <LineId Id="5" Count="0" />
@@ -74,6 +77,7 @@ END_IF]]></ST>
       <LineId Id="7" Count="0" />
     </LineIds>
     <LineIds Name="FB_HardwareFFOutput.EvaluateOutput">
+      <LineId Id="2" Count="0" />
       <LineId Id="1" Count="0" />
     </LineIds>
     <LineIds Name="FB_HardwareFFOutput.Register">

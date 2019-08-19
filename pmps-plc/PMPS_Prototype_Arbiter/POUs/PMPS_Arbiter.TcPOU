@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
   <POU Name="PMPS_Arbiter" Id="{91ae890b-11cc-4d41-83ec-edc5b802c784}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM PMPS_Arbiter
 VAR
@@ -9,37 +9,72 @@ VAR
 	
 	fbPhotonEnergyWatcher	:	FB_PhotonEnergyWatcher;
 	
-	fbMPSInterface	:	FB_BeamClassOutputs;
-	{attribute 'pmps_interface' := 'TIID^Device 2 (EtherCAT)^Term 6 (EK1100)^Term 2 (EL6692)^IO Outputs^'}
-	ExchangeBeamParams	:	FB_BeamParamEx;
+	//fbMPSInterface	:	FB_BeamClassOutputs;
+	
+	{attribute 'TcLinkTo' := '.i_stBP:=TIIB[PMPS_IF]^IO Inputs^CurrentBP1;.xTxPDO_toggle:=TIIB[PMPS_IF]^SYNC Inputs^TxPDO toggle;.xTxPDO_state:=TIIB[PMPS_IF]^SYNC Inputs^TxPDO state'}
+	fbBPFanout	:	FB_BeamParamFanout;
+	
+	{attribute 'TcLinkTo' := '.i_stBP:=TIIB[PMPS_IF]^IO Outputs^ReqBP'}
+	q_stReqBeamParams	AT %Q*	:	ST_BeamParams;
+	
+	//fbBPFanout1	:	FB_BeamParamFanout_1;
+	
+	fbBPRequestor	:	FB_BPRequestor;
+	fbSimAttenuator :	FB_AttenuatorSimulator;
+	
+	stCurrentBeamParam	AT %I*	:	ST_BeamParams;
+	
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[
-//Execute arbiter
-g_fbArbiter.GetArbitratedBP();
+      <ST><![CDATA[PMPS_GVL_BeamParams.stCurrentBeamParameters.neVRange := F_eVRangeCalculator(
+	PMPS_GVL_BeamParams.stCurrentBeamParameters.reV,
+	PMPS_GVL_BeamParams.stCurrentBeamParameters.neVRange);
 
+//Example with attenuator peel-off
+//////////////////////////////////
+
+//Beam parameter requestor
+fbBPRequestor(stReqBP := g_fbArbiter1.GetArbitratedBP(),
+q_ReqAtt=>fbSimAttenuator.i_rRequestedAttenuation,
+q_stReqBP=>q_stReqBeamParams);
+
+//Request beam class
 //fbMPSInterface();
 
+//Keep an eye on the photon energy
 fbPhotonEnergyWatcher(i_stCurrentBeamParams	:= PMPS_GVL_BeamParams.stCurrentBeamParameters,
-					i_stRequestedBeamParams := g_fbArbiter.q_stBeamParams,
+					i_stRequestedBeamParams := fbBPRequestor.q_stReqBP,
 					io_fbFFHWO:= GVL.g_FastFaultOutput1);
 
-ExchangeBeamParams();
-]]></ST>
+
+
+fbSimAttenuator(Arbiter:=g_fbArbiter2);
+
+
+//Beam parameter fanout
+//fbBPFanout();]]></ST>
     </Implementation>
     <LineIds Name="PMPS_Arbiter">
-      <LineId Id="75" Count="0" />
-      <LineId Id="16" Count="0" />
-      <LineId Id="74" Count="0" />
-      <LineId Id="84" Count="1" />
-      <LineId Id="95" Count="0" />
-      <LineId Id="94" Count="0" />
-      <LineId Id="98" Count="0" />
-      <LineId Id="111" Count="0" />
-      <LineId Id="67" Count="0" />
-      <LineId Id="73" Count="0" />
-      <LineId Id="138" Count="0" />
+      <LineId Id="235" Count="0" />
+      <LineId Id="237" Count="1" />
+      <LineId Id="236" Count="0" />
+      <LineId Id="228" Count="2" />
+      <LineId Id="214" Count="0" />
+      <LineId Id="168" Count="0" />
+      <LineId Id="224" Count="1" />
+      <LineId Id="217" Count="0" />
+      <LineId Id="215" Count="0" />
+      <LineId Id="172" Count="0" />
+      <LineId Id="216" Count="0" />
+      <LineId Id="173" Count="3" />
+      <LineId Id="179" Count="0" />
+      <LineId Id="178" Count="0" />
+      <LineId Id="189" Count="0" />
+      <LineId Id="191" Count="0" />
+      <LineId Id="218" Count="1" />
+      <LineId Id="231" Count="0" />
+      <LineId Id="212" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>

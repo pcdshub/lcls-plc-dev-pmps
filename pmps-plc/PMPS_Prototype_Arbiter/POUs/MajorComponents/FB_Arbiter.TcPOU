@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
   <POU Name="FB_Arbiter" Id="{9cc1f6b7-c43c-0fbb-09be-271b21ce1be7}" SpecialFunc="None">
     <Declaration><![CDATA[(* FB Arbiter
 
@@ -58,14 +58,19 @@ fbBPAssertionPool.A_Reset();]]></ST>
     <Method Name="AddRequest" Id="{1e467c4a-5c4c-0f06-2179-99208c80fe24}">
       <Declaration><![CDATA[METHOD AddRequest : BOOL
 VAR_INPUT
-	nStateID	:	DWORD; //StateID of state requesting beam parameter set
+	nReqID	:	DWORD; //StateID of state requesting beam parameter set
 	stReqBP		:	ST_BeamParams; //Requested beam params
 END_VAR
 ]]></Declaration>
       <Implementation>
-        <ST><![CDATA[IF nStateID <> EXCLUDED_ASSERTION_ID THEN
+        <ST><![CDATA[IF THIS^.CheckRequest(nReqID) THEN
+	AddRequest := FALSE;
+	RETURN;
+END_IF
+
+IF nReqID <> EXCLUDED_ASSERTION_ID THEN
 	THIS^.fbBPAssertionPool.A_Add(
-		key := nStateID,
+		key := nReqID,
 		putValue := stReqBP
 	);
 END_IF
@@ -94,7 +99,7 @@ ArbitrateBP.fAtt := MAX(stBP1.fAtt, stBP2.fAtt);
 ArbitrateBP.fPP_mJ := MIN(stBP1.fPP_mJ, stBP2.fPP_mJ);
 
 //Photon energy ranges
-ArbitrateBP.neVReqRange := stBP1.neVReqRange AND stBP2.neVReqRange;
+ArbitrateBP.neVRange := stBP1.neVRange AND stBP2.neVRange;
 
 //Rate
 ArbitrateBP.nRate := MIN(stBP1.nRate, stBP2.nRate);]]></ST>
@@ -157,7 +162,7 @@ IF THIS^.fbBPAssertionPool.bOk THEN //If the table is empty (not OK), we are lef
 	stOutputBP := F_SetBeamParams(
 		fAtt := getBPStruct.fAtt,
 		fPP_mJ := getBPStruct.fPP_mJ,
-		neVReqRange	:= getBPStruct.neVReqRange,
+		neVRange	:= getBPStruct.neVRange,
 		nRate := getBPStruct.nRate
 	);
 
@@ -175,7 +180,12 @@ END_IF
 
 THIS^.q_stBeamParams := stOutputBP;
 
-GetArbitratedBP := stOutputBP;]]></ST>
+GetArbitratedBP.fAtt := stOutputBP.fAtt;
+GetArbitratedBP.fPP_mJ := stOutputBP.fPP_mJ;
+GetArbitratedBP.nBeamClass := stOutputBP.nBeamClass;
+GetArbitratedBP.neVRange := stOutputBP.neVRange;
+GetArbitratedBP.nRate := stOutputBP.nRate;
+GetArbitratedBP.xValidToggle := NOT GetArbitratedBP.xValidToggle;]]></ST>
       </Implementation>
     </Method>
     <Method Name="RemoveRequest" Id="{91259d93-276a-0acc-0f44-27a89e3b464d}">
@@ -214,7 +224,9 @@ RemoveRequest := THIS^.fbBPAssertionPool.bOk;]]></ST>
       <LineId Id="1" Count="0" />
     </LineIds>
     <LineIds Name="FB_Arbiter.AddRequest">
-      <LineId Id="27" Count="10" />
+      <LineId Id="52" Count="0" />
+      <LineId Id="67" Count="0" />
+      <LineId Id="53" Count="13" />
       <LineId Id="20" Count="0" />
     </LineIds>
     <LineIds Name="FB_Arbiter.ArbitrateBP">
@@ -237,6 +249,7 @@ RemoveRequest := THIS^.fbBPAssertionPool.bOk;]]></ST>
       <LineId Id="62" Count="1" />
       <LineId Id="51" Count="0" />
       <LineId Id="50" Count="0" />
+      <LineId Id="72" Count="4" />
     </LineIds>
     <LineIds Name="FB_Arbiter.RemoveRequest">
       <LineId Id="10" Count="7" />

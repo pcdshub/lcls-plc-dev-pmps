@@ -18,5 +18,6 @@
 		</SvbTask>
 		<Axis File="Dev1.xti" Id="1"/>
 		<Axis File="Dev 2.xti" Id="2"/>
+		<Axis File="Axis 3.xti" Id="3"/>
 	</NC>
 </TcSmItem>
