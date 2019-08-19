@@ -1,15 +1,392 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<TcSmProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4022.22">
+<?xml version="1.0"?>
+<TcSmProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4023.119">
+	<DataTypes>
+		<DataType>
+			<Name GUID="{18071995-0000-0000-0000-002000000006}" IecBaseType="true" BitType="true" AutoDeleteType="true" HideSubItems="true">ARRAY [0..5] OF BIT</Name>
+			<BitSize>6</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000000000010}">BIT</BaseType>
+			<ArrayInfo>
+				<LBound>0</LBound>
+				<Elements>6</Elements>
+			</ArrayInfo>
+		</DataType>
+		<DataType>
+			<Name GUID="{18071995-0000-0000-0000-002000000003}" IecBaseType="true" AutoDeleteType="true" HideSubItems="true">ARRAY [0..2] OF BIT</Name>
+			<BitSize>3</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000000000010}">BIT</BaseType>
+			<ArrayInfo>
+				<LBound>0</LBound>
+				<Elements>3</Elements>
+			</ArrayInfo>
+		</DataType>
+		<DataType>
+			<Name GUID="{F459ABEA-ABDF-06BD-2225-D43275F86912}" AutoDeleteType="true">ST_BeamParams</Name>
+			<BitSize>192</BitSize>
+			<SubItem>
+				<Name>fAtt</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<Comment><![CDATA[Requested attenuation %]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>0</BitOffs>
+				<Default>
+					<Value>100</Value>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>nBeamClass</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000001}">BYTE</Type>
+				<Comment><![CDATA[Machine parameters]]></Comment>
+				<BitSize>8</BitSize>
+				<BitOffs>32</BitOffs>
+				<Default>
+					<Value>15</Value>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>nRate</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<Comment><![CDATA[Pulse-rate]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>64</BitOffs>
+				<Default>
+					<Value>10</Value>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>fPP_mJ</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<Comment><![CDATA[Per pulse max energy (mJ)]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>96</BitOffs>
+				<Default>
+					<Value>20</Value>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>neVReqRange</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000004}">WORD</Type>
+				<Comment><![CDATA[Valid photon energy ranges]]></Comment>
+				<BitSize>16</BitSize>
+				<BitOffs>128</BitOffs>
+				<Default>
+					<Value>65535</Value>
+				</Default>
+				<Properties>
+					<Property>
+						<Name>plcAttribute_displaymode</Name>
+						<Value>binary</Value>
+					</Property>
+				</Properties>
+			</SubItem>
+			<SubItem>
+				<Name>reV</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<Comment><![CDATA[Photon energy (calculated by undulator gap)]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>160</BitOffs>
+				<Default>
+					<Value>0</Value>
+				</Default>
+			</SubItem>
+			<Hides>
+				<Hide GUID="{78C36F1F-49D4-4A98-A984-C1A1FB958C5C}"/>
+				<Hide GUID="{F6431806-B627-497C-BADD-DBF4AE61DDAD}"/>
+			</Hides>
+		</DataType>
+		<DataType>
+			<Name GUID="{368B451D-5F22-418E-BC16-2D5D4795EA17}" PersistentType="true">ST_PMPS_Attenuator</Name>
+			<BitSize>48</BitSize>
+			<SubItem>
+				<Name>nReqAtt</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000005}">UINT</Type>
+				<BitSize>16</BitSize>
+				<BitOffs>0</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>nAttCur</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000005}">UINT</Type>
+				<BitSize>16</BitSize>
+				<BitOffs>16</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>xAttOK</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000005}">UINT</Type>
+				<BitSize>16</BitSize>
+				<BitOffs>32</BitOffs>
+			</SubItem>
+		</DataType>
+		<DataType>
+			<Name GUID="{1A16E08A-0722-4B0A-BA3C-4DE06882AA20}" PersistentType="true">ST_BeamParams</Name>
+			<BitSize>1736</BitSize>
+			<SubItem>
+				<Name>fAtt</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<Comment><![CDATA[Requested attenuation %]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>0</BitOffs>
+				<Default>
+					<Value>100</Value>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>nBeamClass</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000001}">BYTE</Type>
+				<Comment><![CDATA[Machine parameters]]></Comment>
+				<BitSize>8</BitSize>
+				<BitOffs>32</BitOffs>
+				<Default>
+					<Value>15</Value>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>nRate</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<Comment><![CDATA[Pulse-rate]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>64</BitOffs>
+				<Default>
+					<Value>10</Value>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>fPP_mJ</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<Comment><![CDATA[Per pulse max energy (mJ)]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>96</BitOffs>
+				<Default>
+					<Value>20</Value>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>neVRange</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000004}">WORD</Type>
+				<Comment><![CDATA[Valid photon energy ranges]]></Comment>
+				<BitSize>16</BitSize>
+				<BitOffs>128</BitOffs>
+				<Default>
+					<Value>65535</Value>
+				</Default>
+				<Properties>
+					<Property>
+						<Name>plcAttribute_displaymode</Name>
+						<Value>binary</Value>
+					</Property>
+				</Properties>
+			</SubItem>
+			<SubItem>
+				<Name>reV</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<Comment><![CDATA[Photon energy (calculated by undulator gap)]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>160</BitOffs>
+				<Default>
+					<Value>0</Value>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>astAttenuators</Name>
+				<Type GUID="{368B451D-5F22-418E-BC16-2D5D4795EA17}">ST_PMPS_Attenuator</Type>
+				<ArrayInfo>
+					<LBound>0</LBound>
+					<Elements>32</Elements>
+				</ArrayInfo>
+				<BitSize>1536</BitSize>
+				<BitOffs>192</BitOffs>
+			</SubItem>
+			<SubItem>
+				<Name>xValidToggle</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>1728</BitOffs>
+			</SubItem>
+			<Hides>
+				<Hide GUID="{78C36F1F-49D4-4A98-A984-C1A1FB958C5C}"/>
+				<Hide GUID="{F6431806-B627-497C-BADD-DBF4AE61DDAD}"/>
+				<Hide GUID="{F459ABEA-ABDF-06BD-2225-D43275F86912}"/>
+				<Hide GUID="{7316A6E2-CEF5-4B8C-B1CE-749A85F85FDA}"/>
+				<Hide GUID="{53E4DC6C-4730-4D87-8557-C1B671BE0662}"/>
+				<Hide GUID="{A8B44F63-3E95-482F-9E25-C46EB6DEF06A}"/>
+			</Hides>
+		</DataType>
+		<DataType>
+			<Name GUID="{183E930A-4C64-4DC2-95B5-28EADAFA45EE}" PersistentType="true">ST_ReqBeamParams</Name>
+			<BitSize>160</BitSize>
+			<SubItem>
+				<Name>fAtt</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<Comment><![CDATA[Requested attenuation %]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>0</BitOffs>
+				<Default>
+					<Value>100</Value>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>nBeamClass</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000001}">BYTE</Type>
+				<Comment><![CDATA[Machine parameters]]></Comment>
+				<BitSize>8</BitSize>
+				<BitOffs>32</BitOffs>
+				<Default>
+					<Value>15</Value>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>nRate</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<Comment><![CDATA[Pulse-rate]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>64</BitOffs>
+				<Default>
+					<Value>10</Value>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>fPP_mJ</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<Comment><![CDATA[Per pulse max energy (mJ)]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>96</BitOffs>
+				<Default>
+					<Value>20</Value>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>neVPermRange</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000004}">WORD</Type>
+				<Comment><![CDATA[Valid photon energy ranges]]></Comment>
+				<BitSize>16</BitSize>
+				<BitOffs>128</BitOffs>
+				<Default>
+					<Value>65535</Value>
+				</Default>
+				<Properties>
+					<Property>
+						<Name>plcAttribute_displaymode</Name>
+						<Value>binary</Value>
+					</Property>
+				</Properties>
+			</SubItem>
+			<SubItem>
+				<Name>xValidToggle</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000030}">BOOL</Type>
+				<BitSize>8</BitSize>
+				<BitOffs>144</BitOffs>
+			</SubItem>
+			<Hides>
+				<Hide GUID="{FC42DB62-E617-435F-86F0-9A207B93F02E}"/>
+			</Hides>
+		</DataType>
+		<DataType>
+			<Name GUID="{7316A6E2-CEF5-4B8C-B1CE-749A85F85FDA}" PersistentType="true">ST_BeamParams</Name>
+			<BitSize>192</BitSize>
+			<SubItem>
+				<Name>fAtt</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<Comment><![CDATA[Requested attenuation %]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>0</BitOffs>
+				<Default>
+					<Value>100</Value>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>nBeamClass</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000001}">BYTE</Type>
+				<Comment><![CDATA[Machine parameters]]></Comment>
+				<BitSize>8</BitSize>
+				<BitOffs>32</BitOffs>
+				<Default>
+					<Value>15</Value>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>nRate</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000008}">UDINT</Type>
+				<Comment><![CDATA[Pulse-rate]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>64</BitOffs>
+				<Default>
+					<Value>10</Value>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>fPP_mJ</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<Comment><![CDATA[Per pulse max energy (mJ)]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>96</BitOffs>
+				<Default>
+					<Value>20</Value>
+				</Default>
+			</SubItem>
+			<SubItem>
+				<Name>neVRange</Name>
+				<Type GUID="{18071995-0000-0000-0000-000000000004}">WORD</Type>
+				<Comment><![CDATA[Valid photon energy ranges]]></Comment>
+				<BitSize>16</BitSize>
+				<BitOffs>128</BitOffs>
+				<Default>
+					<Value>65535</Value>
+				</Default>
+				<Properties>
+					<Property>
+						<Name>plcAttribute_displaymode</Name>
+						<Value>binary</Value>
+					</Property>
+				</Properties>
+			</SubItem>
+			<SubItem>
+				<Name>reV</Name>
+				<Type GUID="{18071995-0000-0000-0000-00000000000D}">REAL</Type>
+				<Comment><![CDATA[Photon energy (calculated by undulator gap)]]></Comment>
+				<BitSize>32</BitSize>
+				<BitOffs>160</BitOffs>
+				<Default>
+					<Value>0</Value>
+				</Default>
+			</SubItem>
+			<Hides>
+				<Hide GUID="{78C36F1F-49D4-4A98-A984-C1A1FB958C5C}"/>
+				<Hide GUID="{F6431806-B627-497C-BADD-DBF4AE61DDAD}"/>
+				<Hide GUID="{F459ABEA-ABDF-06BD-2225-D43275F86912}"/>
+			</Hides>
+		</DataType>
+	</DataTypes>
+	<ImageDatas>
+		<ImageData Id="1000">424dd6020000000000003600000028000000100000000e0000000100180000000000a0020000c40e0000c40e00000000000000000000ff00ffff00ffff00ff808080808080808080808080808080808080808080808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ff0000c00000c0ffffffc0c0c0000000c0c0c0000000808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ff0000c00000c0ffffffc0c0c000ffffc0c0c000ffff808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ff0000c00000c0ffffffc0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ff0000c00000c0ffffffc0c0c0000000c0c0c0000000808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ff0000c00000c0ffffffc0c0c0ff0000c0c0c0ff0000808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ff0000c00000c0ffffffc0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ff0000c00000c0ffffffc0c0c0000000c0c0c0000000808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ff0000c00000c0ffffffc0c0c00000ffc0c0c00000ff808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ff0000c00000c0ffffffc0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ff0000c00000c0ffffffc0c0c0000000c0c0c0000000808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ff0000c00000c0ffffffc0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ff0000c00000c0ffffffc0c0c0008000c0c0c0008000808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ff0000c00000c0ffffffc0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ff</ImageData>
+		<ImageData Id="1001">424dd6020000000000003600000028000000100000000e0000000100180000000000a0020000120b0000120b00000000000000000000ff00ffff00ffff00ffff00ffff00ffff00ff808080808080808080808080808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0000000c0c0c0000000808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c000ffffc0c0c000ffff808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0000000c0c0c0000000808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0ff0000c0c0c0ff0000808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ff0000ff0000ff0000ff0000ff0000ff0000ffc0c0c0000000c0c0c0000000808080ff00ffff00ffff00ffff00ffff00ff0000ff0000ff0000ff0000ff0000ff0000ffc0c0c00000ffc0c0c00000ff808080ff00ffff00ffff00ffff00ffff00ff0000ff0000ff0000ff0000ff0000ff0000ffc0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ff0000ff0000ff0000ff0000ff0000ff0000ffc0c0c0000000c0c0c0000000808080ff00ffff00ffff00ffff00ffff00ff0000ff0000ff0000ff0000ff0000ff0000ffc0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ff0000ff0000ff0000ff0000ff0000ff0000ffc0c0c0008000c0c0c0008000808080ff00ffff00ffff00ffff00ffff00ff0000ff0000ff0000ff0000ff0000ff0000ffc0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ff</ImageData>
+		<ImageData Id="1002">424dd6020000000000003600000028000000100000000e0000000100180000000000a0020000120b0000120b00000000000000000000ff00ffff00ffff00ffff00ffff00ffff00ff808080808080808080808080808080808080808080808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0808080808080808080c0c0c0c0c0c080808000bfffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c080808080808080808000bfff00bfff00bfff00bfff00bfffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0808080808080808080c0c0c0c0c0c080808000bfffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0808080808080808080c0c0c0c0c0c080808000bfffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c080808080808080808000bfff00bfff00bfff00bfff00bfff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0808080808080808080c0c0c0c0c0c080808000bfffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0c0c0c0bbc2bbc0c0c0c0c0c0c0c0c0808080ff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0bac2ba0bfc0bc0c0c0c0c0c0c0c0c0808080ff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ff</ImageData>
+		<ImageData Id="1003">424de6000000000000007600000028000000100000000e000000010004000000000070000000120b0000120b0000100000001000000000000000000080000080000000808000800000008000800080800000c0c0c000808080000000ff0000ff000000ffff00ff000000ff00ff00ffff0000ffffff00dddd88888888dddddddd77777778d9dddddd77888778d99ddddd778889999999dddd77888778d99dddd977777778d9ddddd997888778dddd999999888778ddddddd997888778ddddddd977777778dddddddd777a7778dddddddd777a7778dddddddd777a7778dddddddd77777778dddd</ImageData>
+		<ImageData Id="1004">424dd6020000000000003600000028000000100000000e0000000100180000000000a0020000c40e0000c40e00000000000000000000ff00ffff00ffff00ffff00ffff00ffff00ff808080808080808080808080808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ff00bfffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0c0c0c0c0c0c080808000bfff00bfff00bfff00bfff00bfffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ff00bfffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0c0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ff</ImageData>
+		<ImageData Id="1005">424de6000000000000007600000028000000100000000e000000010004000000000070000000120b0000120b0000100000001000000000000000000080000080000000808000800000008000800080800000c0c0c000808080000000ff0000ff000000ffff00ff000000ff00ff00ffff0000ffffff00dddddd88888888dddddddd77777778dddddddd77888778dddddddd77888778dddddddd77888778dddddddd77777778dddddddd77888778dd9b9b9b77888778ddb9b9b977888778dd9b9b9b77777778ddb9b9b9777a7778dd9b9b9b777a7778ddb9b9b9777a7778dd9b9b9b77777778dd</ImageData>
+		<ImageData Id="1006">424dd6020000000000003600000028000000100000000e0000000100180000000000a0020000c40e0000c40e00000000000000000000ff00ffff00ffff00ffff00ffff00ffff00ff808080808080808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffff00ffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ff007fff007fff007fff007fff007fff007fffc0c0c0c0c0c0808080ff00ffff00ffff00ffff00ffff00ffff00ffff00ff</ImageData>
+	</ImageDatas>
 	<Project ProjectGUID="{11D93138-2D8B-49C5-B84D-11A4D2CA3157}" Target64Bit="true" ShowHideConfigurations="#x106">
 		<System>
-			<Settings DontCheckTarget="169.254.224.1.1.1">
+			<Settings>
 				<Cpu BaseTime="500"/>
 			</Settings>
+			<Licenses>
+				<Target>
+					<ManualSelect>{3EBB9639-5FF3-42B6-8847-35C70DC013C8}</ManualSelect>
+				</Target>
+			</Licenses>
 			<Tasks>
 				<Task Id="3" Priority="20" CycleTime="10000" AmsPort="350">
 					<Name>PlcTask</Name>
 				</Task>
+				<Task Id="6" Priority="30" CycleTime="2000000" AmsPort="351" AdtTasks="true">
+					<Name>VISU_TASK</Name>
+				</Task>
+				<Task Id="7" Priority="21" CycleTime="100000" AmsPort="352" AdtTasks="true">
+					<Name>PlcTask1</Name>
+				</Task>
 			</Tasks>
+			<Routes>
+				<Route Name="plcprog-console" Addr="172.21.42.53" NetId="172.21.42.53.1.1" TransType="1"/>
+			</Routes>
 		</System>
 		<Motion>
 			<NC File="NC.xti"/>
@@ -17,7 +394,582 @@
 		<Plc>
 			<Project File="PMPS_Prototype_Arbiter.xti"/>
 		</Plc>
-		<Io/>
+		<Io>
+			<Device Id="1" Disabled="true" DevType="111" DevFlags="#x0003" AmsPort="28673" AmsNetId="169.254.224.1.2.1" RemoteName="Device 1 (EtherCAT)">
+				<Name>Device 1 (EtherCAT)</Name>
+				<AddressInfo>
+					<Ccat>
+						<Address>-268435456</Address>
+						<Offset>131072</Offset>
+						<Size>8192</Size>
+						<BaseAddr>0</BaseAddr>
+						<BusNo>4</BusNo>
+						<SlotNo>0</SlotNo>
+						<VendorId>5612</VendorId>
+						<DeviceId>20480</DeviceId>
+						<Dma>
+							<Address>0</Address>
+							<Offset>4096</Offset>
+							<Size>256</Size>
+							<BaseAddr>2</BaseAddr>
+							<RxChn>0</RxChn>
+							<TxChn>1</TxChn>
+						</Dma>
+						<Identification>
+							<Value>498694182</Value>
+							<Version>1</Version>
+							<Size>256</Size>
+						</Identification>
+					</Ccat>
+				</AddressInfo>
+				<Image Id="1" AddrType="9" ImageType="3">
+					<Name>Image</Name>
+				</Image>
+				<Box Id="1" BoxType="9099">
+					<Name>Term 1 (EK1200)</Name>
+					<ImageId>1000</ImageId>
+					<EtherCAT PdiType="#x0100" CycleMBoxPollingTime="0" VendorId="#x00000002" ProductCode="#x04b02c52" RevisionNo="#x00001388" InfoDataState="false" PortPhys="49" MaxSlotCount="256" MaxSlotGroupCount="1" SlotPdoIncrement="1" SlotIndexIncrement="16" Type="EK1200-5000 EtherCAT Power supply (2A E-Bus)" Desc="EK1200" PortABoxInfo="#x00ffffff"/>
+					<Box Id="2" BoxType="9099">
+						<Name>Term 2 (EL2022)</Name>
+						<ImageId>1001</ImageId>
+						<EtherCAT SlaveType="1" PdiType="#x0104" CycleMBoxPollingTime="0" VendorId="#x00000002" ProductCode="#x07e63052" RevisionNo="#x00120000" RepeatSupport="true" PortPhys="51" MaxSlotCount="256" MaxSlotGroupCount="1" SlotPdoIncrement="1" SlotIndexIncrement="16" Type="EL2022 2Ch. Dig. Output 24V, 2A" Desc="EL2022" PortABoxInfo="#x01000001">
+							<SyncMan>000f01004400010003000000000000000000000f44090000</SyncMan>
+							<Fmmu>0000000000000000000f00020100000001000000000000000000000000000000</Fmmu>
+							<Pdo Name="Channel 1" Index="#x1600" InOut="1" Flags="#x0011" SyncMan="0">
+								<Entry Name="Output" Index="#x7000" Sub="#x01">
+									<Type>BIT</Type>
+								</Entry>
+							</Pdo>
+							<Pdo Name="Channel 2" Index="#x1601" InOut="1" Flags="#x0011" SyncMan="0">
+								<Entry Name="Output" Index="#x7010" Sub="#x01">
+									<Type>BIT</Type>
+								</Entry>
+							</Pdo>
+						</EtherCAT>
+					</Box>
+					<Box File="Term 10 (EL7047).xti" Id="10">
+						<EtherCAT PortABoxInfo="#x01000002"/>
+					</Box>
+					<Box Id="3" BoxType="9099">
+						<Name>Term 3 (EK1122)</Name>
+						<ImageId>1002</ImageId>
+						<EtherCAT SlaveType="1" PdiType="#x0d00" CycleMBoxPollingTime="0" VendorId="#x00000002" ProductCode="#x04622c52" RevisionNo="#x00120000" PortPhys="4883" MaxSlotCount="256" MaxSlotGroupCount="1" SlotPdoIncrement="1" SlotIndexIncrement="16" Type="EK1122 2 port EtherCAT junction" Desc="EK1122" PortABoxInfo="#x0100000a"/>
+						<Box Id="8" BoxType="9099" BoxFlags="#x00000020">
+							<Name>Box 8 (EL6692)</Name>
+							<ImageId>1003</ImageId>
+							<EtherCAT SlaveType="3" AdsServerAddress="0539effc0209eb03" PdiType="#x0c05" MboxDataLinkLayer="true" StateMBoxPolling="true" CycleMBoxPollingTime="0" CoeType="47" EoeType="1" FoeType="1" VendorId="#x00000002" ProductCode="#x1a243052" RevisionNo="#x00140002" InfoDataAddr="true" InfoDataNetId="true" TimeoutMailbox2="2000" GenerateOwnNetId="true" PortPhys="17" MaxSlotCount="256" MaxSlotGroupCount="1" SlotPdoIncrement="1" SlotIndexIncrement="16" Type="EL6692 EtherCAT Bridge terminal (Secondary)" Desc="EL6692" PortABoxInfo="#x03000003">
+								<SyncMan>001000012600010001000000800000040001001026010000</SyncMan>
+								<SyncMan>001400012200010002000000800000040001001422010000</SyncMan>
+								<SyncMan>001818002400010003000000000000000000001824010000</SyncMan>
+								<SyncMan>001e1a002000010004000000000000000200001e20010000</SyncMan>
+								<Fmmu>0000000000000000001800020100000001000000000000000000000000000000</Fmmu>
+								<Fmmu>0000000000000000001e00010100000002000000000000000000000000000000</Fmmu>
+								<Fmmu>00000000000000000d0800010100000003000000000000000000000000000000</Fmmu>
+								<SwitchPortData>00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000</SwitchPortData>
+								<DcMode>4672656552756e0000000000000000004672656552756e00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000</DcMode>
+								<DcMode>4443000000000000000000000000000044432d53796e6368726f6e000000000000000000000000000000000000000000000000000000000000000000000020030100000000000000000000000000000000000000000000000000000000000000</DcMode>
+								<Pdo Name="SYNC Inputs" Index="#x1a01" Flags="#x0010" SyncMan="3">
+									<ExcludePdo>#x1a02</ExcludePdo>
+									<ExcludePdo>#x1a03</ExcludePdo>
+									<Entry Name="Sync Mode" BitLen="2" Index="#x10f4" Sub="#x01">
+										<Type>BIT2</Type>
+										<Comment><![CDATA[0: no Syncronisation
+1: Secondary side is Sync Master
+2: Primary side is Sync Master]]></Comment>
+									</Entry>
+									<Entry BitLen="6">
+										<Type GUID="{18071995-0000-0000-0000-002000000006}">ARRAY [0..5] OF BIT</Type>
+									</Entry>
+									<Entry BitLen="3">
+										<Type GUID="{18071995-0000-0000-0000-002000000003}">ARRAY [0..2] OF BIT</Type>
+									</Entry>
+									<Entry Name="TxPDO toggle" BitLen="1" Index="#x1800" Sub="#x09">
+										<Type>BIT</Type>
+										<Comment><![CDATA[Bit toggles when new data from other side received]]></Comment>
+									</Entry>
+									<Entry Name="TxPDO state" BitLen="1" Index="#x1800" Sub="#x07">
+										<Type>BIT</Type>
+										<Comment><![CDATA[0: Other side is in OP state
+>0: Error]]></Comment>
+									</Entry>
+									<Entry Name="Control value update toggle" BitLen="1" Index="#x10f4" Sub="#x0e">
+										<Type>BIT</Type>
+										<Comment><![CDATA[Bit toggles when new DC control data available]]></Comment>
+									</Entry>
+									<Entry Name="Timestamp update toggle" BitLen="1" Index="#x10f4" Sub="#x0f">
+										<Type>BIT</Type>
+										<Comment><![CDATA[Bit toggles when new timestamp data available]]></Comment>
+									</Entry>
+									<Entry Name="External device not connected" BitLen="1" Index="#x10f4" Sub="#x10">
+										<Type>BIT</Type>
+										<Comment><![CDATA[0: External device connected
+1: External device not connected]]></Comment>
+									</Entry>
+								</Pdo>
+								<Pdo Name="SYNC Inputs" Index="#x1a02" Flags="#x0010">
+									<ExcludePdo>#x1a01</ExcludePdo>
+									<ExcludePdo>#x1a03</ExcludePdo>
+									<Entry Name="Sync Mode" BitLen="2" Index="#x10f4" Sub="#x01">
+										<Type>BIT2</Type>
+										<Comment><![CDATA[0: no Syncronisation
+1: Secondary side is Sync Master
+2: Primary side is Sync Master]]></Comment>
+									</Entry>
+									<Entry BitLen="6">
+										<Type GUID="{18071995-0000-0000-0000-002000000006}">ARRAY [0..5] OF BIT</Type>
+									</Entry>
+									<Entry BitLen="3">
+										<Type GUID="{18071995-0000-0000-0000-002000000003}">ARRAY [0..2] OF BIT</Type>
+									</Entry>
+									<Entry Name="TxPDO toggle" BitLen="1" Index="#x1800" Sub="#x09">
+										<Type>BIT</Type>
+										<Comment><![CDATA[Bit toggles when new data from other side received]]></Comment>
+									</Entry>
+									<Entry Name="TxPDO state" BitLen="1" Index="#x1800" Sub="#x07">
+										<Type>BIT</Type>
+										<Comment><![CDATA[0: Other side is in OP state
+>0: Error]]></Comment>
+									</Entry>
+									<Entry Name="Control value update toggle" BitLen="1" Index="#x10f4" Sub="#x0e">
+										<Type>BIT</Type>
+										<Comment><![CDATA[Bit toggles when new DC control data available]]></Comment>
+									</Entry>
+									<Entry Name="Timestamp update toggle" BitLen="1" Index="#x10f4" Sub="#x0f">
+										<Type>BIT</Type>
+										<Comment><![CDATA[Bit toggles when new timestamp data available]]></Comment>
+									</Entry>
+									<Entry Name="External device not connected" BitLen="1" Index="#x10f4" Sub="#x10">
+										<Type>BIT</Type>
+										<Comment><![CDATA[0: External device connected
+1: External device not connected]]></Comment>
+									</Entry>
+									<Entry Name="Internal time stamp" BitLen="64" Index="#x10f4" Sub="#x11">
+										<Type>ULINT</Type>
+									</Entry>
+									<Entry Name="External time stamp" BitLen="64" Index="#x10f4" Sub="#x12">
+										<Type>ULINT</Type>
+									</Entry>
+									<Entry Name="Control Value for DC Master Clock" BitLen="32" Index="#x10f4" Sub="#x13">
+										<Type>UDINT</Type>
+									</Entry>
+								</Pdo>
+								<Pdo Name="SYNC Inputs" Index="#x1a03" Flags="#x0010">
+									<ExcludePdo>#x1a01</ExcludePdo>
+									<ExcludePdo>#x1a02</ExcludePdo>
+									<Entry Name="Sync Mode" BitLen="2" Index="#x10f4" Sub="#x01">
+										<Type>BIT2</Type>
+										<Comment><![CDATA[0: no Syncronisation
+1: Secondary side is Sync Master
+2: Primary side is Sync Master]]></Comment>
+									</Entry>
+									<Entry BitLen="6">
+										<Type GUID="{18071995-0000-0000-0000-002000000006}">ARRAY [0..5] OF BIT</Type>
+									</Entry>
+									<Entry BitLen="3">
+										<Type GUID="{18071995-0000-0000-0000-002000000003}">ARRAY [0..2] OF BIT</Type>
+									</Entry>
+									<Entry Name="TxPDO toggle" BitLen="1" Index="#x1800" Sub="#x09">
+										<Type>BIT</Type>
+										<Comment><![CDATA[Bit toggles when new data from other side received]]></Comment>
+									</Entry>
+									<Entry Name="TxPDO state" BitLen="1" Index="#x1800" Sub="#x07">
+										<Type>BIT</Type>
+										<Comment><![CDATA[0: Other side is in OP state
+>0: Error]]></Comment>
+									</Entry>
+									<Entry Name="Control value update toggle" BitLen="1" Index="#x10f4" Sub="#x0e">
+										<Type>BIT</Type>
+										<Comment><![CDATA[Bit toggles when new DC control data available]]></Comment>
+									</Entry>
+									<Entry Name="Timestamp update toggle" BitLen="1" Index="#x10f4" Sub="#x0f">
+										<Type>BIT</Type>
+										<Comment><![CDATA[Bit toggles when new timestamp data available]]></Comment>
+									</Entry>
+									<Entry Name="External device not connected" BitLen="1" Index="#x10f4" Sub="#x10">
+										<Type>BIT</Type>
+										<Comment><![CDATA[0: External device connected
+1: External device not connected]]></Comment>
+									</Entry>
+									<Entry Name="Internal time stamp" BitLen="32" Index="#x10f4" Sub="#x11">
+										<Type>UDINT</Type>
+									</Entry>
+									<Entry Name="External time stamp" BitLen="32" Index="#x10f4" Sub="#x12">
+										<Type>UDINT</Type>
+									</Entry>
+									<Entry Name="Control Value for DC Master Clock" BitLen="32" Index="#x10f4" Sub="#x13">
+										<Type>UDINT</Type>
+									</Entry>
+								</Pdo>
+								<Pdo Name="IO Inputs" Index="#x1a00" Flags="#x0021" SyncMan="3">
+									<Entry Name="RequestBP" BitLen="192" Index="#x6000" Sub="#x01">
+										<Type GUID="{F459ABEA-ABDF-06BD-2225-D43275F86912}">ST_BeamParams</Type>
+									</Entry>
+								</Pdo>
+								<Pdo Name="IO Outputs" Index="#x1600" InOut="1" Flags="#x0021" SyncMan="2">
+									<Entry Name="CurrentBP" BitLen="192" Index="#x7000" Sub="#x01">
+										<Type GUID="{F459ABEA-ABDF-06BD-2225-D43275F86912}">ST_BeamParams</Type>
+									</Entry>
+								</Pdo>
+								<CoeProfile ProfileNo="5001"/>
+							</EtherCAT>
+						</Box>
+						<Box Id="9" BoxType="9099" BoxFlags="#x00000020">
+							<Name>Box 9 (EL6692)</Name>
+							<ImageId>1003</ImageId>
+							<EtherCAT SlaveType="3" AdsServerAddress="0539effc020aec03" PdiType="#x0c05" MboxDataLinkLayer="true" StateMBoxPolling="true" CycleMBoxPollingTime="0" CoeType="47" EoeType="1" FoeType="1" VendorId="#x00000002" ProductCode="#x1a243052" RevisionNo="#x00140002" InfoDataAddr="true" InfoDataNetId="true" TimeoutMailbox2="2000" GenerateOwnNetId="true" PortPhys="17" MaxSlotCount="256" MaxSlotGroupCount="1" SlotPdoIncrement="1" SlotIndexIncrement="16" Type="EL6692 EtherCAT Bridge terminal (Secondary)" Desc="EL6692" PortABoxInfo="#x01000003">
+								<SyncMan>001000012600010001000000800000040001001026010000</SyncMan>
+								<SyncMan>001400012200010002000000800000040001001422010000</SyncMan>
+								<SyncMan>001800002400000003000000000000000000001824010000</SyncMan>
+								<SyncMan>001e02002000010004000000000000000200001e20010000</SyncMan>
+								<Fmmu>0000000000000000000000020000000001000000000000000000000000000000</Fmmu>
+								<Fmmu>0000000000000000001e00010100000002000000000000000000000000000000</Fmmu>
+								<Fmmu>00000000000000000d0800010100000003000000000000000000000000000000</Fmmu>
+								<SwitchPortData>00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000</SwitchPortData>
+								<DcMode>4672656552756e0000000000000000004672656552756e00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000</DcMode>
+								<DcMode>4443000000000000000000000000000044432d53796e6368726f6e000000000000000000000000000000000000000000000000000000000000000000000020030100000000000000000000000000000000000000000000000000000000000000</DcMode>
+								<Pdo Name="SYNC Inputs" Index="#x1a01" Flags="#x0010" SyncMan="3">
+									<ExcludePdo>#x1a02</ExcludePdo>
+									<ExcludePdo>#x1a03</ExcludePdo>
+									<Entry Name="Sync Mode" Index="#x10f4" Sub="#x01">
+										<Type>BIT2</Type>
+										<Comment><![CDATA[0: no Syncronisation
+1: Secondary side is Sync Master
+2: Primary side is Sync Master]]></Comment>
+									</Entry>
+									<Entry>
+										<Type GUID="{18071995-0000-0000-0000-002000000006}">ARRAY [0..5] OF BIT</Type>
+									</Entry>
+									<Entry>
+										<Type GUID="{18071995-0000-0000-0000-002000000003}">ARRAY [0..2] OF BIT</Type>
+									</Entry>
+									<Entry Name="TxPDO toggle" Index="#x1800" Sub="#x09">
+										<Type>BIT</Type>
+										<Comment><![CDATA[Bit toggles when new data from other side received]]></Comment>
+									</Entry>
+									<Entry Name="TxPDO state" Index="#x1800" Sub="#x07">
+										<Type>BIT</Type>
+										<Comment><![CDATA[0: Other side is in OP state
+>0: Error]]></Comment>
+									</Entry>
+									<Entry Name="Control value update toggle" Index="#x10f4" Sub="#x0e">
+										<Type>BIT</Type>
+										<Comment><![CDATA[Bit toggles when new DC control data available]]></Comment>
+									</Entry>
+									<Entry Name="Timestamp update toggle" Index="#x10f4" Sub="#x0f">
+										<Type>BIT</Type>
+										<Comment><![CDATA[Bit toggles when new timestamp data available]]></Comment>
+									</Entry>
+									<Entry Name="External device not connected" Index="#x10f4" Sub="#x10">
+										<Type>BIT</Type>
+										<Comment><![CDATA[0: External device connected
+1: External device not connected]]></Comment>
+									</Entry>
+								</Pdo>
+								<Pdo Name="SYNC Inputs" Index="#x1a02" Flags="#x0010">
+									<ExcludePdo>#x1a01</ExcludePdo>
+									<ExcludePdo>#x1a03</ExcludePdo>
+									<Entry Name="Sync Mode" Index="#x10f4" Sub="#x01">
+										<Type>BIT2</Type>
+										<Comment><![CDATA[0: no Syncronisation
+1: Secondary side is Sync Master
+2: Primary side is Sync Master]]></Comment>
+									</Entry>
+									<Entry>
+										<Type GUID="{18071995-0000-0000-0000-002000000006}">ARRAY [0..5] OF BIT</Type>
+									</Entry>
+									<Entry>
+										<Type GUID="{18071995-0000-0000-0000-002000000003}">ARRAY [0..2] OF BIT</Type>
+									</Entry>
+									<Entry Name="TxPDO toggle" Index="#x1800" Sub="#x09">
+										<Type>BIT</Type>
+										<Comment><![CDATA[Bit toggles when new data from other side received]]></Comment>
+									</Entry>
+									<Entry Name="TxPDO state" Index="#x1800" Sub="#x07">
+										<Type>BIT</Type>
+										<Comment><![CDATA[0: Other side is in OP state
+>0: Error]]></Comment>
+									</Entry>
+									<Entry Name="Control value update toggle" Index="#x10f4" Sub="#x0e">
+										<Type>BIT</Type>
+										<Comment><![CDATA[Bit toggles when new DC control data available]]></Comment>
+									</Entry>
+									<Entry Name="Timestamp update toggle" Index="#x10f4" Sub="#x0f">
+										<Type>BIT</Type>
+										<Comment><![CDATA[Bit toggles when new timestamp data available]]></Comment>
+									</Entry>
+									<Entry Name="External device not connected" Index="#x10f4" Sub="#x10">
+										<Type>BIT</Type>
+										<Comment><![CDATA[0: External device connected
+1: External device not connected]]></Comment>
+									</Entry>
+									<Entry Name="Internal time stamp" Index="#x10f4" Sub="#x11">
+										<Type>ULINT</Type>
+									</Entry>
+									<Entry Name="External time stamp" Index="#x10f4" Sub="#x12">
+										<Type>ULINT</Type>
+									</Entry>
+									<Entry Name="Control Value for DC Master Clock" Index="#x10f4" Sub="#x13">
+										<Type>UDINT</Type>
+									</Entry>
+								</Pdo>
+								<Pdo Name="SYNC Inputs" Index="#x1a03" Flags="#x0010">
+									<ExcludePdo>#x1a01</ExcludePdo>
+									<ExcludePdo>#x1a02</ExcludePdo>
+									<Entry Name="Sync Mode" Index="#x10f4" Sub="#x01">
+										<Type>BIT2</Type>
+										<Comment><![CDATA[0: no Syncronisation
+1: Secondary side is Sync Master
+2: Primary side is Sync Master]]></Comment>
+									</Entry>
+									<Entry>
+										<Type GUID="{18071995-0000-0000-0000-002000000006}">ARRAY [0..5] OF BIT</Type>
+									</Entry>
+									<Entry>
+										<Type GUID="{18071995-0000-0000-0000-002000000003}">ARRAY [0..2] OF BIT</Type>
+									</Entry>
+									<Entry Name="TxPDO toggle" Index="#x1800" Sub="#x09">
+										<Type>BIT</Type>
+										<Comment><![CDATA[Bit toggles when new data from other side received]]></Comment>
+									</Entry>
+									<Entry Name="TxPDO state" Index="#x1800" Sub="#x07">
+										<Type>BIT</Type>
+										<Comment><![CDATA[0: Other side is in OP state
+>0: Error]]></Comment>
+									</Entry>
+									<Entry Name="Control value update toggle" Index="#x10f4" Sub="#x0e">
+										<Type>BIT</Type>
+										<Comment><![CDATA[Bit toggles when new DC control data available]]></Comment>
+									</Entry>
+									<Entry Name="Timestamp update toggle" Index="#x10f4" Sub="#x0f">
+										<Type>BIT</Type>
+										<Comment><![CDATA[Bit toggles when new timestamp data available]]></Comment>
+									</Entry>
+									<Entry Name="External device not connected" Index="#x10f4" Sub="#x10">
+										<Type>BIT</Type>
+										<Comment><![CDATA[0: External device connected
+1: External device not connected]]></Comment>
+									</Entry>
+									<Entry Name="Internal time stamp" Index="#x10f4" Sub="#x11">
+										<Type>UDINT</Type>
+									</Entry>
+									<Entry Name="External time stamp" Index="#x10f4" Sub="#x12">
+										<Type>UDINT</Type>
+									</Entry>
+									<Entry Name="Control Value for DC Master Clock" Index="#x10f4" Sub="#x13">
+										<Type>UDINT</Type>
+									</Entry>
+								</Pdo>
+								<Pdo Name="IO Inputs" Index="#x1a00" Flags="#x0021" SyncMan="3"/>
+								<Pdo Name="IO Outputs" Index="#x1600" InOut="1" Flags="#x0021" SyncMan="2"/>
+								<CoeProfile ProfileNo="5001"/>
+							</EtherCAT>
+						</Box>
+					</Box>
+					<Box Id="4" BoxType="9099">
+						<Name>Term 4 (EK1110)</Name>
+						<ImageId>1004</ImageId>
+						<EtherCAT SlaveType="1" PdiType="#x0100" CycleMBoxPollingTime="0" VendorId="#x00000002" ProductCode="#x04562c52" RevisionNo="#x00110000" PortPhys="19" MaxSlotCount="256" MaxSlotGroupCount="1" SlotPdoIncrement="1" SlotIndexIncrement="16" Type="EK1110 EtherCAT extension" Desc="EK1110" PortABoxInfo="#x02000003"/>
+					</Box>
+				</Box>
+				<EtherCAT EnableVirtualSwitch="true" MaxSwitchPorts="3" MaxSwitchFrames="140"/>
+			</Device>
+			<Device Id="2" Disabled="true" DevType="111" DevFlags="#x0003" AmsPort="28674" AmsNetId="169.254.224.1.3.1" RemoteName="Device 2 (EtherCAT)">
+				<Name>Device 2 (EtherCAT)</Name>
+				<AddressInfo>
+					<Ccat>
+						<Address>-41943040</Address>
+						<Offset>131072</Offset>
+						<Size>8192</Size>
+						<BaseAddr>0</BaseAddr>
+						<BusNo>1</BusNo>
+						<SlotNo>0</SlotNo>
+						<VendorId>5612</VendorId>
+						<DeviceId>20480</DeviceId>
+						<Dma>
+							<Address>0</Address>
+							<Offset>4096</Offset>
+							<Size>12288</Size>
+							<BaseAddr>2</BaseAddr>
+							<RxChn>0</RxChn>
+							<TxChn>1</TxChn>
+						</Dma>
+						<Identification>
+							<Value>175900712</Value>
+							<Version>1</Version>
+							<Size>256</Size>
+						</Identification>
+					</Ccat>
+				</AddressInfo>
+				<Image Id="4" AddrType="9" ImageType="3">
+					<Name>Image</Name>
+				</Image>
+				<Box Id="5" BoxType="9099">
+					<Name>Term 1 (EK1200)</Name>
+					<ImageId>1000</ImageId>
+					<EtherCAT PdiType="#x0100" CycleMBoxPollingTime="0" VendorId="#x00000002" ProductCode="#x04b02c52" RevisionNo="#x00001388" InfoDataState="false" PortPhys="49" MaxSlotCount="256" MaxSlotGroupCount="1" SlotPdoIncrement="1" SlotIndexIncrement="16" Type="EK1200-5000 EtherCAT Power supply (2A E-Bus)" Desc="EK1200" PortABoxInfo="#x00ffffff"/>
+					<Box Id="6" BoxType="9099" BoxFlags="#x00000020">
+						<Name>Term 6 (EL6692)</Name>
+						<ImageId>1005</ImageId>
+						<EtherCAT SlaveType="3" AdsServerAddress="052837800307e903" PdiType="#x0c05" MboxDataLinkLayer="true" StateMBoxPolling="true" CycleMBoxPollingTime="0" CoeType="47" EoeType="1" FoeType="1" VendorId="#x00000002" ProductCode="#x1a243052" RevisionNo="#x00120000" InfoDataAddr="true" InfoDataNetId="true" TimeoutMailbox2="2000" GenerateOwnNetId="true" PortPhys="51" MaxSlotCount="256" MaxSlotGroupCount="1" SlotPdoIncrement="1" SlotIndexIncrement="16" Type="EL6692 EtherCAT Bridge terminal (Primary)" Desc="EL6692" PortABoxInfo="#x01000005">
+							<SyncMan>001000012600010001000000800000040001001026010000</SyncMan>
+							<SyncMan>001400012200010002000000800000040001001422010000</SyncMan>
+							<SyncMan>001800002400000003000000000000000000001824000000</SyncMan>
+							<SyncMan>001e02002000010004000000000000000200001e20010000</SyncMan>
+							<Fmmu>0000000000000000000000020000000001000000000000000000000000000000</Fmmu>
+							<Fmmu>0000000000000000001e00010100000002000000000000000000000000000000</Fmmu>
+							<Fmmu>00000000000000000d0800010100000003000000000000000000000000000000</Fmmu>
+							<SwitchPortData>00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000</SwitchPortData>
+							<BootStrapData>0010f400f410f400</BootStrapData>
+							<DcMode>4672656552756e0000000000000000004672656552756e00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000</DcMode>
+							<DcMode>4443000000000000000000000000000044432d53796e6368726f6e000000000000000000000000000000000000000000000000000000000000000000000020030100000000000000000000000000000000000000000000000000000000000000</DcMode>
+							<MBoxUserCmdData>020003000900000014000000000000000000000000000000000000000000000020f51001010000000053796e634d6173746572205365636f6e6461727900</MBoxUserCmdData>
+							<MBoxUserCmdData>02000300090000000f000000000000000000000000000000000000000000000020ff10000100000000636f756e7420456e7472794465736300</MBoxUserCmdData>
+							<Pdo Name="SYNC Inputs" Index="#x1a01" Flags="#x0010" SyncMan="3">
+								<ExcludePdo>#x1a02</ExcludePdo>
+								<ExcludePdo>#x1a03</ExcludePdo>
+								<Entry Name="Sync Mode" BitLen="2" Index="#x10f4" Sub="#x01">
+									<Type>BIT2</Type>
+									<Comment><![CDATA[0: no Syncronisation
+1: Secondary side is Sync Master
+2: Primary side is Sync Master]]></Comment>
+								</Entry>
+								<Entry BitLen="6">
+									<Type GUID="{18071995-0000-0000-0000-002000000006}">ARRAY [0..5] OF BIT</Type>
+								</Entry>
+								<Entry BitLen="3">
+									<Type GUID="{18071995-0000-0000-0000-002000000003}">ARRAY [0..2] OF BIT</Type>
+								</Entry>
+								<Entry Name="TxPDO toggle" BitLen="1" Index="#x1800" Sub="#x09">
+									<Type>BIT</Type>
+									<Comment><![CDATA[Bit toggles when new data from other side received]]></Comment>
+								</Entry>
+								<Entry Name="TxPDO state" BitLen="1" Index="#x1800" Sub="#x07">
+									<Type>BIT</Type>
+									<Comment><![CDATA[0: Other side is in OP state
+>0: Error]]></Comment>
+								</Entry>
+								<Entry Name="Control value update toggle" BitLen="1" Index="#x10f4" Sub="#x0e">
+									<Type>BIT</Type>
+									<Comment><![CDATA[Bit toggles when new DC control data available]]></Comment>
+								</Entry>
+								<Entry Name="Timestamp update toggle" BitLen="1" Index="#x10f4" Sub="#x0f">
+									<Type>BIT</Type>
+									<Comment><![CDATA[Bit toggles when new timestamp data available]]></Comment>
+								</Entry>
+								<Entry Name="External device not connected" BitLen="1" Index="#x10f4" Sub="#x10">
+									<Type>BIT</Type>
+									<Comment><![CDATA[0: External device connected
+1: External device not connected]]></Comment>
+								</Entry>
+							</Pdo>
+							<Pdo Name="SYNC Inputs" Index="#x1a02" Flags="#x0010">
+								<ExcludePdo>#x1a01</ExcludePdo>
+								<ExcludePdo>#x1a03</ExcludePdo>
+								<Entry Name="Sync Mode" BitLen="2" Index="#x10f4" Sub="#x01">
+									<Type>BIT2</Type>
+									<Comment><![CDATA[0: no Syncronisation
+1: Secondary side is Sync Master
+2: Primary side is Sync Master]]></Comment>
+								</Entry>
+								<Entry BitLen="6">
+									<Type GUID="{18071995-0000-0000-0000-002000000006}">ARRAY [0..5] OF BIT</Type>
+								</Entry>
+								<Entry BitLen="3">
+									<Type GUID="{18071995-0000-0000-0000-002000000003}">ARRAY [0..2] OF BIT</Type>
+								</Entry>
+								<Entry Name="TxPDO toggle" BitLen="1" Index="#x1800" Sub="#x09">
+									<Type>BIT</Type>
+									<Comment><![CDATA[Bit toggles when new data from other side received]]></Comment>
+								</Entry>
+								<Entry Name="TxPDO state" BitLen="1" Index="#x1800" Sub="#x07">
+									<Type>BIT</Type>
+									<Comment><![CDATA[0: Other side is in OP state
+>0: Error]]></Comment>
+								</Entry>
+								<Entry Name="Control value update toggle" BitLen="1" Index="#x10f4" Sub="#x0e">
+									<Type>BIT</Type>
+									<Comment><![CDATA[Bit toggles when new DC control data available]]></Comment>
+								</Entry>
+								<Entry Name="Timestamp update toggle" BitLen="1" Index="#x10f4" Sub="#x0f">
+									<Type>BIT</Type>
+									<Comment><![CDATA[Bit toggles when new timestamp data available]]></Comment>
+								</Entry>
+								<Entry Name="External device not connected" BitLen="1" Index="#x10f4" Sub="#x10">
+									<Type>BIT</Type>
+									<Comment><![CDATA[0: External device connected
+1: External device not connected]]></Comment>
+								</Entry>
+								<Entry Name="Internal time stamp" BitLen="64" Index="#x10f4" Sub="#x11">
+									<Type>ULINT</Type>
+								</Entry>
+								<Entry Name="External time stamp" BitLen="64" Index="#x10f4" Sub="#x12">
+									<Type>ULINT</Type>
+								</Entry>
+								<Entry Name="Control Value for DC Master Clock" BitLen="32" Index="#x10f4" Sub="#x13">
+									<Type>UDINT</Type>
+								</Entry>
+							</Pdo>
+							<Pdo Name="SYNC Inputs" Index="#x1a03" Flags="#x0010">
+								<ExcludePdo>#x1a01</ExcludePdo>
+								<ExcludePdo>#x1a02</ExcludePdo>
+								<Entry Name="Sync Mode" BitLen="2" Index="#x10f4" Sub="#x01">
+									<Type>BIT2</Type>
+									<Comment><![CDATA[0: no Syncronisation
+1: Secondary side is Sync Master
+2: Primary side is Sync Master]]></Comment>
+								</Entry>
+								<Entry BitLen="6">
+									<Type GUID="{18071995-0000-0000-0000-002000000006}">ARRAY [0..5] OF BIT</Type>
+								</Entry>
+								<Entry BitLen="3">
+									<Type GUID="{18071995-0000-0000-0000-002000000003}">ARRAY [0..2] OF BIT</Type>
+								</Entry>
+								<Entry Name="TxPDO toggle" BitLen="1" Index="#x1800" Sub="#x09">
+									<Type>BIT</Type>
+									<Comment><![CDATA[Bit toggles when new data from other side received]]></Comment>
+								</Entry>
+								<Entry Name="TxPDO state" BitLen="1" Index="#x1800" Sub="#x07">
+									<Type>BIT</Type>
+									<Comment><![CDATA[0: Other side is in OP state
+>0: Error]]></Comment>
+								</Entry>
+								<Entry Name="Control value update toggle" BitLen="1" Index="#x10f4" Sub="#x0e">
+									<Type>BIT</Type>
+									<Comment><![CDATA[Bit toggles when new DC control data available]]></Comment>
+								</Entry>
+								<Entry Name="Timestamp update toggle" BitLen="1" Index="#x10f4" Sub="#x0f">
+									<Type>BIT</Type>
+									<Comment><![CDATA[Bit toggles when new timestamp data available]]></Comment>
+								</Entry>
+								<Entry Name="External device not connected" BitLen="1" Index="#x10f4" Sub="#x10">
+									<Type>BIT</Type>
+									<Comment><![CDATA[0: External device connected
+1: External device not connected]]></Comment>
+								</Entry>
+								<Entry Name="Internal time stamp" BitLen="32" Index="#x10f4" Sub="#x11">
+									<Type>UDINT</Type>
+								</Entry>
+								<Entry Name="External time stamp" BitLen="32" Index="#x10f4" Sub="#x12">
+									<Type>UDINT</Type>
+								</Entry>
+								<Entry Name="Control Value for DC Master Clock" BitLen="32" Index="#x10f4" Sub="#x13">
+									<Type>UDINT</Type>
+								</Entry>
+							</Pdo>
+							<Pdo Name="IO Inputs" Index="#x1a00" Flags="#x0021" SyncMan="3"/>
+							<Pdo Name="IO Outputs" Index="#x1600" InOut="1" Flags="#x0021" SyncMan="2"/>
+							<CoeProfile ProfileNo="5001"/>
+						</EtherCAT>
+					</Box>
+					<Box Id="7" BoxType="9099">
+						<Name>Term 3 (EL9011)</Name>
+						<ImageId>1006</ImageId>
+						<EtherCAT CycleMBoxPollingTime="0" VendorId="#x00000002" ProductCode="#x23333050" InfoDataState="false" MaxSlotCount="256" MaxSlotGroupCount="1" SlotPdoIncrement="1" SlotIndexIncrement="16" Type="EL9011 End Terminal" Desc="EL9011" PortABoxInfo="#x01000006"/>
+					</Box>
+				</Box>
+				<EtherCAT EnableVirtualSwitch="true" MaxSwitchPorts="2" MaxSwitchFrames="120"/>
+			</Device>
+		</Io>
 	</Project>
 	<Mappings>
 		<MappingInfo Identifier="{05000010-2001-0850-3000-040300205008}" Id="#x02030010" Watchdog="04000000080000000400000004000000"/>

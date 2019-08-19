@@ -9,3 +9,6 @@ _Libraries
 *.~u
 *.tmc
 *.sln
+*.dbg
+*.noprjfile
+UpgradeLog.htm*

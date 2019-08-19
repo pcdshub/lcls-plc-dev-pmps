@@ -1,21 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
   <POU Name="FB_Arbiter_Test" Id="{db09e55a-38f4-0816-2f75-9c1afd6ec43c}" SpecialFunc="None">
     <Declaration><![CDATA[{attribute 'call_after_init'}
-FUNCTION_BLOCK FB_Arbiter_Test EXTENDS FB_TestSuite IMPLEMENTS I_RunnableTestSuite
+FUNCTION_BLOCK FB_Arbiter_Test EXTENDS TcUnit.FB_TestSuite
 VAR_INPUT
 END_VAR
 VAR_OUTPUT
 END_VAR
 VAR
-	fbAssert : TcUnit.FB_Assert;
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[]]></ST>
+      <ST><![CDATA[Arbitration();
+RequestCheckRemoveBP();]]></ST>
     </Implementation>
     <Method Name="Arbitration" Id="{2b6f199f-ca1a-03e4-0a23-e2d3f0dbc445}">
-      <Declaration><![CDATA[METHOD PRIVATE Arbitration
+      <Declaration><![CDATA[METHOD Arbitration
 VAR_INPUT
 END_VAR
 VAR
@@ -34,7 +34,7 @@ VAR
 	stRateReqBP	:	ST_BeamParams := PMPS_GVL_BeamParams.cstFullBeam;
 	
 	stArbitratedBP	:	ST_BeamParams;
-	stExpectedBP	:	ST_BeamParams := PMPS_GVL_BeamParams.cstFullBeam;
+	stExpectedBP	:	ST_BeamParams;
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[TEST('Arbitration');
@@ -44,52 +44,40 @@ fbArbiter.A_Init();
 
 stAttReqBP.fAtt := 50;
 stPPEReqBP.fPP_mJ := 1;
-stEVReqBP.neVReqRange := 2#1111_1100_1111_1111;
+stEVReqBP.neVRange := 2#1111_1100_1111_1111;
 stRateReqBP.nRate := 120;
 
 //Load arbiter with beam parameter sets
-fbAssert.AssertTrue(fbArbiter.AddRequest(nAttReqID, stAttReqBP),
+AssertTrue(fbArbiter.AddRequest(nAttReqID, stAttReqBP),
 					'Safest attenuation request failed to load');
 					
 //Load arbiter with beam parameter sets
-fbAssert.AssertTrue(fbArbiter.AddRequest(nPPEReqID, stPPEReqBP),
+AssertTrue(fbArbiter.AddRequest(nPPEReqID, stPPEReqBP),
 					'Safest PPE request failed to load');
 					
 //Load arbiter with beam parameter sets
-fbAssert.AssertTrue(fbArbiter.AddRequest(nEVReqID, stEVReqBP),
+AssertTrue(fbArbiter.AddRequest(nEVReqID, stEVReqBP),
 					'Safest stEVReqBP request failed to load');
 					
 //Load arbiter with beam parameter sets
-fbAssert.AssertTrue(fbArbiter.AddRequest(nRateReqID, stRateReqBP),
+AssertTrue(fbArbiter.AddRequest(nRateReqID, stRateReqBP),
 					'Safest stEVReqBP request failed to load');
 
 stExpectedBP.fAtt 	:= 	stAttReqBP.fAtt;
 stExpectedBP.fPP_mJ	:=  stPPEReqBP.fPP_mJ;
-stExpectedBP.neVReqRange := stEVReqBP.neVReqRange;
+stExpectedBP.neVRange := stEVReqBP.neVRange;
 stExpectedBP.nRate := stRateReqBP.nRate;
 
 stArbitratedBP := fbArbiter.GetArbitratedBP();
 
-fbAssert.AssertFalse(F_DifferentBeamParams(stExpectedBP, stArbitratedBP),
+AssertFalse(F_DiffReqBeamParams(stExpectedBP, stArbitratedBP),
 				'Arbitrated BP does not match expected.');
-]]></ST>
-      </Implementation>
-    </Method>
-    <Method Name="FB_init" Id="{905e10b5-34d1-0d47-0f2f-058acb702e66}">
-      <Declaration><![CDATA[METHOD FB_init : BOOL
-VAR_INPUT
-	bInitRetains : BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
-	bInCopyCode : BOOL;  // if TRUE, the instance afterwards gets moved into the copy code (online change)
-END_VAR
-]]></Declaration>
-      <Implementation>
-        <ST><![CDATA[SUPER^.RegisterTestSuite(THIS^);
 
-]]></ST>
+TEST_FINISHED();]]></ST>
       </Implementation>
     </Method>
     <Method Name="RequestCheckRemoveBP" Id="{8a012cde-0038-03e6-02ee-15f6a358c4a9}">
-      <Declaration><![CDATA[METHOD PRIVATE RequestCheckRemoveBP
+      <Declaration><![CDATA[METHOD RequestCheckRemoveBP
 VAR_INPUT
 END_VAR
 VAR
@@ -102,40 +90,41 @@ END_VAR]]></Declaration>
         <ST><![CDATA[fbArbiter.A_Init();
 
 TEST('RequestBP');
-fbAssert.AssertTrue(fbArbiter.AddRequest(nId, stReq),
+AssertTrue(fbArbiter.AddRequest(nId, stReq),
 	'Request failed');
+
+TEST_FINISHED();
 	
 TEST('DuplicateID');
-fbAssert.AssertFalse(fbArbiter.AddRequest(nId, stReq),
+AssertFalse(fbArbiter.AddRequest(nId, stReq),
 	'Duplicate request accepted, not good.');
+
+TEST_FINISHED();
 	
 TEST('CheckBP');
-fbAssert.AssertTrue(fbArbiter.CheckRequest(nId),
+AssertTrue(fbArbiter.CheckRequest(nId),
 	'Check failed');
+
+TEST_FINISHED();	
 	
 TEST('IDDoesNotExist');
-fbAssert.AssertFalse(fbArbiter.CheckRequest(nId+1),
+AssertFalse(fbArbiter.CheckRequest(nId+1),
 	'Check returned true when ID does not exist');
+
+TEST_FINISHED();
 	
 TEST('RemoveBP');
-fbAssert.AssertTrue(fbArbiter.RemoveRequest(nId),
+AssertTrue(fbArbiter.RemoveRequest(nId),
 	'Remove failed');
-fbAssert.AssertFalse(fbArbiter.CheckRequest(nId),
-	'Remove did not remove request');]]></ST>
-      </Implementation>
-    </Method>
-    <Method Name="RunTests" Id="{1d17ac00-7099-0d59-00bd-5e8356ee15d5}">
-      <Declaration><![CDATA[METHOD RunTests : TCUNIT.E_TestSuiteRunState
-]]></Declaration>
-      <Implementation>
-        <ST><![CDATA[Arbitration();
-RequestCheckRemoveBP();
-
-RunTests := TcUnit.E_TestSuiteRunState.FINISHED;]]></ST>
+AssertFalse(fbArbiter.CheckRequest(nId),
+	'Remove did not remove request');
+	
+TEST_FINISHED();]]></ST>
       </Implementation>
     </Method>
     <LineIds Name="FB_Arbiter_Test">
       <LineId Id="9" Count="0" />
+      <LineId Id="19" Count="0" />
     </LineIds>
     <LineIds Name="FB_Arbiter_Test.Arbitration">
       <LineId Id="47" Count="0" />
@@ -156,32 +145,30 @@ RunTests := TcUnit.E_TestSuiteRunState.FINISHED;]]></ST>
       <LineId Id="84" Count="0" />
       <LineId Id="83" Count="0" />
       <LineId Id="85" Count="0" />
+      <LineId Id="136" Count="0" />
       <LineId Id="30" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_Arbiter_Test.FB_init">
-      <LineId Id="7" Count="0" />
-      <LineId Id="9" Count="0" />
-      <LineId Id="8" Count="0" />
     </LineIds>
     <LineIds Name="FB_Arbiter_Test.RequestCheckRemoveBP">
       <LineId Id="185" Count="1" />
       <LineId Id="157" Count="0" />
       <LineId Id="30" Count="0" />
       <LineId Id="166" Count="0" />
+      <LineId Id="213" Count="1" />
       <LineId Id="195" Count="1" />
       <LineId Id="198" Count="0" />
       <LineId Id="197" Count="0" />
+      <LineId Id="215" Count="1" />
       <LineId Id="167" Count="3" />
-      <LineId Id="199" Count="1" />
+      <LineId Id="217" Count="0" />
+      <LineId Id="199" Count="0" />
+      <LineId Id="218" Count="0" />
+      <LineId Id="200" Count="0" />
       <LineId Id="202" Count="0" />
       <LineId Id="201" Count="0" />
+      <LineId Id="220" Count="0" />
+      <LineId Id="219" Count="0" />
       <LineId Id="179" Count="5" />
-    </LineIds>
-    <LineIds Name="FB_Arbiter_Test.RunTests">
-      <LineId Id="4" Count="0" />
-      <LineId Id="8" Count="0" />
-      <LineId Id="6" Count="0" />
-      <LineId Id="5" Count="0" />
+      <LineId Id="211" Count="1" />
     </LineIds>
   </POU>
 </TcPlcObject>

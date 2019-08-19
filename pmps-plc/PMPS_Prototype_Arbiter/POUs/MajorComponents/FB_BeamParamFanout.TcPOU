@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
+  <POU Name="FB_BeamParamFanout" Id="{ae70823e-3202-0954-039a-ef27ac7de5b7}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_BeamParamFanout
+VAR_INPUT
+
+END_VAR
+VAR_OUTPUT
+	stBP	:	ST_BeamParams;
+END_VAR
+VAR
+	i_stBP	AT %I* :	ST_BeamParams;
+	
+	xTxPDO_toggle	AT 	%I* :	BIT;
+	xTxPDO_state	AT	%I*	:	BIT;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+
+stBP.xValidToggle;]]></ST>
+    </Implementation>
+    <LineIds Name="FB_BeamParamFanout">
+      <LineId Id="23" Count="1" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

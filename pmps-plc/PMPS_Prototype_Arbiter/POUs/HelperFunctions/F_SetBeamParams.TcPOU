@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
   <POU Name="F_SetBeamParams" Id="{4c1793f1-8a27-0a2c-0990-5356f1b410e4}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION F_SetBeamParams : ST_BeamParams
 VAR_INPUT
 	fAtt	:	REAL := 100;
 	fPP_mJ: REAL := 0;
-	neVReqRange	:	WORD := 0;
+	neVRange	:	WORD := 0;
 	nRate	:	UDINT := 0;
 END_VAR
 VAR
@@ -16,7 +16,7 @@ END_VAR
     <Implementation>
       <ST><![CDATA[BeamParams.fAtt := LIMIT(0,fAtt,100);
 BeamParams.fPP_mJ := LIMIT(0,fPP_mJ,20);
-BeamParams.neVReqRange := neVReqRange;
+BeamParams.neVRange := neVRange;
 BeamParams.nRate	:= MIN(nRate,1000000);
 
 F_SetBeamParams	:= BeamParams;]]></ST>

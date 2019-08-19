@@ -1,21 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
   <POU Name="FB_eVWithinSpec_Test" Id="{b622c686-f9dd-0ccb-3e3a-bfb750a08cb0}" SpecialFunc="None">
     <Declaration><![CDATA[{attribute 'call_after_init'}
-FUNCTION_BLOCK FB_eVWithinSpec_Test EXTENDS FB_TestSuite IMPLEMENTS I_RunnableTestSuite
+FUNCTION_BLOCK FB_eVWithinSpec_Test EXTENDS TcUnit.FB_TestSuite
 VAR_INPUT
 END_VAR
 VAR_OUTPUT
 END_VAR
 VAR
-	fbAssert : TcUnit.FB_Assert;
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[]]></ST>
+      <ST><![CDATA[evWithinRangeChecks();]]></ST>
     </Implementation>
     <Method Name="evWithinRangeChecks" Id="{1d6c611b-6bb7-0728-3075-755617dbc45a}">
-      <Declaration><![CDATA[METHOD PRIVATE evWithinRangeChecks
+      <Declaration><![CDATA[METHOD evWithinRangeChecks
 VAR_INPUT
 END_VAR
 VAR
@@ -25,48 +24,27 @@ END_VAR]]></Declaration>
         <ST><![CDATA[TEST('evWithinRangeChecks');
 	
 //Upper limit equal
-fbAssert.AssertTrue(
+AssertTrue(
 	F_eVWithinSpec(300, 2#0000_0000_0000_0010),
 	'Upper limit not inclusive');
 //Lower limit equal
-fbAssert.AssertTrue(
+AssertTrue(
 	F_eVWithinSpec(300, 2#0000_0000_0000_0100),
 	'Lower limit not inclusive');
 //Out of range
-fbAssert.AssertFalse(
+AssertFalse(
 	F_eVWithinSpec(300.1, 2#0000_0000_0000_0010),
 	'Out of range failed, whatever you did, it broke this really bad.');
 //Negative eV
-fbAssert.AssertFalse(
+AssertFalse(
 	F_eVWithinSpec(-300, 16#FFFF),
 	'Working with antimatter? Negative eV should not be acceptable.');
 //Upper unallocated range
-fbAssert.AssertFalse(
-	F_eVWithinSpec(1700, 2#1000_0000_0000_0000),
-	'eV range should not evaluate past 1.6keV');
-]]></ST>
-      </Implementation>
-    </Method>
-    <Method Name="FB_init" Id="{0db25b8c-9741-0590-06db-375536617cb5}">
-      <Declaration><![CDATA[METHOD FB_init : BOOL
-VAR_INPUT
-	bInitRetains : BOOL; // if TRUE, the retain variables are initialized (warm start / cold start)
-	bInCopyCode : BOOL;  // if TRUE, the instance afterwards gets moved into the copy code (online change)
-END_VAR
-]]></Declaration>
-      <Implementation>
-        <ST><![CDATA[SUPER^.RegisterTestSuite(THIS^);
-
-]]></ST>
-      </Implementation>
-    </Method>
-    <Method Name="RunTests" Id="{a263af5d-547a-000b-1e62-1a7934c6e961}">
-      <Declaration><![CDATA[METHOD RunTests : TCUNIT.E_TestSuiteRunState
-]]></Declaration>
-      <Implementation>
-        <ST><![CDATA[evWithinRangeChecks();
-
-RunTests := TcUnit.E_TestSuiteRunState.FINISHED;]]></ST>
+AssertFalse(
+	F_eVWithinSpec(1701, 2#1000_0000_0000_0000),
+	'eV range should not evaluate past 1.7keV');
+	
+TEST_FINISHED();]]></ST>
       </Implementation>
     </Method>
     <LineIds Name="FB_eVWithinSpec_Test">
@@ -90,17 +68,8 @@ RunTests := TcUnit.E_TestSuiteRunState.FINISHED;]]></ST>
       <LineId Id="82" Count="0" />
       <LineId Id="94" Count="1" />
       <LineId Id="85" Count="0" />
+      <LineId Id="101" Count="0" />
       <LineId Id="84" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_eVWithinSpec_Test.FB_init">
-      <LineId Id="7" Count="0" />
-      <LineId Id="9" Count="0" />
-      <LineId Id="8" Count="0" />
-    </LineIds>
-    <LineIds Name="FB_eVWithinSpec_Test.RunTests">
-      <LineId Id="4" Count="0" />
-      <LineId Id="6" Count="0" />
-      <LineId Id="5" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>

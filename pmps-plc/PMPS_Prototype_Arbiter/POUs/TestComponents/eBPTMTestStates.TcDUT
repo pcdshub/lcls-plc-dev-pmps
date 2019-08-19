@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.18">
+  <DUT Name="eBPTMTestStates" Id="{4579000d-df0c-05b4-249d-3febc5c5a3c9}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+TYPE eBPTMTestStates :
+(
+	Init := 0,
+	WaitingForValidID := 50,
+	WaitingForTransitionAssertion := 100,
+	WaitingForFinalAssertion	:= 200,
+	Transitioning	:= 300,
+	CleaningUp	:= 400,
+	AnotherState := 500
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>
