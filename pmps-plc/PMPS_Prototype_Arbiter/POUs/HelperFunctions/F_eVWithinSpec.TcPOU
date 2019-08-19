@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4022.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
   <POU Name="F_eVWithinSpec" Id="{45f3ed56-b8f9-0768-224f-cf2f5086a350}" SpecialFunc="None">
     <Declaration><![CDATA[//reV must be within permitted range.
 FUNCTION F_eVWithinSpec : BOOL
@@ -12,7 +12,7 @@ VAR
 	nPermittedRangeHolding	:	WORD; 
 	//For loop counter
 	nIndex	:	INT;
-	// Lower boundary for range check
+	// Lower boundary for range check 
 	rPreviousBoundary: REAL := 0;
 END_VAR
 ]]></Declaration>
@@ -41,27 +41,5 @@ FOR nIndex := 0 TO PMPS_GVL_BeamParams.g_cBoundaries DO
 END_FOR
 ]]></ST>
     </Implementation>
-    <LineIds Name="F_eVWithinSpec">
-      <LineId Id="49" Count="0" />
-      <LineId Id="56" Count="0" />
-      <LineId Id="50" Count="0" />
-      <LineId Id="52" Count="0" />
-      <LineId Id="54" Count="1" />
-      <LineId Id="57" Count="1" />
-      <LineId Id="37" Count="0" />
-      <LineId Id="36" Count="0" />
-      <LineId Id="35" Count="0" />
-      <LineId Id="7" Count="0" />
-      <LineId Id="38" Count="0" />
-      <LineId Id="32" Count="0" />
-      <LineId Id="92" Count="0" />
-      <LineId Id="91" Count="0" />
-      <LineId Id="114" Count="1" />
-      <LineId Id="90" Count="0" />
-      <LineId Id="48" Count="0" />
-      <LineId Id="41" Count="0" />
-      <LineId Id="88" Count="0" />
-      <LineId Id="33" Count="0" />
-    </LineIds>
   </POU>
 </TcPlcObject>
